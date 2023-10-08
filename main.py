@@ -27,92 +27,42 @@ print(
     "This is an image processing application. Write a command to begin or --help to see all the available commands.\n")
 x = input()
 new_x = x.split(' ')
-if new_x[0] == "--brightness":
-    basic_operations.modify_brightness2(im, int(new_x[1]))
-if new_x[0] == "--contrast":
-    basic_operations.modify_contrast3(im, int(new_x[1]))
-if new_x[0] == "--negative":
-    basic_operations.apply_negative(im)
-if new_x[0] == "--hflip":
-    geometric_operations.horizontal_flip(im)
-if new_x[0] == "--vflip":
-    geometric_operations.vertical_flip(im)
-if new_x[0] == "--dflip":
-    geometric_operations.diagonal_flip(im)
-if new_x[0] == "--help":
-    show_help()
+if len(new_x) < 1 or len(new_x) > 2:
+    print("Error, provide correct numbers of arguments")
+else:
+    if new_x[0] == "--brightness":
+        if len(new_x) != 2:
+            print("Error, provide correct numbers of parameter")
+        else:
+            basic_operations.modify_brightness2(im, int(new_x[1]))
+    elif new_x[0] == "--contrast":
+        if len(new_x) != 2:
+            print("Error, provide correct numbers of parameter")
+        else:
+            basic_operations.modify_contrast3(im, int(new_x[1]))
+    elif new_x[0] == "--negative":
+        basic_operations.apply_negative(im)
+    elif new_x[0] == "--hflip":
+        geometric_operations.horizontal_flip(im)
+    elif new_x[0] == "--vflip":
+        geometric_operations.vertical_flip(im)
+    elif new_x[0] == "--dflip":
+        geometric_operations.diagonal_flip(im)
+    elif new_x[0] == "--shrink":
+        if len(new_x) != 2:
+            print("Error, provide correct numbers of parameter")
+        else:
+            geometric_operations.shrinking(im, new_x[1])
+    # elif new_x[0] == "--enlarge":
+    #     if len(new_x) != 2:
+    #         print("Error, provide correct numbers of parameter")
+    #     else:
+    #         geometric_operations.enlarge(im, new_x[1])
+    elif new_x[0] == "--help":
+        show_help()
+    else:
+        print("This command does not exist")
 
 # example
-geometric_operations.enlarge(im, 2)
+# geometric_operations.vertical_flip(im)
 # show_help()
-
-
-# # im = Image.open("lena.bmp")
-#
-# arr = np.array(im.getdata())
-# print(im.getdata()[0])
-# if arr.ndim == 1:  # grayscale
-#     numColorChannels = 1
-#     arr = arr.reshape(im.size[1], im.size[0])
-# else:
-#     numColorChannels = arr.shape[1]
-#     arr = arr.reshape(im.size[1], im.size[0], numColorChannels)
-
-
-# arr.reshape(2, 393216)
-# print(im.size[1])
-# print(im.size[0])
-# print(arr)
-# arr = arr - 30  # Example processing (decrease brightness)
-
-# newIm = Image.fromarray(arr.astype(np.uint8))
-# newIm.show()
-
-# newIm.save("result.bmp")
-# def save_image(image, output_path):
-#     image.save(output_path)
-
-
-# def modify_brightness(image, factor):
-#     arr = np.array(image)
-#     arr = arr * factor
-#     arr = np.clip(arr, 0, 255).astype(np.uint8)
-#     save_image(Image.fromarray(arr), "new_image.bmp")
-# return Image.fromarray(arr)
-
-
-# example
-# new_image = modify_brightness(im, 1/30)
-# save_image(arr, "new_image.bmp")
-
-
-# from PIL import Image
-# import numpy as np
-#
-# im = Image.open("venv/images/lenac.bmp")
-# # im = Image.open("lena.bmp")
-#
-# arr = np.array(im.getdata())
-# if arr.ndim == 1:  # grayscale
-#     numColorChannels = 1
-#     arr = arr.reshape(im.size[1], im.size[0])
-# else:
-#     numColorChannels = arr.shape[1]
-#     arr = arr.reshape(im.size[1], im.size[0], numColorChannels)
-
-
-# arr = arr / 2 # Example processing (decrease brightness)
-
-# def brightness(img, strength=0):
-#     return [[[
-#         int((510 / (1 + (2.7183 ** (-strength * img[i][j][k] / 255)))) - 255)
-#         for k in range(len(img[0][0]))
-#     ] for j in range(len(img[0]))] for i in range(len(img))]
-#
-#
-# brightness(arr, 0)
-#
-# newIm = Image.fromarray(arr.astype(np.uint8))
-# newIm.show()
-#
-# newIm.save("result.bmp")
