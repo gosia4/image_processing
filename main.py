@@ -1,11 +1,11 @@
 from PIL import Image
 import numpy as np
-import venv.basic_operations as basic_operations
-import venv.geometric_operations as geometric_operations
-import venv.noise_removal as noise_removal
+import image_processing.venv.basic_operations as basic_operations
+import image_processing.venv.geometric_operations as geometric_operations
+import image_processing.venv.noise_removal as noise_removal
 
 # def main():
-im = Image.open("venv/images/lena.bmp")
+im = Image.open("venv/images/lenac_impulse1.bmp")
 data = np.array(im.getdata())
 # noise_removal.median_filter4(im, 10)
 
@@ -25,7 +25,7 @@ def show_help():
           "\n\n--enlarge parameter, enlarge the image"
           "\nas a parameter provide a factor")
 
-
+basic_operations.modify_contrast3(im, 3)
 
 print(
     "This is an image processing application. Write a command to begin or --help to see all the available commands.\n")
@@ -57,11 +57,11 @@ else:
             print("Error, provide correct numbers of parameter")
         else:
             geometric_operations.shrinking(im, new_x[1])
-    # elif new_x[0] == "--enlarge":
-    #     if len(new_x) != 2:
-    #         print("Error, provide correct numbers of parameter")
-    #     else:
-    #         geometric_operations.enlarge(im, new_x[1])
+    elif new_x[0] == "--enlarge":
+        if len(new_x) != 2:
+            print("Error, provide correct numbers of parameter")
+        else:
+            geometric_operations.enlarge(im, new_x[1])
     elif new_x[0] == "--mean":
         noise_removal.median_filter(im, 20)
     elif new_x[0] == "--help":

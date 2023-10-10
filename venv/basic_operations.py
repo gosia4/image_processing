@@ -5,6 +5,11 @@ import math
 def save_image(image, output_path):
     image.save(output_path)
 
+def int_or_touple_to_array(item):
+    if type(item) is tuple:
+        return list(item)
+    else:
+        return [item, item, item]
 
 def modify_brightness(image, factor):
     arr = np.array(image)
@@ -12,7 +17,7 @@ def modify_brightness(image, factor):
     else: arr = arr / factor
     # arr = arr * factor
     arr = np.clip(arr, 0, 255).astype(np.uint8)
-    save_image(Image.fromarray(arr), "new_image.bmp")
+    save_image(Image.fromarray(arr), "../new_image.bmp")
 
 def modify_brightness2(image, factor):
     if factor < -255: factor = -255
@@ -74,19 +79,21 @@ def modify_contrast3(image, factor):
         result_image = Image.new('RGB', (width, height))
         color_channels = 3
     elif (image.mode == "L"):
-        result_image = Image.new('RGB', (width, height))
+        result_image = Image.new('L', (width, height))
         color_channels = 1
 
     if (color_channels == 0):
         print("this program does not support this color model.")
         return
 
+
     for y in range(height):
         for x in range(width):
-            old_value = image.getpixel((x, y))[0]
-            new_value = lut[old_value]
-
-            result_image.putpixel((x, y), new_value)
+            color_tab = []
+            for c in range(color_channels):
+                old_value = image.getpixel((x, y))
+                color_tab.append(int(lut[int_or_touple_to_array(old_value)[c]]))
+            result_image.putpixel((x, y), tuple(color_tab))
     result_image.save("new_image.bmp")
     result_image.show()
 
