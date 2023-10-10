@@ -1,10 +1,13 @@
 from PIL import Image
+import numpy as np
 import basic_operations
 import geometric_operations
+import noise_removal
 
 # def main():
-im = Image.open("venv/images/lenac.bmp")
-
+im = Image.open("venv/images/lena.bmp")
+data = np.array(im.getdata())
+# noise_removal.median_filter4(im, 10)
 
 def show_help():
     print("Basic operations:\n"
@@ -58,10 +61,13 @@ else:
     #         print("Error, provide correct numbers of parameter")
     #     else:
     #         geometric_operations.enlarge(im, new_x[1])
+    elif new_x[0] == "--mean":
+        noise_removal.median_filter(im, 20)
     elif new_x[0] == "--help":
         show_help()
     else:
         print("This command does not exist")
+
 
 # example
 # geometric_operations.vertical_flip(im)
