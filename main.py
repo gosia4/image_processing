@@ -1,8 +1,8 @@
 from PIL import Image
 import numpy as np
-import basic_operations
-import geometric_operations
-import noise_removal
+import venv.basic_operations
+import venv.geometric_operations
+import venv.noise_removal
 
 # def main():
 im = Image.open("venv/images/lena.bmp")
@@ -24,6 +24,7 @@ def show_help():
           "\nas a parameter provide a factor"
           "\n\n--enlarge parameter, enlarge the image"
           "\nas a parameter provide a factor")
+
 
 
 print(
