@@ -1,8 +1,8 @@
 from PIL import Image
 import numpy as np
-import venv.basic_operations
-import venv.geometric_operations
-import venv.noise_removal
+import venv.basic_operations as basic_operations
+import venv.geometric_operations as geometric_operations
+import venv.noise_removal as noise_removal
 
 # def main():
 im = Image.open("venv/images/lena.bmp")
