@@ -1,12 +1,15 @@
+import sys
+import geometric_operations
+import basic_operations
+import noise_removal
 from PIL import Image
 import numpy as np
-import image_processing.venv.basic_operations as basic_operations
-import image_processing.venv.geometric_operations as geometric_operations
-import image_processing.venv.noise_removal as noise_removal
 
 # def main():
-im = Image.open("venv/images/lena_impulse1.bmp")
+im = Image.open("venv/images/lenac.bmp")
 data = np.array(im.getdata())
+
+
 # noise_removal.median_filter4(im, 10)
 
 def show_help():
@@ -25,50 +28,34 @@ def show_help():
           "\n\n--enlarge parameter, enlarge the image"
           "\nas a parameter provide a factor")
 
-geometric_operations.shrink(im)
 
-print(
-    "This is an image processing application. Write a command to begin or --help to see all the available commands.\n")
-x = input()
-new_x = x.split(' ')
-if len(new_x) < 1 or len(new_x) > 2:
-    print("Error, provide correct numbers of arguments")
+# geometric_operations.shrink(im)
+# noise_removal.remove_noise_median(im, 3)
+# geometric_operations.shrink(im)
+
+
+if sys.argv[1] == "--brightness":
+    basic_operations.modify_brightness(im, int(sys.argv[1]))
+elif sys.argv[1] == "--contrast":
+    basic_operations.modify_contrast(im, int(sys.argv[1]))
+elif sys.argv[1] == "--negative":
+    basic_operations.apply_negative(im)
+elif sys.argv[1] == "--hflip":
+    geometric_operations.horizontal_flip(im)
+elif sys.argv[1] == "--vflip":
+    geometric_operations.vertical_flip(im)
+elif sys.argv[1] == "--dflip":
+    geometric_operations.diagonal_flip(im)
+elif sys.argv[1] == "--shrink":
+    geometric_operations.shrinking(im, sys.argv[1])
+elif sys.argv[1] == "--enlarge":
+    geometric_operations.enlarge(im, sys.argv[1])
+elif sys.argv[1] == "--mean":
+    noise_removal.median_filter(im, 20)
+elif sys.argv[1] == "--help":
+    show_help()
 else:
-    if new_x[0] == "--brightness":
-        if len(new_x) != 2:
-            print("Error, provide correct numbers of parameter")
-        else:
-            basic_operations.modify_brightness(im, int(new_x[1]))
-    elif new_x[0] == "--contrast":
-        if len(new_x) != 2:
-            print("Error, provide correct numbers of parameter")
-        else:
-            basic_operations.modify_contrast(im, int(new_x[1]))
-    elif new_x[0] == "--negative":
-        basic_operations.apply_negative(im)
-    elif new_x[0] == "--hflip":
-        geometric_operations.horizontal_flip(im)
-    elif new_x[0] == "--vflip":
-        geometric_operations.vertical_flip(im)
-    elif new_x[0] == "--dflip":
-        geometric_operations.diagonal_flip(im)
-    elif new_x[0] == "--shrink":
-        if len(new_x) != 2:
-            print("Error, provide correct numbers of parameter")
-        else:
-            geometric_operations.shrinking(im, new_x[1])
-    elif new_x[0] == "--enlarge":
-        if len(new_x) != 2:
-            print("Error, provide correct numbers of parameter")
-        else:
-            geometric_operations.enlarge(im, new_x[1])
-    elif new_x[0] == "--mean":
-        noise_removal.median_filter(im, 20)
-    elif new_x[0] == "--help":
-        show_help()
-    else:
-        print("This command does not exist")
-
+    print("This command does not exist")
 
 # example
 # geometric_operations.vertical_flip(im)
