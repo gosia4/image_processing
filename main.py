@@ -25,8 +25,7 @@ def show_help():
           "\n\n--enlarge parameter, enlarge the image"
           "\nas a parameter provide a factor")
 
-basic_operations.apply_negative(im)
-
+geometric_operations.shrink(im)
 
 print(
     "This is an image processing application. Write a command to begin or --help to see all the available commands.\n")
