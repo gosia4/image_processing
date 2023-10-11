@@ -5,7 +5,7 @@ import image_processing.venv.geometric_operations as geometric_operations
 import image_processing.venv.noise_removal as noise_removal
 
 # def main():
-im = Image.open("venv/images/lenac_impulse1.bmp")
+im = Image.open("venv/images/lena_impulse1.bmp")
 data = np.array(im.getdata())
 # noise_removal.median_filter4(im, 10)
 
@@ -25,7 +25,8 @@ def show_help():
           "\n\n--enlarge parameter, enlarge the image"
           "\nas a parameter provide a factor")
 
-basic_operations.modify_contrast3(im, 3)
+basic_operations.apply_negative(im)
+
 
 print(
     "This is an image processing application. Write a command to begin or --help to see all the available commands.\n")
@@ -38,12 +39,12 @@ else:
         if len(new_x) != 2:
             print("Error, provide correct numbers of parameter")
         else:
-            basic_operations.modify_brightness2(im, int(new_x[1]))
+            basic_operations.modify_brightness(im, int(new_x[1]))
     elif new_x[0] == "--contrast":
         if len(new_x) != 2:
             print("Error, provide correct numbers of parameter")
         else:
-            basic_operations.modify_contrast3(im, int(new_x[1]))
+            basic_operations.modify_contrast(im, int(new_x[1]))
     elif new_x[0] == "--negative":
         basic_operations.apply_negative(im)
     elif new_x[0] == "--hflip":

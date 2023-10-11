@@ -1,14 +1,14 @@
 import numpy as np
 from PIL import Image
 
-im = Image.open("venv/images/lenac.bmp")
-arr = np.array(im.getdata())
-if arr.ndim == 1:  # grayscale
-    numColorChannels = 1
-    arr = arr.reshape(im.size[1], im.size[0])
-else:
-    numColorChannels = arr.shape[1]
-    arr = arr.reshape(im.size[1], im.size[0], numColorChannels)
+# im = Image.open("venv/images/lenac.bmp")
+# arr = np.array(im.getdata())
+# if arr.ndim == 1:  # grayscale
+#     numColorChannels = 1
+#     arr = arr.reshape(im.size[1], im.size[0])
+# else:
+#     numColorChannels = arr.shape[1]
+#     arr = arr.reshape(im.size[1], im.size[0], numColorChannels)
 def horizontal_flip(image):
     width, height = image.size
     flipped_image = Image.new('RGB', (width, height))

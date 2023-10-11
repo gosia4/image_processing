@@ -1,0 +1,28 @@
+import numpy as np
+from PIL import Image
+
+# saves the image to the desired path
+def save_image(image, output_path):
+    image.save(output_path)
+
+# gets the variable (item) that can be either int or RGB pixel format (tuple of 3-element arrays)
+#   returns a list of either 1 item (Grayscale int) or 3 items (RGB int values)
+def int_or_tuple_to_array(item):
+    if type(item) is tuple:
+        return list(item)
+    else:
+        return [item, item, item]
+
+
+# reads the color mode of the image
+#   returns new empty canvas with apropriate format (mode) [Grayscale / RGB]
+#   returns number of color channels this image has
+def analyse_color_channels(image):
+    width, height = image.size
+    if image.mode == "RGB":
+        return [Image.new('RGB', (width, height)), 3]
+    elif image.mode == "L":
+        return [Image.new('L', (width, height)), 1]
+    else:
+        print("this program does not support this color model.")
+        return [0, 0]
