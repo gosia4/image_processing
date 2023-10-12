@@ -6,7 +6,7 @@ from PIL import Image
 import numpy as np
 
 # def main():
-im = Image.open("venv/images/lenac.bmp")
+im = Image.open("venv/images/lena_impulse1.bmp")
 data = np.array(im.getdata())
 
 
@@ -30,7 +30,7 @@ def show_help():
 
 
 # geometric_operations.shrink(im)
-# noise_removal.remove_noise_median(im, 3)
+noise_removal.remove_noise_median(im, 3)
 # geometric_operations.shrink(im)
 
 

@@ -20,8 +20,8 @@ def modify_brightness(image, factor):
     for y in range(height):
         for x in range(width):
             color_tab = []
+            old_value = image.getpixel((x, y))
             for c in range(color_channels):
-                old_value = image.getpixel((x, y))
                 # appends new color value once for each color channel
                 color_tab.append(factor + sp.int_or_tuple_to_array(old_value)[c])
 
@@ -52,11 +52,10 @@ def modify_contrast(image, factor):
     for y in range(height):
         for x in range(width):
             color_tab = []
+            old_value = image.getpixel((x, y))
             for c in range(color_channels):
-                old_value = image.getpixel((x, y))
                 # appends new color value once for each color channel
                 color_tab.append(int(lut[sp.int_or_tuple_to_array(old_value)[c]]))
-
             # then puts that pixel to the new image as a tuple (I hate tuples)
             result_image.putpixel((x, y), tuple(color_tab))
     result_image.save("new_image.bmp")
@@ -74,8 +73,8 @@ def apply_negative(image):
     for y in range(height):
         for x in range(width):
             color_tab = []
+            old_value = image.getpixel((x, y))
             for c in range(color_channels):
-                old_value = image.getpixel((x, y))
                 # appends negative color value once for each color channel
                 color_tab.append(int(255 - sp.int_or_tuple_to_array(old_value)[c]))
 
