@@ -6,12 +6,12 @@ from PIL import Image
 import numpy as np
 
 # def main():
-im = Image.open("venv/images/lenac.bmp")
+im = Image.open("venv/images/lena_impulse1.bmp")
 data = np.array(im.getdata())
 
 
 # noise_removal.median_filter4(im, 10)
-
+# noise_removal.geometric_mean(im, 3)
 def show_help():
     print("Basic operations:\n"
           "--brightness parameter, modifies brightness by a parameter"
