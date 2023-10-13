@@ -1,4 +1,6 @@
 import sys
+
+import error_functions
 import geometric_operations
 import basic_operations
 import noise_removal
@@ -6,12 +8,15 @@ from PIL import Image
 import numpy as np
 
 # def main():
-im = Image.open("venv/images/lena_impulse1.bmp")
-data = np.array(im.getdata())
+im = Image.open("venv/images/lena.bmp")
+im1 = Image.open("venv/images/lena_impulse1.bmp")
+
+# error_functions.pmse2(im, im1)
+# noise_removal.remove_noise_median(im1, 3)
+# im1 = Image.open("new_image.bmp")
+# error_functions.pmse2(im, im1)
 
 
-# noise_removal.median_filter4(im, 10)
-# noise_removal.geometric_mean(im, 3)
 def show_help():
     print("Basic operations:\n"
           "--brightness parameter, modifies brightness by a parameter"
@@ -26,12 +31,12 @@ def show_help():
           "\n\n--shrink parameter, shrink the image"
           "\nas a parameter provide a factor"
           "\n\n--enlarge parameter, enlarge the image"
-          "\nas a parameter provide a factor")
+          "\nas a parameter provide a factor"
+          "\n\n--mean")
 
 
 # geometric_operations.shrink(im)
 # noise_removal.remove_noise_median(im, 3)
-# geometric_operations.shrink(im)
 
 
 if sys.argv[1] == "--brightness":
@@ -49,14 +54,16 @@ elif sys.argv[1] == "--dflip":
 elif sys.argv[1] == "--shrink":
     geometric_operations.shrinking(im, sys.argv[1])
 elif sys.argv[1] == "--enlarge":
-    geometric_operations.enlarge(im, sys.argv[1])
-elif sys.argv[1] == "--mean":
-    noise_removal.median_filter(im, 20)
+    geometric_operations.enlarge_image(im, sys.argv[1])
+elif sys.argv[1] == "--median":
+    noise_removal.remove_noise_median(im, 20)
+elif sys.argv[1] == "--gmean":
+    noise_removal.geometric_mean(im, sys.argv[1])
+elif sys.argv[1] == "--mse":
+    error_functions.mse(sys.argv[1], sys.argv[2])  # czy użytkownik ma podać nazwy pliku z obrazkiem?
+elif sys.argv[1] == "--pmse":
+    error_functions.pmse(sys.argv[1], sys.argv[2])  # czy użytkownik ma podać nazwy pliku z obrazkiem?
 elif sys.argv[1] == "--help":
     show_help()
 else:
     print("This command does not exist")
-
-# example
-# geometric_operations.vertical_flip(im)
-# show_help()

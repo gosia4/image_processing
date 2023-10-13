@@ -28,6 +28,7 @@ def modify_brightness(image, factor):
             # then puts that pixel to the new image as a tuple (I hate tuples)
             result_image.putpixel((x, y), tuple(color_tab))
     result_image.save("new_image.bmp")
+    result_image.show()
 
 
 def modify_contrast(image, factor):
