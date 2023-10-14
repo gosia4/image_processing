@@ -6,54 +6,42 @@ from PIL import Image
 def mse(image1, image2):
     if image1.size != image2.size:
         print("Images must have the same dimensions.")
+        return "Error"
     else:
         img1 = np.array(image1)
         img2 = np.array(image2)
+        width, height = image1.size
         # Kwadrat różnicy elementów
-        squared_diff = np.square(img1.astype(float) - img2.astype(float))
+        # squared_diff = np.square(img1.astype(float) - img2.astype(float))
+        squared_diff = (img1.astype(float) - img2.astype(float)) ** 2
 
         # Suma tych kwadratów
-        sum_squared_diff = np.sum(squared_diff)
+        sum_squared_diff = 0
+        for i in range(width):
+            for j in range(height):
+                sum_squared_diff += squared_diff[i, j]
 
         # Calculate the mean squared error
-        mse_value = sum_squared_diff / (img1.shape[0] * img1.shape[1])
-        print(mse_value)
+        mse_value = sum_squared_diff / (width * height)
+        #print(mse_value)
+        return mse_value
 
 
 def pmse(image1, image2):
-    if image1.size != image2.size:
-        print("Images must have the same dimensions.")
-    else:
-        img1 = np.array(image1)
-        img2 = np.array(image2)
-        # Kwadrat różnicy elementów
-        squared_diff = np.square(img1.astype(float) - img2.astype(float))
-        max_value = np.max(img1.astype(float))
-        temp = squared_diff / (max_value ** 2)
-        # Suma tych kwadratów
-        sum_squared_diff = np.sum(temp)
-        pmse_value = sum_squared_diff / (img1.shape[0] * img1.shape[1])
-        print(pmse_value)
+    mse_value = mse(image1, image2)
+    img1 = np.array(image1)
+    width, height = image1.size
+    # Calculate the maximum value of (img1.astype(float) ** 2)
 
+    max_squared_value = 0
+    for i in range(width):
+        for j in range(height):
+            if img1[i][j] > max_squared_value:
+                max_squared_value = img1[i][j]
+    # max_squared_value = calculate_max(img1.astype(float) ** 2)
 
-def pmse2(image1, image2):
-    if image1.size != image2.size:
-        print("Images must have the same dimensions.")
-    else:
-        img1 = np.array(image1)
-        img2 = np.array(image2)
-        # Kwadrat różnicy elementów
-        squared_diff = np.square(img1.astype(float) - img2.astype(float))
+    pmse_value = mse_value / max_squared_value
+    #print(pmse_value)
+    return pmse_value
 
-        # Suma tych kwadratów
-        sum_squared_diff = np.sum(squared_diff)
-
-        # Calculate the mean squared error
-        mse_value = sum_squared_diff / (img1.shape[0] * img1.shape[1])
-
-        # Calculate the peak mean square error (PMSE)
-        pmse_value = np.max(mse_value)
-        print(pmse_value)
-
-
-
+# def snr(image1, image2):

@@ -11,10 +11,10 @@ import numpy as np
 im = Image.open("venv/images/lena.bmp")
 im1 = Image.open("venv/images/lena_impulse1.bmp")
 
-# error_functions.pmse2(im, im1)
+# error_functions.pmse3(im, im1)
 # noise_removal.remove_noise_median(im1, 3)
 # im1 = Image.open("new_image.bmp")
-# error_functions.pmse2(im, im1)
+# error_functions.pmse3(im, im1)
 
 
 def show_help():
@@ -38,11 +38,11 @@ def show_help():
 # geometric_operations.shrink(im)
 # noise_removal.remove_noise_median(im, 3)
 
-
+# sys
 if sys.argv[1] == "--brightness":
-    basic_operations.modify_brightness(im, int(sys.argv[1]))
-elif sys.argv[1] == "--contrast":
-    basic_operations.modify_contrast(im, int(sys.argv[1]))
+    basic_operations.modify_brightness(im, int(sys.argv[2]))
+if sys.argv[1] == "--contrast":
+    basic_operations.modify_contrast(im, int(sys.argv[2]))
 elif sys.argv[1] == "--negative":
     basic_operations.apply_negative(im)
 elif sys.argv[1] == "--hflip":
@@ -52,17 +52,19 @@ elif sys.argv[1] == "--vflip":
 elif sys.argv[1] == "--dflip":
     geometric_operations.diagonal_flip(im)
 elif sys.argv[1] == "--shrink":
-    geometric_operations.shrinking(im, sys.argv[1])
+    geometric_operations.shrinking(im, sys.argv[2])
 elif sys.argv[1] == "--enlarge":
-    geometric_operations.enlarge_image(im, sys.argv[1])
+    geometric_operations.enlarge_image(im, sys.argv[2])
 elif sys.argv[1] == "--median":
-    noise_removal.remove_noise_median(im, 20)
+    noise_removal.remove_noise_median(im, sys.argv[2])
 elif sys.argv[1] == "--gmean":
-    noise_removal.geometric_mean(im, sys.argv[1])
+    noise_removal.geometric_mean(im, sys.argv[2])
 elif sys.argv[1] == "--mse":
-    error_functions.mse(sys.argv[1], sys.argv[2])  # czy użytkownik ma podać nazwy pliku z obrazkiem?
+    print(error_functions.mse(im, im1))  # czy użytkownik ma podać nazwy pliku z obrazkiem?
 elif sys.argv[1] == "--pmse":
-    error_functions.pmse(sys.argv[1], sys.argv[2])  # czy użytkownik ma podać nazwy pliku z obrazkiem?
+    print(error_functions.pmse(im, im1))  # czy użytkownik ma podać nazwy pliku z obrazkiem?
+# elif sys.argv[1] == "--snr":
+#     error_functions.snr(sys.argv[1], sys.argv[2])  # czy użytkownik ma podać nazwy pliku z obrazkiem?
 elif sys.argv[1] == "--help":
     show_help()
 else:

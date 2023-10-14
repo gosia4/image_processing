@@ -1,9 +1,10 @@
 import numpy as np
 from PIL import Image
 
+
 def remove_noise_median(image, kernel_size):
     width, height = image.size
-    #print(image.mode)
+    # print(image.mode)
     filtered_image = Image.new("L", (width, height))
 
     for x in range(width):
@@ -32,7 +33,6 @@ def remove_noise_median(image, kernel_size):
 
     filtered_image.save("new_image.bmp")
     filtered_image.show()
-
 
 
 def geometric_mean(image, kernel_size):
