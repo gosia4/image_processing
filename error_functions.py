@@ -23,7 +23,7 @@ def mse(image1, image2):
 
         # Calculate the mean squared error
         mse_value = sum_squared_diff / (width * height)
-        #print(mse_value)
+        # print(mse_value)
         return mse_value
 
 
@@ -41,7 +41,30 @@ def pmse(image1, image2):
     # max_squared_value = calculate_max(img1.astype(float) ** 2)
 
     pmse_value = mse_value / max_squared_value
-    #print(pmse_value)
+    # print(pmse_value)
     return pmse_value
 
-# def snr(image1, image2):
+
+def snr(image1, image2):
+    img1 = np.array(image1)
+    img2 = np.array(image2)
+    width, height = image1.size
+
+    # Kwadrat różnicy elementów
+    squared_diff = (img1.astype(float) - img2.astype(float)) ** 2
+
+    # Suma tych kwadratów
+    sum_squared_diff = 0
+    for i in range(width):
+        for j in range(height):
+            sum_squared_diff += squared_diff[i, j]
+
+    # Suma kwadratów
+    sum_squared = 0
+    for i in range(width):
+        for j in range(height):
+            sum_squared += (img1.astype(float) ** 2)
+
+    snr_value = 10 * np.log10(sum_squared / sum_squared_diff)
+
+    return snr_value
