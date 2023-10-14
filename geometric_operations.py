@@ -75,9 +75,22 @@ def enlarge_image(image, val):
         width, height = image.size
         new_width = int(width * val)
         new_height = int(height * val)
-        scaled_image = Image.new('RGB', (new_width, new_height))
-        for y in range(new_height):
-            for x in range(new_width):
-                scaled_image.putpixel((x, y), tuple(image.getpixel((int(x / val), int(y / val)))))
-        scaled_image.save("new_image.bmp")
-        scaled_image.show()
+        if image.mode == "RGB":
+            result_image = Image.new('RGB', (new_width, new_height))
+            for y in range(new_height):
+                for x in range(new_width):
+                    result_image.putpixel((x, y), tuple(image.getpixel((int(x / val), int(y / val)))))
+        elif image.mode == "L":
+            result_image = Image.new('L', (new_width, new_height))
+            for y in range(new_height):
+                for x in range(new_width):
+                    source_x = int(x / val)
+                    source_y = int(y / val)
+                    source_pixel = image.getpixel((source_x, source_y))
+                    result_image.putpixel((x, y), source_pixel)
+        else:
+            print("this program does not support this color model.")
+            return [0, 0]
+        result_image.save("new_image.bmp")
+        result_image.show()
+        return result_image

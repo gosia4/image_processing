@@ -97,12 +97,12 @@ elif sys.argv[1] == "--median":
     if len(sys.argv) < 3:
         print("Please provide a kernel size for median filtering.")
     else:
-        noise_removal.remove_noise_median(im, int(sys.argv[2]))
+        noise_removal.remove_noise_median(im1, int(sys.argv[2]))
 elif sys.argv[1] == "--gmean":
     if len(sys.argv) < 3:
         print("Please provide a kernel size for geometric mean filtering.")
     else:
-        noise_removal.geometric_mean(im, int(sys.argv[2]))
+        noise_removal.geometric_mean(im1, int(sys.argv[2]))
 elif sys.argv[1] == "--mse":
     if len(sys.argv) != 2:
         print("Unexpected argument for --mse.")
