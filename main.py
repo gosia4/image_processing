@@ -11,10 +11,10 @@ import numpy as np
 im = Image.open("venv/images/lena.bmp")
 im1 = Image.open("venv/images/lena_impulse1.bmp")
 
-print(error_functions.snr(im, im1))
-noise_removal.remove_noise_median(im1, 3)
-im1 = Image.open("new_image.bmp")
-print(error_functions.snr(im, im1))
+
+# print(error_functions.psnr(im, im1))
+# im1 = Image.open("new_image.bmp")
+# print(error_functions.mse(im, noise_removal.remove_noise_median(im1, 3)))
 
 
 def show_help():
@@ -32,7 +32,10 @@ def show_help():
           "\nas a parameter provide a factor"
           "\n\n--enlarge parameter, enlarge the image"
           "\nas a parameter provide a factor"
-          "\n\n--mean"
+          "\n\n--median"
+          "\nMedian filter"
+          "\n\n--gmean"
+          "\ngeometric mean filter"
           "\nMean square error"
           "\n\n--pmse"
           "\nPeak mean square error"
@@ -114,7 +117,17 @@ elif sys.argv[1] == "--snr":
     if len(sys.argv) != 2:
         print("Unexpected argument for --snr.")
     else:
-      print(error_functions.snr(im, im1))
+        print(error_functions.snr(im, im1))
+elif sys.argv[1] == "--psnr":
+    if len(sys.argv) != 2:
+        print("Unexpected argument for --psnr.")
+    else:
+        print(error_functions.mse(im, im1))
+elif sys.argv[1] == "--md":
+    if len(sys.argv) != 2:
+        print("Unexpected argument for --md.")
+    else:
+        print(error_functions.mse(im, im1))
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
@@ -122,10 +135,6 @@ elif sys.argv[1] == "--help":
         show_help()
 else:
     print("This command does not exist")
-
-
-
-
 
 # if sys.argv[1] == "--brightness":
 #     basic_operations.modify_brightness(im, int(sys.argv[2]))

@@ -33,6 +33,7 @@ def remove_noise_median(image, kernel_size):
 
     filtered_image.save("new_image.bmp")
     filtered_image.show()
+    return filtered_image
 
 
 def geometric_mean(image, kernel_size):
