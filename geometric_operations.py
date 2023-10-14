@@ -40,19 +40,29 @@ def diagonal_flip(image):
     result_image.show()
 
 
-def shrinking(image, factor):
-    if factor == 0:
+def shrinking(image, val):
+    if val == 0:
         print("You cannot divide by zero")
     else:
         width, height = image.size
-        new_width = int(width / factor)
-        new_height = int(height / factor)
-        scaled_image = Image.new('RGB', (new_width, new_height))
-        for y in range(new_height):
-            for x in range(new_width):
-                scaled_image.putpixel((x, y), tuple(image.getpixel((int(x * factor), int(y * factor)))))
-        scaled_image.save("new_image.bmp")
-        scaled_image.show()
+        new_width = int(width / val)
+        new_height = int(height / val)
+        if image.mode == "RGB":
+            result_image = Image.new('RGB', (new_width, new_height))
+            for y in range(new_height):
+                for x in range(new_width):
+                    result_image.putpixel((x, y), tuple(image.getpixel((int(x * val), int(y * val)))))
+        elif image.mode == 'L':
+            result_image = Image.new('L', (new_width, new_height))
+            for y in range(new_height):
+                for x in range(new_width):
+                    result_image.putpixel((x, y), image.getpixel((int(x * val), int(y * val))))
+        else:
+            print("this program does not support this color model.")
+            return [0, 0]
+        result_image.save("new_image.bmp")
+        result_image.show()
+    return result_image
 
 
 def shrink(image):
@@ -84,9 +94,7 @@ def enlarge_image(image, val):
             result_image = Image.new('L', (new_width, new_height))
             for y in range(new_height):
                 for x in range(new_width):
-                    source_x = int(x / val)
-                    source_y = int(y / val)
-                    source_pixel = image.getpixel((source_x, source_y))
+                    source_pixel = image.getpixel((int(x / val), int(y / val)))
                     result_image.putpixel((x, y), source_pixel)
         else:
             print("this program does not support this color model.")
