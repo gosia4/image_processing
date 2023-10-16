@@ -9,7 +9,8 @@ import numpy as np
 
 # def main():
 im = Image.open("venv/images/lena.bmp")
-im1 = Image.open("venv/images/lena_impulse1.bmp")
+im1 = Image.open("venv/images/lenac_normal1.bmp")
+noise_removal.remove_noise_median(im1, )
 
 
 # print(error_functions.psnr(im, im1))
@@ -19,36 +20,29 @@ im1 = Image.open("venv/images/lena_impulse1.bmp")
 
 def show_help():
     print("Basic operations:\n\n"
-          "--brightness parameter, modifies brightness by a parameter"
-          "\nas a parameter provide values from bigger than 0 to make the image lighter"
-          "\nas a parameter provide values smaller than 0 to make the image dunkler"
-          "\n\n--contrast parameter, modifies contrast by a parameter"
+          "--brightness parameter: modifies brightness by a parameter"
+          "\nas a parameter provide values 0 to 255 to make the image lighter"
+          "\nas a parameter provide values -255 to 0 to make the image darker"
+          "\n\n--contrast parameter: modifies contrast by a parameter"
           "\nas a parameter provide values between 0 and 10 to change the contrast"
-          "\n\n--negative, without parameter"
-          "\n\n--hflip, without parameter, horizontal flip"
-          "\n\n--vflip, without parameter, vertical flip"
-          "\n\n--dflip, without parameter, diagonal flip"
-          "\n\n--shrink parameter, shrink the image"
+          "\n\n--negative: changes the negative of the image; without parameter"
+          "\n\n--hflip: horizontal flip of the image; without parameter"
+          "\n\n--vflip: vertical flip of the image; without parameter"
+          "\n\n--dflip:diagonal flip of the image; without parameter"
+          "\n\n--shrink: shrink the image by a value"
           "\nas a parameter provide a factor"
-          "\n\n--enlarge parameter, enlarge the image"
+          "\n\n--zoomin: zoom in the image; without parameter"
+          "\n\n--enlarge parameter, enlarge the image by a value"
           "\nas a parameter provide a factor"
-          "\n\n--median"
-          "\nMedian filter"
-          "\n\n--gmean"
-          "\ngeometric mean filter"
-          "\nMean square error"
-          "\n\n--pmse"
-          "\nPeak mean square error"
-          "\n\n--snr"
-          "\nSignal to noise ratio"
-          "\n\n--psnr"
-          "\nPeak signal to noise ratio "
-          "\n\n--md"
-          "\nMaximum difference")
-
-
-# geometric_operations.shrink(im)
-# noise_removal.remove_noise_median(im, 3)
+          "\n\n--median: reduces the noise of the image using median filter"
+          "\nas a parameter provide the kernel size >=3"
+          "\n\n--gmean: reduces the noise of the image using geometric mean filter"
+          "\nas a parameter provide the kernel size"
+          "\n\n--mse: Mean square error"
+          "\n\n--pmse: Peak mean square error"
+          "\n\n--snr: Signal to noise ratio"
+          "\n\n--psnr: Peak signal to noise ratio"
+          "\n\n--md: Maximum difference")
 
 
 if len(sys.argv) < 2:
@@ -88,6 +82,11 @@ elif sys.argv[1] == "--shrink":
         print("Please provide a shrink factor.")
     else:
         geometric_operations.shrinking(im, float(sys.argv[2]))
+elif sys.argv[1] == "--zoomin":
+    if len(sys.argv) != 2:
+        print("Unexpected argument for --zoomin.")
+    else:
+        geometric_operations.shrink(im)
 elif sys.argv[1] == "--enlarge":
     if len(sys.argv) < 3:
         print("Please provide an enlargement factor.")
