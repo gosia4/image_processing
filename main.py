@@ -8,9 +8,7 @@ from PIL import Image
 import numpy as np
 
 # def main():
-im = Image.open("venv/images/lenac.bmp")
-# im1 = Image.open("venv/images/lenac_uniform1.bmp")
-# noise_removal.geometric_mean(im1, 3)
+
 
 
 # print(error_functions.psnr(im, im1))
@@ -43,6 +41,7 @@ def show_help():
           "\n\n--snr: Signal to noise ratio"
           "\n\n--psnr: Peak signal to noise ratio"
           "\n\n--md: Maximum difference")
+
 
 
 if len(sys.argv) < 2:

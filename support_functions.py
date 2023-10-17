@@ -9,9 +9,9 @@ def save_image(image, output_path):
 #   returns a list of either 1 item (Grayscale int) or 3 items (RGB int values)
 def int_or_tuple_to_array(item):
     if type(item) is tuple:
-        return list(item)
+        return np.array(item)
     else:
-        return [item, item, item]
+        return np.array([item, item, item])
 
 
 # reads the color mode of the image

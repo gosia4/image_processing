@@ -5,6 +5,7 @@ import support_functions as sp
 
 def remove_noise_median(image, kernel_size):
     width, height = image.size
+
     result_image, color_channels = sp.analyse_color_channels(image)
 
     if color_channels == 0:
@@ -45,7 +46,6 @@ def remove_noise_median(image, kernel_size):
     result_image.save("new_image.bmp")
     result_image.show()
 
-
 def geometric_mean(image, kernel_size):
     if kernel_size < 3:
         print("Kernel size must be at least 3")
@@ -83,4 +83,3 @@ def geometric_mean(image, kernel_size):
                 result_image.putpixel((x, y), tuple(mean_pix))
 
         result_image.show()
-
