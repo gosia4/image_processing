@@ -81,7 +81,7 @@ def snr(image1, image2):
 
     elif np.any(ssd == 0):
         for i in range(3):
-            if ssd[i] != 0:
+            if ssd[i] == 0:
                 snr_value[i] = float('inf')
             elif color_channels_1 == 1:
                 snr_value[i] = 10 * np.log10(sum_squared_signal / ssd[i])
@@ -92,65 +92,34 @@ def snr(image1, image2):
         snr_value = 10 * np.log10(sum_squared_signal / ssd)
     return snr_value
 
-
-# def snr2(image1, image2):
-#     width, height = image1.size
-#     mse_value = mse(image1, image2)
-#     sum_squared = 0
-#     sum_squared_signal = np.array([0, 0, 0])
-#     for x in range(width):
-#         for y in range(height):
-#             sum_squared += sp.int_or_tuple_to_array(image1.getpixel((x, y)))
-#
-#     if np.any(mse_value == 0):
-#         for i in range(3):
-#             sum_squared_signal[i] = sum_squared[i] / mse_value[i]
-#
-#     else:
-#         sum_squared_signal = sum_squared / mse_value
-#
-#     snr_value = 10 * np.log10(sum_squared_signal)
-#     return snr_value
-#
-# def snr3(image1, image2):
-#     img1 = np.array(image1)
-#     img2 = np.array(image2)
-#     width, height = image1.size
-#     # Calculate the sum of squared differences
-#     sum_squared_diff = 0
-#     sum_squared_signal = 0
-#
-#     for i in range(width):
-#         for j in range(height):
-#             squared_diff = (img1[i, j].astype(int) - img2[i, j].astype(int)) ** 2
-#             sum_squared_diff += squared_diff
-#             sum_squared_signal += (img1[i, j].astype(float) ** 2)
-#
-#     # wersja 1
-#     # # Kwadrat różnicy elementów
-#     # squared_diff = (img1.astype(float) - img2.astype(float)) ** 2
-#     #
-#     # # Suma tych kwadratów
-#     # sum_squared_diff = 0
-#     # for i in range(width):
-#     #     for j in range(height):
-#     #         sum_squared_diff += squared_diff[i, j]
-#
-#     if sum_squared_diff == 0:
-#         snr_value = float('inf')  # Set SNR to infinity for zero noise
-#     else:
-#         snr_value = 10 * np.log10(sum_squared_signal / sum_squared_diff)
-#     return snr_value
-
 def psnr(image1, image2):
     img1 = np.array(image1)
     img2 = np.array(image2)
     width, height = image1.size
     ssd = squared_sum_diff(image1, image2)
 
-    #make checks for 0
-    
-    return 10 * np.log10(np.array([65025, 65025, 65025]) / ssd)
+    color_channels_1 = sp.analyse_color_channels(image1)[1]
+    color_channels_2 = sp.analyse_color_channels(image2)[1]
+
+    psnr_value = ([0, 0, 0])
+
+    if color_channels_1 * color_channels_2 == 1:
+        if ssd != 0:
+            return 10 * np.log10(65025 / ssd)
+
+    elif np.any(ssd == 0):
+        for i in range(3):
+            if ssd[i] == 0:
+                psnr_value[i] = float('inf')
+            else:
+                psnr_value[i] = 10 * np.log10(65025 / ssd[i])
+
+    else:
+        snr_value = 10 * np.log10(np.array([65025, 65025, 65025]) / ssd)
+
+    print(ssd)
+    return snr_value
+
 
     #
     # sum_squared_diff = 0
