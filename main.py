@@ -7,8 +7,8 @@ import noise_removal
 from PIL import Image
 import numpy as np
 
-# def main():
 
+# def main():
 
 
 # print(error_functions.psnr(im, im1))
@@ -43,87 +43,86 @@ def show_help():
           "\n\n--md: Maximum difference")
 
 
-
 if len(sys.argv) < 2:
     print("Please provide a command.")
 elif sys.argv[1] == "--brightness":
-    if len(sys.argv) < 3:
-        print("Please provide a brightness value.")
+    if len(sys.argv) < 5:
+        print("Please provide a correct number of parameters.")
     else:
-        basic_operations.modify_brightness(Image.open(sys.argv[1]), int(sys.argv[2]))
+        basic_operations.modify_brightness(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4])
 elif sys.argv[1] == "--contrast":
-    if len(sys.argv) < 3:
-        print("Please provide a contrast value.")
+    if len(sys.argv) < 5:
+        print("Please provide a correct number of parameters.")
     else:
-        basic_operations.modify_contrast(Image.open(sys.argv[2]), int(sys.argv[2]))
+        basic_operations.modify_contrast(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4])
 elif sys.argv[1] == "--negative":
-    if len(sys.argv) != 2:
-        print("Unexpected argument for --negative.")
+    if len(sys.argv) < 4:
+        print("Please provide a correct number of parameters.")
     else:
-        basic_operations.apply_negative(Image.open(sys.argv[2]))
+        basic_operations.apply_negative(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--hflip":
-    if len(sys.argv) != 2:
-        print("Unexpected argument for --hflip.")
+    if len(sys.argv) < 4:
+        print("Please provide a correct number of parameters.")
     else:
-        geometric_operations.horizontal_flip(Image.open(sys.argv[2]))
+        geometric_operations.horizontal_flip(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--vflip":
-    if len(sys.argv) != 2:
-        print("Unexpected argument for --vflip.")
+    if len(sys.argv) < 4:
+        print("Please provide a correct number of parameters.")
     else:
-        geometric_operations.vertical_flip(Image.open(sys.argv[2]))
+        geometric_operations.vertical_flip(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--dflip":
     if len(sys.argv) != 2:
         print("Unexpected argument for --dflip.")
     else:
-        geometric_operations.diagonal_flip(Image.open(sys.argv[2]))
+        geometric_operations.diagonal_flip(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--shrink":
-    if len(sys.argv) < 3:
-        print("Please provide a shrink factor.")
+    if len(sys.argv) < 5:
+        print("Please provide a correct number of parameters.")
     else:
-        geometric_operations.shrinking(Image.open(sys.argv[2]), float(sys.argv[2]), sys.argv[4])
+        geometric_operations.shrinking(Image.open(sys.argv[2]), float(sys.argv[3]), sys.argv[4])
 elif sys.argv[1] == "--zoomin":
-    if len(sys.argv) != 2:
-        print("Unexpected argument for --zoomin.")
+    if len(sys.argv) < 4:
+        print("Please provide a correct number of parameters.")
     else:
-        geometric_operations.shrink(Image.open(sys.argv[2]), sys.argv[4])
+        geometric_operations.shrink(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--enlarge":
-    if len(sys.argv) < 3:
-        print("Please provide an enlargement factor.")
+    if len(sys.argv) < 5:
+        print("Please provide a correct number of parameters.")
     else:
-        geometric_operations.enlarge_image(Image.open(sys.argv[2]), float(sys.argv[2]), sys.argv[4])
+        geometric_operations.enlarge_image(Image.open(sys.argv[2]), float(sys.argv[3]), sys.argv[4])
 elif sys.argv[1] == "--median":
-    if len(sys.argv) < 3:
-        print("Please provide a kernel size for median filtering.")
+    if len(sys.argv) < 5:
+        print("Please provide a correct number of parameters.")
     else:
         noise_removal.remove_noise_median(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4])
 elif sys.argv[1] == "--gmean":
-    if len(sys.argv) < 4:
-        print("Please provide a kernel size for geometric mean filtering.")
+    if len(sys.argv) < 5:
+        print("Please provide a correct number of parameters.")
     else:
         noise_removal.geometric_mean(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4])
 elif sys.argv[1] == "--mse":
     if len(sys.argv) < 4:
-        print("Please provide a ")
+        print("Please provide a correct number of parameters.")
     else:
         print(error_functions.mse(Image.open(sys.argv[2]), Image.open(sys.argv[3])))
 elif sys.argv[1] == "--pmse":
-    if len(sys.argv) != 2:
-        print("Unexpected argument for --pmse.")
+    if len(sys.argv) < 4:
+        print("Please provide a correct number of parameters.")
     else:
         print(error_functions.pmse(Image.open(sys.argv[2]), Image.open(sys.argv[3])))
 elif sys.argv[1] == "--snr":
-    if len(sys.argv) != 2:
-        print("Unexpected argument for --snr.")
+    if len(sys.argv) < 4:
+        print("Please provide a correct number of parameters.")
     else:
         print(error_functions.snr(Image.open(sys.argv[2]), Image.open(sys.argv[3])))
 elif sys.argv[1] == "--psnr":
-    if len(sys.argv) != 2:
-        print("Unexpected argument for --psnr.")
+    if len(sys.argv) < 4:
+        print("Please provide a correct number of parameters.")
     else:
         print(error_functions.mse(Image.open(sys.argv[2]), Image.open(sys.argv[3])))
 elif sys.argv[1] == "--md":
-    if len(sys.argv) != 2:
-        print("Unexpected argument for --md.")
+    if len(sys.argv) < 4:
+        print("Please provide a correct number of parameters.")
     else:
         print(error_functions.md(Image.open(sys.argv[2]), Image.open(sys.argv[3])))
 elif sys.argv[1] == "--help":

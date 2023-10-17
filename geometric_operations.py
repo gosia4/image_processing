@@ -13,11 +13,11 @@ def horizontal_flip(image, output):
             right_pixel = image.getpixel((width - x - 1, y))
             result_image.putpixel((x, y), right_pixel)
             result_image.putpixel((width - x - 1, y), left_pixel)
-    result_image.save("new_image.bmp")
+    sp.save_image(result_image, output)
     result_image.show()
 
 
-def vertical_flip(image):
+def vertical_flip(image, output):
     width, height = image.size
     result_image = sp.analyse_color_channels(image)[0]
     for y in range(height // 2):
@@ -26,21 +26,21 @@ def vertical_flip(image):
             bottom_pixel = image.getpixel((x, height - y - 1))
             result_image.putpixel((x, y), bottom_pixel)
             result_image.putpixel((x, height - y - 1), top_pixel)
-    result_image.save("new_image.bmp")
+    sp.save_image(result_image, output)
     result_image.show()
 
 
-def diagonal_flip(image):
+def diagonal_flip(image, output):
     width, height = image.size
     result_image = sp.analyse_color_channels(image)[0]
     for x in range(width):
         for y in range(height):
             result_image.putpixel((width - x - 1, height - y - 1), image.getpixel((x, y)))
-    result_image.save("new_image.bmp")
+    sp.save_image(result_image, output)
     result_image.show()
 
 
-def shrinking(image, factor):
+def shrinking(image, factor, output):
     if factor == 0:
         print("You cannot divide by zero")
     else:
@@ -51,11 +51,11 @@ def shrinking(image, factor):
         for y in range(new_height):
             for x in range(new_width):
                 scaled_image.putpixel((x, y), tuple(image.getpixel((int(x * factor), int(y * factor)))))
-        scaled_image.save("new_image.bmp")
+        sp.save_image(scaled_image, output)
         scaled_image.show()
 
 
-def shrink(image):
+def shrink(image, output):
     result_image = sp.analyse_color_channels(image)[0]
     # result_image = image
     width, height = image.size
@@ -65,10 +65,11 @@ def shrink(image):
         for y in range(height):
             temp = []
             result_image.putpixel((x, y), image.getpixel((x - move_distance, y)))
+    sp.save_image(result_image, output)
     result_image.show()
 
 
-def enlarge_image(image, val):
+def enlarge_image(image, val, output):
     if val == 0:
         print("Error")
     else:
@@ -89,6 +90,6 @@ def enlarge_image(image, val):
         else:
             print("this program does not support this color model.")
             return [0, 0]
-        result_image.save("new_image.bmp")
+        sp.save_image(result_image, output)
         result_image.show()
         return result_image
