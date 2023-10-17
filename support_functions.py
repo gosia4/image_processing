@@ -11,7 +11,7 @@ def int_or_tuple_to_array(item):
     if type(item) is tuple:
         return np.array(item)
     else:
-        return np.array([item, item, item])
+        return (item, item, item)
 
 
 # reads the color mode of the image
