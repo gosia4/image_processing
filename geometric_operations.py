@@ -3,7 +3,7 @@ from PIL import Image
 import support_functions as sp
 
 
-def horizontal_flip(image):
+def horizontal_flip(image, output):
     width, height = image.size
     result_image = sp.analyse_color_channels(image)[0]
 

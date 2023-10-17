@@ -3,7 +3,7 @@ from PIL import Image
 import support_functions as sp
 
 
-def remove_noise_median(image, kernel_size):
+def remove_noise_median(image, kernel_size, output):
     width, height = image.size
 
     result_image, color_channels = sp.analyse_color_channels(image)
@@ -24,7 +24,6 @@ def remove_noise_median(image, kernel_size):
 
                     if (target_x >= 0 and target_x < width - 1):
                         if (target_y >= 0 and target_y < height - 1):
-
                             sample_arr.append(image.getpixel((target_x, target_y)))
             median_pixel = []
             for c in range(color_channels):
@@ -44,9 +43,11 @@ def remove_noise_median(image, kernel_size):
             result_image.putpixel((x, y), tuple(median_pixel))
 
     result_image.save("new_image.bmp")
+    sp.save_image(output)
     result_image.show()
 
-def geometric_mean(image, kernel_size):
+
+def geometric_mean(image, kernel_size, output):
     if kernel_size < 3:
         print("Kernel size must be at least 3")
         return
@@ -82,4 +83,5 @@ def geometric_mean(image, kernel_size):
 
                 result_image.putpixel((x, y), tuple(mean_pix))
 
+        sp.save_image(result_image, output)
         result_image.show()
