@@ -22,7 +22,7 @@ def squared_sum_diff(image1, image2):
 def mse(image1, image2):
     ssd = squared_sum_diff(image1, image2)
     width, height = image1.size
-    if ssd == "Error":
+    if np.any(ssd == "Error"):
         return
     mse_value = ssd / (width * height)
     return mse_value
