@@ -42,8 +42,8 @@ def remove_noise_median(image, kernel_size, output):
 
             result_image.putpixel((x, y), tuple(median_pixel))
 
-    result_image.save("new_image.bmp")
-    sp.save_image(output)
+    # result_image.save("new_image.bmp")
+    sp.save_image(result_image, output)
     result_image.show()
 
 
