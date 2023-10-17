@@ -8,9 +8,6 @@ from PIL import Image
 import numpy as np
 
 # def main():
-im = Image.open("venv/images/lena.bmp")
-# im1 = Image.open("venv/images/lenac_impulse1.bmp")
-im1 = Image.open("venv/images/lena_impulse1.bmp")
 
 
 # print(error_functions.psnr(im, im1))
@@ -47,10 +44,6 @@ def show_help():
           "\n\n--md"
           "\nMaximum difference")
 
-
-# geometric_operations.shrink(im)
-# noise_removal.remove_noise_median(im, 3)
-print(error_functions.snr(im, im1))
 
 if len(sys.argv) < 2:
     print("Please provide a command.")
