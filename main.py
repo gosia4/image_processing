@@ -7,7 +7,10 @@ import noise_removal
 from PIL import Image
 import numpy as np
 
-noise_removal.remove_noise_median(Image.open("lena_impulse3.bmp"), 3, "new_image.bmp")
+noise_removal.geometric_mean(Image.open("lena_impulse3.bmp"), 3, "new_image.bmp")
+# noise_removal.remove_noise_median(Image.open("lena_impulse3.bmp"), 3, "new_image.bmp")
+print(error_functions.mse(Image.open("lena.bmp"), Image.open("new_image.bmp")))
+
 
 def show_help():
     print("Basic operations:\n\n"
