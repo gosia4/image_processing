@@ -8,9 +8,9 @@ from PIL import Image
 import numpy as np
 
 # def main():
-im = Image.open("venv/images/lena.bmp")
-im1 = Image.open("venv/images/lenac_normal1.bmp")
-noise_removal.remove_noise_median(im1, )
+im = Image.open("venv/images/lenac.bmp")
+# im1 = Image.open("venv/images/lenac_uniform1.bmp")
+# noise_removal.geometric_mean(im1, 3)
 
 
 # print(error_functions.psnr(im, im1))
@@ -103,25 +103,25 @@ elif sys.argv[1] == "--gmean":
     else:
         noise_removal.geometric_mean(im, int(sys.argv[2]))
 elif sys.argv[1] == "--mse":
-    if len(sys.argv) != 2:
-        print("Unexpected argument for --mse.")
+    if len(sys.argv) < 4:
+        print("Please provide a ")
     else:
-        print(error_functions.mse(im, im1))
+        print(error_functions.mse(Image.open(sys.argv[2]), Image.open(sys.argv[3])))
 elif sys.argv[1] == "--pmse":
     if len(sys.argv) != 2:
         print("Unexpected argument for --pmse.")
     else:
-        print(error_functions.pmse(im, im1))
+        print(error_functions.pmse(int(sys.argv[2]), int(sys.argv[3])))
 elif sys.argv[1] == "--snr":
     if len(sys.argv) != 2:
         print("Unexpected argument for --snr.")
     else:
-        print(error_functions.snr(im, im1))
+        print(error_functions.snr(int(sys.argv[2]), int(sys.argv[3])))
 elif sys.argv[1] == "--psnr":
     if len(sys.argv) != 2:
         print("Unexpected argument for --psnr.")
     else:
-        print(error_functions.mse(im, im1))
+        print(error_functions.mse(int(sys.argv[2]), int(sys.argv[3])))
 elif sys.argv[1] == "--md":
     if len(sys.argv) != 2:
         print("Unexpected argument for --md.")
