@@ -9,17 +9,17 @@ import numpy as np
 
 # noise_removal.geometric_mean(Image.open("lenac_impulse3.bmp"), 3, "new_image.bmp")
 # noise_removal.geometric_mean(Image.open("lenac_impulse1.bmp"), 3, "new_image.bmp")
-# noise_removal.remove_noise_median(Image.open("lenac_impulse1.bmp"), 3, "new_image.bmp")
+noise_removal.geometric_mean(Image.open("lenac_impulse1.bmp"), 3, "new_image.bmp")
 
-print(error_functions.mse(Image.open("lenac.bmp"), Image.open("lenac_impulse1.bmp")))
+print(error_functions.mse(Image.open("lenac.bmp"), Image.open("new_image.bmp")))
 print("\n")
-print(error_functions.pmse(Image.open("lenac.bmp"), Image.open("lenac_impulse1.bmp")))
+print(error_functions.pmse(Image.open("lenac.bmp"), Image.open("new_image.bmp")))
 print("\n")
-print(error_functions.snr(Image.open("lenac.bmp"), Image.open("lenac_impulse1.bmp")))
+print(error_functions.snr(Image.open("lenac.bmp"), Image.open("new_image.bmp")))
 print("\n")
-print(error_functions.psnr(Image.open("lenac.bmp"), Image.open("lenac_impulse1.bmp")))
+print(error_functions.psnr(Image.open("lenac.bmp"), Image.open("new_image.bmp")))
 print("\n")
-print(error_functions.md(Image.open("lenac.bmp"), Image.open("lenac_impulse1.bmp")))
+print(error_functions.md(Image.open("lenac.bmp"), Image.open("new_image.bmp")))
 
 
 

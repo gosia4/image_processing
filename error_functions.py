@@ -98,21 +98,24 @@ def psnr(image1, image2):
     color_channels_1 = sp.analyse_color_channels(image1)[1]
     color_channels_2 = sp.analyse_color_channels(image2)[1]
 
+    width, height = image1.size
+    max = 65025 * width * height
+
     psnr_value = ([0, 0, 0])
 
     if color_channels_1 * color_channels_2 == 1:
         if ssd != 0:
-            return 10 * np.log10(65025 / ssd)
+            return 10 * np.log10(max / ssd)
 
     elif np.any(ssd == 0):
         for i in range(3):
             if ssd[i] == 0:
                 psnr_value[i] = float('inf')
             else:
-                psnr_value[i] = 10 * np.log10(65025 / ssd[i])
+                psnr_value[i] = 10 * np.log10(max / ssd[i])
 
     else:
-        snr_value = 10 * np.log10(np.array([65025, 65025, 65025]) / ssd)
+        snr_value = 10 * np.log10(np.array([max, max, max]) / ssd)
 
     return snr_value
 
@@ -140,12 +143,12 @@ def md(image1, image2):
         for j in range(height):
             diff = img1[i][j] - img2[i][j]
             if channels == 1:
-                if diff > max_diff:
-                    max_diff = diff
+                if abs(diff) > max_diff:
+                    max_diff = abs(diff)
             else:
                 for c in range(channels):
-                    if diff[c] > max_diff[c]:
-                        max_diff[c] = diff[c]
+                    if abs(diff[c]) > max_diff[c]:
+                        max_diff[c] = abs(diff[c])
 
     return max_diff
 
