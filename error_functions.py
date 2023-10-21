@@ -93,9 +93,6 @@ def snr(image1, image2):
     return snr_value
 
 def psnr(image1, image2):
-    img1 = np.array(image1)
-    img2 = np.array(image2)
-    width, height = image1.size
     ssd = squared_sum_diff(image1, image2)
 
     color_channels_1 = sp.analyse_color_channels(image1)[1]
@@ -121,43 +118,38 @@ def psnr(image1, image2):
     return snr_value
 
 
-    #
-    # sum_squared_diff = 0
-    # sum_max_squared_signal = 0
-    # max_value = 0
-    #
-    # for i in range(width):
-    #     for j in range(height):
-    #         squared_diff = (img1[i, j].astype(float) - img2[i, j].astype(float)) ** 2
-    #         sum_squared_diff += squared_diff
-    #         if img1[i, j].astype(float) > max_value:
-    #             max_squared_value = max_value ** 2
-    #             # sum_max_squared_signal += (img1[i, j].astype(float) ** 2)
-
-    #
-    # sum1 = 0
-    # for i in range(width):
-    #     for j in range(height):
-    #         sum1 += max_squared_value[i][j]
-
-
 def md(image1, image2):
-    img1 = np.array(image1)
-    img2 = np.array(image2)
+    img1 = np.array(image1).astype(int)
+    img2 = np.array(image2).astype(int)
+
+    color_channels_1 = sp.analyse_color_channels(image1)[1]
+    color_channels_2 = sp.analyse_color_channels(image2)[1]
+
+    channels = color_channels_2 * color_channels_1
+    if channels > 3:
+        channels = 3
+
     width, height = image1.size
 
-    diff = 0
-    max_diff = 0
+
+    if channels == 1:
+        max_diff = 0
+    else:
+        max_diff = [0, 0, 0]
+
     for i in range(width):
         for j in range(height):
-            if img1[i][j] > img2[i][j]:
-                diff = img1[i][j] - img2[i][j]
+            diff = img1[i][j] - img2[i][j]
+            if channels == 1:
+                if diff > max_diff:
+                    max_diff = diff
             else:
-                diff = img2[i][j] - img1[i][j]
-            if diff > max_diff:
-                max_diff = diff
+                for c in range(channels):
+                    if diff[c] > max_diff[c]:
+                        max_diff[c] = diff[c]
 
     return max_diff
+
 
 
 # to raczej do usunięcia

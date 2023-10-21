@@ -62,7 +62,7 @@ def geometric_mean(image, kernel_size, output):
         for x in range(width):
             for y in range(height):
                 sample_size = 0
-                mean_value = [1, 1, 1]
+                mean_value = [1.0, 1.0, 1.0]
                 for i in range(-kernel_size // 2 + 1, kernel_size // 2 + 1):
                     for j in range(-kernel_size // 2 + 1, kernel_size // 2 + 1):
                         target_x = x + i
