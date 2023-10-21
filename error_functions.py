@@ -16,7 +16,7 @@ def squared_sum_diff(image1, image2):
         sum_squared_diff = 0
         for i in range(width):
             for j in range(height):
-                sum_squared_diff += (img1[i, j].astype(int) - img2[i, j].astype(int)) ** 2
+                sum_squared_diff += ((img1[i, j].astype(int) - img2[i, j].astype(int)) ** 2)
 
         return sum_squared_diff
 def mse(image1, image2):
@@ -114,7 +114,6 @@ def psnr(image1, image2):
     else:
         snr_value = 10 * np.log10(np.array([65025, 65025, 65025]) / ssd)
 
-    print(ssd)
     return snr_value
 
 
