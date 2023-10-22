@@ -7,7 +7,6 @@ import basic_operations
 import noise_removal
 
 
-
 def show_help():
     print("---------------Basic operations:-----------------\n"
           "\n"
@@ -87,7 +86,6 @@ def show_help():
           "\t\tFirst image is treated as original image and second one as it's modification.\n"
           )
 
-show_help()
 if len(sys.argv) < 2:
     print("Please provide a command.")
 elif sys.argv[1] == "--brightness":
