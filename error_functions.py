@@ -65,15 +65,6 @@ def snr(image1, image2):
     for i in range(width):
         for j in range(height):
             sum_squared_signal += img1[i, j].astype(float) ** 2
-    # wersja 1
-    # # Kwadrat różnicy elementów
-    # squared_diff = (img1.astype(float) - img2.astype(float)) ** 2
-
-    # # Suma tych kwadratów
-    # sum_squared_diff = 0
-    # for i in range(width):
-    #     for j in range(height):
-    #         sum_squared_diff += squared_diff[i, j]
 
     if color_channels_1 * color_channels_2 == 1:
         if ssd != 0:
@@ -91,6 +82,7 @@ def snr(image1, image2):
     else:
         snr_value = 10 * np.log10(sum_squared_signal / ssd)
     return snr_value
+
 
 def psnr(image1, image2):
     ssd = squared_sum_diff(image1, image2)
@@ -151,33 +143,3 @@ def md(image1, image2):
                         max_diff[c] = abs(diff[c])
 
     return max_diff
-
-
-
-# to raczej do usunięcia
-def psnr5(img1, img2):
-    image1 = np.array(img1)
-    image2 = np.array(img2)
-    width, height = img1.size
-    max_value = float('-inf')  # Initialize max_value to negative infinity
-
-    # Calculate sum of squared differences and find max value
-    sum_squared_diff = 0
-    for i in range(width):
-        for j in range(height):
-            if image1[i][j] > image2[i][j]:
-                squared_diff = (image1[i][j] - image2[i][j]) ** 2
-            else:
-                squared_diff = (image2[i][j] - image1[i][j]) ** 2
-            sum_squared_diff += squared_diff
-            if image1[i][j] > max_value:
-                max_value = image1[i][j]
-
-    # Calculate psnr
-    if sum_squared_diff == 0:
-        psnr_value = float('inf')  # Set psnr to infinity for zero noise
-    else:
-        max_squared_value = max_value ** 2
-        psnr_value = 10 * math.log10(max_squared_value / (sum_squared_diff / (width * height)))
-
-    return psnr_value
