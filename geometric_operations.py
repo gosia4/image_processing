@@ -42,17 +42,28 @@ def diagonal_flip(image, output):
 
 def shrinking(image, factor, output):
     if factor == 0:
-        print("You cannot divide by zero")
+        print("Error")
     else:
         width, height = image.size
         new_width = int(width / factor)
         new_height = int(height / factor)
-        scaled_image = Image.new('RGB', (new_width, new_height))
-        for y in range(new_height):
-            for x in range(new_width):
-                scaled_image.putpixel((x, y), tuple(image.getpixel((int(x * factor), int(y * factor)))))
-        sp.save_image(scaled_image, output)
-        scaled_image.show()
+        if image.mode == "RGB":
+            result_image = Image.new('RGB', (new_width, new_height))
+            for y in range(new_height):
+                for x in range(new_width):
+                    result_image.putpixel((x, y), tuple(image.getpixel((int(x * factor), int(y * factor)))))
+        elif image.mode == "L":
+            result_image = Image.new('L', (new_width, new_height))
+            for y in range(new_height):
+                for x in range(new_width):
+                    source_pixel = image.getpixel((int(x * factor), int(y * factor)))
+                    result_image.putpixel((x, y), source_pixel)
+        else:
+            print("this program does not support this color model.")
+            return [0, 0]
+        sp.save_image(result_image, output)
+        result_image.show()
+        return result_image
 
 
 def shrink(image, output):
