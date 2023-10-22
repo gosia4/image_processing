@@ -7,7 +7,6 @@ import noise_removal
 from PIL import Image
 import numpy as np
 
-geometric_operations.shrink(Image.open("lenac.bmp"), 10000,)
 def show_help():
     print("Basic operations:\n\n"
           "--brightness: modifies brightness of the image by value\n"
@@ -78,8 +77,8 @@ elif sys.argv[1] == "--vflip":
     else:
         geometric_operations.vertical_flip(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--dflip":
-    if len(sys.argv) != 2:
-        print("Unexpected argument for --dflip.")
+    if len(sys.argv) < 4:
+        print("Please provide a correct number of parameters.")
     else:
         geometric_operations.diagonal_flip(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--shrink":
