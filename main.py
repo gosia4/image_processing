@@ -7,8 +7,11 @@ import noise_removal
 from PIL import Image
 import numpy as np
 
+geometric_operations.resize(Image.open("lenac.bmp"), 1, "new_image.bmp")
+
 def show_help():
-    print("Basic operations:\n\n"
+    print("------------Basic operations:----------------\n"
+          "\n"
           "--brightness: modifies brightness of the image by value\n"
           "\tuse case: --brightness [image_path] [value] [output_path]\n"
           "\t\t[value] is added to every pixel of the image,\n"
@@ -24,6 +27,8 @@ def show_help():
           "--negative: creates the negative of the image\n"
           "\tuse case: --negative [image_path] [output_path]\n"
           "\n"
+          "------------Geometric operations:----------------\n"
+          "\n"
           "--hflip: flips the image horizontally\n"
           "\tuse case: --hflip [image_path] [output_path]\n"
           "\n"
@@ -33,16 +38,31 @@ def show_help():
           "--dflip: flips the image diagonally\n"
           "\tuse case: --vflip [image_path] [output_path]\n"
           "\n"
-          "--shrink: shrinks the image by a value"
-          "\nas a parameter provide a factor"
-          "\n\n--zoomin: zoom in the image; without parameter"
-          "\n\n--enlarge parameter, enlarge the image by a value"
-          "\nas a parameter provide a factor"
-          "\n\n--median: reduces the noise of the image using median filter"
-          "\nas a parameter provide the kernel size >=3"
-          "\n\n--gmean: reduces the noise of the image using geometric mean filter"
-          "\nas a parameter provide the kernel size"
-          "\n\n--mse: Mean square error"
+          "--shrink: shrinks the image by value\n"
+          "\tuse case: --shrink [image_path] [value] [output_path]\n"
+          "\t\t[value] describes the proportions between original size and output image size.\n"
+          "\t\tThe output image will be [value] times smaller than the original image.\n"
+          "\n"
+          "--enlarge: enlarges the image by value\n"
+          "\tuse case: --enlarge [image_path] [value] [output_path]\n"
+          "\t\t[value] describes the proportions between output image size and original size.\n"
+          "\t\tThe output image will be [value] times larger than the original image.\n"
+          "\n"
+          "------------Noise Filters:----------------\n"
+          "\n" 
+          "--median: reduces the noise of the image using median filter\n"
+          "\tuse case: --median [image_path] [kernel_size] [output_path]\n"
+          "\t\t[kernel_size] describes the dimensions of samples that filter will be using (minimum 3).\n"
+          "\t\tFor best performance provide the [kernel size] == 3\n"
+          "\n"
+          "--gmean: reduces the noise of the image using geometric mean filter\n"
+          "\tuse case: --gmean [image_path] [kernel_size] [output_path]\n"
+          "\t\t[kernel_size] describes the dimensions of samples that filter will be using (minimum 3).\n"
+          "\t\tFor best performance provide the [kernel size] == 3\n"
+          "\n"
+          "------------Error Calculation:----------------\n"
+          "\n"
+          "--mse: returns Mean square error value "
           "\n\n--pmse: Peak mean square error"
           "\n\n--snr: Signal to noise ratio"
           "\n\n--psnr: Peak signal to noise ratio"
@@ -85,17 +105,12 @@ elif sys.argv[1] == "--shrink":
     if len(sys.argv) < 5:
         print("Please provide a correct number of parameters.")
     else:
-        geometric_operations.shrinking(Image.open(sys.argv[2]), float(sys.argv[3]), sys.argv[4])
-elif sys.argv[1] == "--zoomin":
-    if len(sys.argv) < 4:
-        print("Please provide a correct number of parameters.")
-    else:
-        geometric_operations.shrink(Image.open(sys.argv[2]), sys.argv[3])
+        geometric_operations.scale(Image.open(sys.argv[2]), 1.0/float(sys.argv[3]), sys.argv[4])
 elif sys.argv[1] == "--enlarge":
     if len(sys.argv) < 5:
         print("Please provide a correct number of parameters.")
     else:
-        geometric_operations.enlarge_image(Image.open(sys.argv[2]), float(sys.argv[3]), sys.argv[4])
+        geometric_operations.scale(Image.open(sys.argv[2]), float(sys.argv[3]), sys.argv[4])
 elif sys.argv[1] == "--median":
     if len(sys.argv) < 5:
         print("Please provide a correct number of parameters.")

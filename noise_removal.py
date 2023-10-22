@@ -4,6 +4,7 @@ import support_functions as sp
 
 
 def remove_noise_median(image, kernel_size, output):
+    kernel_size = int(kernel_size)
     if kernel_size < 3:
         print("Kernel size must be at least 3")
         return
