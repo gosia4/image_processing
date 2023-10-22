@@ -5,10 +5,6 @@ import support_functions as sp
 
 
 def modify_brightness(image, factor, output):
-    if factor < -255:
-        factor = -255
-    if factor > 255:
-        factor = 255
 
     width, height = image.size
     result_image, color_channels = sp.analyse_color_channels(image)

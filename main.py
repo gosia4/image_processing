@@ -7,25 +7,12 @@ import noise_removal
 from PIL import Image
 import numpy as np
 
-# noise_removal.geometric_mean(Image.open("lenac_impulse3.bmp"), 3, "new_image.bmp")
-# noise_removal.geometric_mean(Image.open("lenac_impulse1.bmp"), 3, "new_image.bmp")
-noise_removal.geometric_mean(Image.open("lenac_impulse1.bmp"), 3, "new_image.bmp")
-
-print(error_functions.mse(Image.open("lenac.bmp"), Image.open("new_image.bmp")))
-print("\n")
-print(error_functions.pmse(Image.open("lenac.bmp"), Image.open("new_image.bmp")))
-print("\n")
-print(error_functions.snr(Image.open("lenac.bmp"), Image.open("new_image.bmp")))
-print("\n")
-print(error_functions.psnr(Image.open("lenac.bmp"), Image.open("new_image.bmp")))
-print("\n")
-print(error_functions.md(Image.open("lenac.bmp"), Image.open("new_image.bmp")))
-
-
-
+basic_operations.modify_brightness(Image.open("lenac.bmp"), 1000, "new_image.bmp")
 def show_help():
     print("Basic operations:\n\n"
-          "--brightness parameter: modifies brightness by a parameter"
+          "--brightness: modifies brightness of the image by value "
+          "use case: --brightness "
+          "modifies brightness by a parameter"
           "\nas a parameter provide values 0 to 255 to make the image lighter"
           "\nas a parameter provide values -255 to 0 to make the image darker"
           "\n\n--contrast parameter: modifies contrast by a parameter"
