@@ -7,21 +7,34 @@ import noise_removal
 from PIL import Image
 import numpy as np
 
-basic_operations.modify_brightness(Image.open("lenac.bmp"), 1000, "new_image.bmp")
+geometric_operations.shrink(Image.open("lenac.bmp"), 10000,)
 def show_help():
     print("Basic operations:\n\n"
-          "--brightness: modifies brightness of the image by value "
-          "use case: --brightness "
-          "modifies brightness by a parameter"
-          "\nas a parameter provide values 0 to 255 to make the image lighter"
-          "\nas a parameter provide values -255 to 0 to make the image darker"
-          "\n\n--contrast parameter: modifies contrast by a parameter"
-          "\nas a parameter provide values between 0 and 10 to change the contrast"
-          "\n\n--negative: changes the negative of the image; without parameter"
-          "\n\n--hflip: horizontal flip of the image; without parameter"
-          "\n\n--vflip: vertical flip of the image; without parameter"
-          "\n\n--dflip:diagonal flip of the image; without parameter"
-          "\n\n--shrink: shrink the image by a value"
+          "--brightness: modifies brightness of the image by value\n"
+          "\tuse case: --brightness [image_path] [value] [output_path]\n"
+          "\t\t[value] is added to every pixel of the image,\n"
+          "\t\tto make image brighter provide positive value,\n"
+          "\t\tfor darker provide negative value\n"
+          "\n"
+          "--contrast: modifies contrast of the image by value\n"
+          "\tuse case: --contrast [image_path] [value] [output_path]\n"
+          "\t\t[value] is used for a contrast modification formula,\n"
+          "\t\tto increase the contrast provide number from 1 to 10\n"
+          "\t\tto decrease the contrast provide number from -10 to -1\n"
+          "\n"
+          "--negative: creates the negative of the image\n"
+          "\tuse case: --negative [image_path] [output_path]\n"
+          "\n"
+          "--hflip: flips the image horizontally\n"
+          "\tuse case: --hflip [image_path] [output_path]\n"
+          "\n"
+          "--vflip: flips the image vertically\n"
+          "\tuse case: --vflip [image_path] [output_path]\n"
+          "\n"
+          "--dflip: flips the image diagonally\n"
+          "\tuse case: --vflip [image_path] [output_path]\n"
+          "\n"
+          "--shrink: shrinks the image by a value"
           "\nas a parameter provide a factor"
           "\n\n--zoomin: zoom in the image; without parameter"
           "\n\n--enlarge parameter, enlarge the image by a value"
@@ -36,7 +49,7 @@ def show_help():
           "\n\n--psnr: Peak signal to noise ratio"
           "\n\n--md: Maximum difference")
 
-
+show_help()
 if len(sys.argv) < 2:
     print("Please provide a command.")
 elif sys.argv[1] == "--brightness":

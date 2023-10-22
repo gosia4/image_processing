@@ -19,7 +19,7 @@ def modify_brightness(image, factor, output):
             old_value = image.getpixel((x, y))
             for c in range(color_channels):
                 # appends new color value once for each color channel
-                color_tab.append(factor + sp.int_or_tuple_to_array(old_value)[c])
+                color_tab.append(int(factor) + sp.int_or_tuple_to_array(old_value)[c])
 
             # then puts that pixel to the new image as a tuple (I hate tuples)
             result_image.putpixel((x, y), tuple(color_tab))
