@@ -66,20 +66,6 @@ def shrinking(image, factor, output):
         return result_image
 
 
-def shrink(image, output):
-    result_image = sp.analyse_color_channels(image)[0]
-    # result_image = image
-    width, height = image.size
-    move_distance = width // 4
-    for x in range(width // 4, width // 2 - 1):
-        move_distance -= 1
-        for y in range(height):
-            temp = []
-            result_image.putpixel((x, y), image.getpixel((x - move_distance, y)))
-    sp.save_image(result_image, output)
-    result_image.show()
-
-
 def enlarge_image(image, val, output):
     if val == 0:
         print("Error")
