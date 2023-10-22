@@ -6,6 +6,7 @@ import geometric_operations
 import basic_operations
 import noise_removal
 
+basic_operations.modify_brightness(Image.open("lena.bmp"), 255, "new_image.bmp")
 
 def show_help():
     print("---------------Basic operations:-----------------\n"

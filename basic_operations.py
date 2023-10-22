@@ -5,7 +5,7 @@ import support_functions as sp
 
 
 def modify_brightness(image, factor, output):
-
+    sp.measure_time(1)
     width, height = image.size
     result_image, color_channels = sp.analyse_color_channels(image)
 
@@ -24,10 +24,12 @@ def modify_brightness(image, factor, output):
             # then puts that pixel to the new image as a tuple (I hate tuples)
             result_image.putpixel((x, y), tuple(color_tab))
     sp.save_image(result_image, output)
-    result_image.show()
+    sp.measure_time(0)
+
 
 
 def modify_contrast(image, factor, output):
+    sp.measure_time(1)
     if factor > 10:
         factor = 10
     if factor < -10:
@@ -56,10 +58,12 @@ def modify_contrast(image, factor, output):
             # then puts that pixel to the new image as a tuple (I hate tuples)
             result_image.putpixel((x, y), tuple(color_tab))
     sp.save_image(result_image, output)
-    result_image.show()
+    sp.measure_time(0)
 
 
 def apply_negative(image, output):
+    sp.measure_time(1)
+
     width, height = image.size
     result_image, color_channels = sp.analyse_color_channels(image)
 
@@ -78,4 +82,4 @@ def apply_negative(image, output):
             # then puts that pixel to the new image as a tuple (I hate tuples)
             result_image.putpixel((x, y), tuple(color_tab))
     sp.save_image(result_image, output)
-    result_image.show()
+    sp.measure_time(0)

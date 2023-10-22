@@ -4,6 +4,8 @@ import support_functions as sp
 
 
 def horizontal_flip(image, output):
+    sp.measure_time(1)
+
     width, height = image.size
     result_image = sp.analyse_color_channels(image)[0]
 
@@ -14,10 +16,13 @@ def horizontal_flip(image, output):
             result_image.putpixel((x, y), right_pixel)
             result_image.putpixel((width - x - 1, y), left_pixel)
     sp.save_image(result_image, output)
-    result_image.show()
+    sp.measure_time(0)
+
 
 
 def vertical_flip(image, output):
+    sp.measure_time(1)
+
     width, height = image.size
     result_image = sp.analyse_color_channels(image)[0]
     for y in range(height // 2):
@@ -27,20 +32,24 @@ def vertical_flip(image, output):
             result_image.putpixel((x, y), bottom_pixel)
             result_image.putpixel((x, height - y - 1), top_pixel)
     sp.save_image(result_image, output)
-    result_image.show()
+    sp.measure_time(0)
 
 
 def diagonal_flip(image, output):
+    sp.measure_time(1)
+
     width, height = image.size
     result_image = sp.analyse_color_channels(image)[0]
     for x in range(width):
         for y in range(height):
             result_image.putpixel((width - x - 1, height - y - 1), image.getpixel((x, y)))
     sp.save_image(result_image, output)
-    result_image.show()
+    sp.measure_time(0)
 
 
 def scale(image, val, output):
+    sp.measure_time(1)
+
     if val == 0:
         print("Error")
     else:
@@ -62,5 +71,6 @@ def scale(image, val, output):
             print("this program does not support this color model.")
             return [0, 0]
         sp.save_image(result_image, output)
-        result_image.show()
+        sp.measure_time(0)
+
         return result_image
