@@ -43,24 +43,30 @@ def diagonal_flip(image, output):
 def scale(image, val, output):
     if val == 0:
         print("Error")
+    if val < 0:
+        print("Value must be more than 0")
     else:
         width, height = image.size
         new_width = int(width * val)
         new_height = int(height * val)
-        if image.mode == "RGB":
-            result_image = Image.new('RGB', (new_width, new_height))
-            for y in range(new_height):
-                for x in range(new_width):
-                    result_image.putpixel((x, y), tuple(image.getpixel((int(x / val), int(y / val)))))
-        elif image.mode == "L":
-            result_image = Image.new('L', (new_width, new_height))
-            for y in range(new_height):
-                for x in range(new_width):
-                    source_pixel = image.getpixel((int(x / val), int(y / val)))
-                    result_image.putpixel((x, y), source_pixel)
+        if val > new_width or val > new_height:
+            print("Error, value must be smaller than new width and new height of the image")
         else:
-            print("this program does not support this color model.")
-            return [0, 0]
-        sp.save_image(result_image, output)
-        result_image.show()
-        return result_image
+
+            if image.mode == "RGB":
+                result_image = Image.new('RGB', (new_width, new_height))
+                for y in range(new_height):
+                    for x in range(new_width):
+                        result_image.putpixel((x, y), tuple(image.getpixel((int(x / val), int(y / val)))))
+            elif image.mode == "L":
+                result_image = Image.new('L', (new_width, new_height))
+                for y in range(new_height):
+                    for x in range(new_width):
+                        source_pixel = image.getpixel((int(x / val), int(y / val)))
+                        result_image.putpixel((x, y), source_pixel)
+            else:
+                print("this program does not support this color model.")
+                return [0, 0]
+            sp.save_image(result_image, output)
+            result_image.show()
+            return result_image
