@@ -38,8 +38,8 @@ def mse_no_numpy(image1, image2):
         sum_squared_diff = 0
         for x in range(width):
             for y in range(height):
-                old_value = sp.int_or_tuple_to_array(image1.getpixel((x, y)))
-                new_value = sp.int_or_tuple_to_array(image2.getpixel((x, y)))
+                old_value = sp.process_int_or_tuple(image1.getpixel((x, y)))
+                new_value = sp.process_int_or_tuple(image2.getpixel((x, y)))
                 sum_squared_diff += (old_value - new_value) ** 2
         # Calculate the mean squared error
         mse_value = sum_squared_diff / (width * height)

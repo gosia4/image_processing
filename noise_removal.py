@@ -32,7 +32,7 @@ def remove_noise_median(image, kernel_size, output):
             for c in range(color_channels):
                 channel_arr = []
                 for h in range(len(sample_arr)):
-                    channel_arr.append(sp.int_or_tuple_to_array(sample_arr[h])[c])
+                    channel_arr.append(sp.process_int_or_tuple(sample_arr[h])[c])
 
                 channel_arr.sort()
 
@@ -73,7 +73,7 @@ def geometric_mean(image, kernel_size, output):
                             if 0 <= target_y < height - 1:
                                 # potential change of ignoring 0 values
                                 # mean_value = [x * y if y != 0 else x for x, y in zip(mean_value, sp.int_or_tuple_to_array(image.getpixel((target_x, target_y))))]
-                                mean_value = [x * y for x, y in zip(mean_value, sp.int_or_tuple_to_array(image.getpixel((target_x, target_y))))]
+                                mean_value = [x * y for x, y in zip(mean_value, sp.process_int_or_tuple(image.getpixel((target_x, target_y))))]
 
                                 sample_size += 1
 

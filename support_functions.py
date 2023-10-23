@@ -9,7 +9,7 @@ def save_image(image, output_path):
 
 # gets the variable (item) that can be either int or RGB pixel format (tuple of 3-element arrays)
 #   returns a list of either 1 item (Grayscale int) or 3 items (RGB int values)
-def int_or_tuple_to_array(item):
+def process_int_or_tuple(item):
     if type(item) is tuple:
         return np.array(item)
     else:
