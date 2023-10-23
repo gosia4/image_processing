@@ -1,12 +1,11 @@
 import sys
 from PIL import Image
-
 import error_functions
 import geometric_operations
 import basic_operations
 import noise_removal
 
-basic_operations.modify_brightness(Image.open("lena.bmp"), 255, "new_image.bmp")
+noise_removal.remove_noise_median(Image.open("lena_impulse1.bmp"), 3 ,"new_image.bmp")
 
 def show_help():
     print("---------------Basic operations:-----------------\n"

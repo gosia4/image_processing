@@ -72,5 +72,5 @@ def scale(image, val, output):
             return [0, 0]
         sp.save_image(result_image, output)
         sp.measure_time(0)
-
+        result_image
         return result_image

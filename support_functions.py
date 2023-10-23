@@ -36,6 +36,6 @@ def measure_time(start):
         time_start = time.time()
         return
     else:
-        global times
+        print(time.time() - time_start)
 
 
