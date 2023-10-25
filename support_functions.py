@@ -3,9 +3,12 @@ from PIL import Image
 import time
 
 time_start = 0
+
+
 # saves the image to the desired path
 def save_image(image, output_path):
     image.save(output_path)
+
 
 # gets the variable (item) that can be either int or RGB pixel format (tuple of 3-element arrays)
 #   returns a list of either 1 item (Grayscale int) or 3 items (RGB int values)
@@ -17,7 +20,7 @@ def process_int_or_tuple(item):
 
 
 # reads the color mode of the image
-#   returns new empty canvas with apropriate format (mode) [Grayscale / RGB]
+#   returns new empty canvas with appropriate format (mode) [Grayscale / RGB]
 #   returns number of color channels this image has
 def analyse_color_channels(image):
     width, height = image.size
@@ -31,11 +34,9 @@ def analyse_color_channels(image):
 
 
 def measure_time(start):
-    global  time_start
+    global time_start
     if start:
         time_start = time.time()
         return
     else:
         print(time.time() - time_start)
-
-

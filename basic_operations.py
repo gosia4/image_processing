@@ -32,7 +32,7 @@ def modify_contrast(image, factor, output):
         factor = -10
 
     lut = []
-    # creates a look up table (all 256 possible transformations)
+    # creates a look-up table (all 256 possible transformations)
     for i in range(256):
         new = 128 + ((i - 128) * (math.e ** factor))
         lut.append(new)
