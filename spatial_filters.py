@@ -24,7 +24,7 @@ def uniform_histogram(image, min_brightness, max_brightness, output):
         current_cumulative = previous_cumulative + histogram[intensity]  # we calcuate new brightness based on the histogram
         cumulative_histogram.append(current_cumulative)
 
-    new_image = Image.new(image.mode, (width, height)) # new image for both gray scale and RGB scle
+    new_image = Image.new(image.mode, (width, height))  # new image for both gray scale and RGB scle
 
     for x in range(width):
         for y in range(height):
