@@ -1,8 +1,5 @@
-import support_functions
 import numpy as np
-import math
 import support_functions as sp
-from PIL import Image
 
 
 def squared_sum_diff(image1, image2):

@@ -1,5 +1,3 @@
-import numpy as np
-from PIL import Image
 import math
 import support_functions as sp
 
@@ -21,7 +19,7 @@ def modify_brightness(image, factor, output):
                 # appends new color value once for each color channel
                 color_tab.append(int(factor) + sp.process_int_or_tuple(old_value)[c])
 
-            # then puts that pixel to the new image as a tuple (I hate tuples)
+            # then puts that pixel to the new image as a tuple
             result_image.putpixel((x, y), tuple(color_tab))
     sp.save_image(result_image, output)
     result_image.show()
