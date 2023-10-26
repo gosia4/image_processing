@@ -13,7 +13,7 @@ import characteristics
 # characteristics.mean(Image.open("lena.bmp"))
 # characteristics.mean(Image.open("lenac.bmp"))
 # characteristics.variance(Image.open("lena.bmp"))
-print(characteristics.variation_coefficient_i(Image.open("lena.bmp")))
+print(characteristics.asymmetry_coefficient(Image.open("lenac.bmp")))
 
 
 def show_help():
@@ -118,7 +118,14 @@ def show_help():
           "\n"
           "--cvarcoi\n"
           "\tuse case: --cvarcoi [image_path]\n"
-          "\t\tVariance coefficient is a measure of relative variability."
+          "\t\tVariance coefficient is a measure of relative variability.\n"
+          "\t\tIt  provides a relative measure of the spread of pixel values compared to the mean.\n"
+          "\n"
+          "--casyco: measures the asymmetry of the pixel value distribution\n"
+          "\tuse case: --casyco [image_path]\n"
+          "\t\tPositive value means the distribution is skewed to the right and negative indicates skewing to the left.\n"
+          "\n"
+          "--"
           )
 
 
