@@ -69,3 +69,15 @@ def histogram(image):
                 histogram_b[b] += 1
 
         return histogram_r, histogram_g, histogram_b
+
+
+def total_pixels(image):
+    width, height = image.size
+    color_mode = analyse_color_channels(image)[1]
+    if color_mode == 1:
+        total = width * height
+    elif color_mode == 3:
+        total = 3 * width * height
+    else:
+        return
+    return total
