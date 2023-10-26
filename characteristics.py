@@ -85,3 +85,18 @@ def standard_deviation(image):
     else:
         return
     return result
+
+
+def variation_coefficient_i(image):
+    color_channel = sp.analyse_color_channels(image)[1]
+    mean_value = mean(image)
+    sd_value = standard_deviation(image)
+    if color_channel == 1:
+        result = sd_value/mean_value
+    elif color_channel == 3:
+        result = [0, 0, 0]
+        for i in range(color_channel):
+            result[i] = sd_value[i]/mean_value[i]
+    else:
+        return
+    return result

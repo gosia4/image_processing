@@ -13,7 +13,7 @@ import characteristics
 # characteristics.mean(Image.open("lena.bmp"))
 # characteristics.mean(Image.open("lenac.bmp"))
 # characteristics.variance(Image.open("lena.bmp"))
-print(characteristics.standard_deviation(Image.open("lenac.bmp")))
+print(characteristics.variation_coefficient_i(Image.open("lena.bmp")))
 
 
 def show_help():
@@ -114,7 +114,11 @@ def show_help():
           "--cstdev: calculates the standard deviation of variability in pixel values\n"
           "\tuse case: --cstdev [image_path]\n"
           "\t\tStandard deviation provides a measure of how much pixel values deviate from the mean.\n"
-          "\t\tThe higher standard deviation, the greater variability in pixel values."
+          "\t\tThe higher standard deviation, the greater variability in pixel values.\n"
+          "\n"
+          "--cvarcoi\n"
+          "\tuse case: --cvarcoi [image_path]\n"
+          "\t\tVariance coefficient is a measure of relative variability."
           )
 
 
@@ -215,6 +219,11 @@ elif sys.argv[1] == "--cstdev":
         print("Please provide a correct number of parameters.")
     else:
         print(characteristics.standard_deviation(Image.open(sys.argv[2])))
+elif sys.argv[1] == "--cvarcoi":
+    if len(sys.argv) != 3:
+        print("Please provide a correct number of parameters.")
+    else:
+        print(characteristics.variation_coefficient_i(Image.open(sys.argv[2])))
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
