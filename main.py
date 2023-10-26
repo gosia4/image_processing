@@ -13,7 +13,7 @@ import characteristics
 # characteristics.mean(Image.open("lena.bmp"))
 # characteristics.mean(Image.open("lenac.bmp"))
 # characteristics.variance(Image.open("lena.bmp"))
-print(characteristics.variance(Image.open("lenac.bmp")))
+print(characteristics.standard_deviation(Image.open("lenac.bmp")))
 
 
 def show_help():

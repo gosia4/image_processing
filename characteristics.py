@@ -1,5 +1,5 @@
 import support_functions as sp
-from PIL import Image
+import math
 
 
 def mean(image):
@@ -53,7 +53,7 @@ def variance(image):
         # Calculate the variance as the average of squared differences
         variance_value = (1 / total_pixels) * sum_squared_diff
 
-        return [variance_value]
+        return variance_value
     elif color_mode == 3:
         mean_values = mean(image)
 
@@ -75,3 +75,13 @@ def variance(image):
 
 def standard_deviation(image):
     variance_value = variance(image)
+    color_channel = sp.analyse_color_channels(image)[1]
+    if color_channel == 1:
+        result = math.sqrt(variance_value)
+    elif color_channel == 3:
+        result = [0, 0, 0]
+        for i in range(color_channel):
+            result[i] = math.sqrt(variance_value[i])
+    else:
+        return
+    return result
