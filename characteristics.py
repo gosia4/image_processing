@@ -92,11 +92,50 @@ def variation_coefficient_i(image):
     mean_value = mean(image)
     sd_value = standard_deviation(image)
     if color_channel == 1:
-        result = sd_value/mean_value
+        result = sd_value / mean_value
     elif color_channel == 3:
         result = [0, 0, 0]
         for i in range(color_channel):
-            result[i] = sd_value[i]/mean_value[i]
+            result[i] = sd_value[i] / mean_value[i]
     else:
         return
     return result
+
+
+def asymmetry_coefficient(image):
+    color_mode = sp.analyse_color_channels(image)[1]
+    total_pixels = sp.total_pixels(image)
+    histogram = sp.histogram(image)
+    mean_value = mean(image)
+    sd_value = standard_deviation(image)
+
+    if color_mode == 1:
+
+        sum_cubed_diff = 0
+
+        # Iterate over pixel values (0 to 255)
+        for i in range(256):
+            cubed_diff = ((i - mean_value) ** 3) * histogram[i]
+            sum_cubed_diff += cubed_diff
+
+        # Calculate the variance as the average of squared differences
+        a_coefficient = (1 / (total_pixels * sd_value ** 3)) * sum_cubed_diff
+
+        return a_coefficient
+    elif color_mode == 3:
+        mean_values = mean(image)
+
+        a_coefficient = [0, 0, 0]
+
+        # Iterate over pixel values (0 to 255) and channels (R, G, B)
+        for i in range(256):
+            for j in range(3):
+                cubed_diff = ((i - mean_values[j]) ** 3) * histogram[j][i]
+                a_coefficient[j] += cubed_diff
+
+        for i in range(len(a_coefficient)):  # len = 3
+            a_coefficient[i] = (1 / (total_pixels * sd_value[i] ** 3)) * a_coefficient[i]
+
+        return a_coefficient
+    else:
+        return
