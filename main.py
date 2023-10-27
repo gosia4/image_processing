@@ -13,7 +13,7 @@ import characteristics
 # characteristics.mean(Image.open("lena.bmp"))
 # characteristics.mean(Image.open("lenac.bmp"))
 # characteristics.variance(Image.open("lena.bmp"))
-print(characteristics.flattening_coefficient(Image.open("lena.bmp")))
+print(characteristics.information_source_entropy(Image.open("lenac.bmp")))
 
 
 def show_help():

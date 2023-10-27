@@ -22,10 +22,10 @@ def mean(image):
         mean_values = []
         # Get the histogram
         histogram = sp.histogram(image)
-        pixel_sum = 0
+
         # Calculate the sum of pixel values
         for j in histogram:
-
+            pixel_sum = 0
             for i in range(256):
                 pixel_sum += i * j[i]
             mean_value = pixel_sum / total_pixels
@@ -200,10 +200,9 @@ def variation_coefficient_ii(image):
         result = []
         # Get the histogram
         histogram = sp.histogram(image)
-        pixel_sum = 0
         # Calculate the sum of pixel values
         for j in histogram:
-
+            pixel_sum = 0
             for i in range(256):
                 pixel_sum += ((j[i]) ** 2)
             before_result = pixel_sum / (total_pixels ** 2)
@@ -215,4 +214,36 @@ def variation_coefficient_ii(image):
 
 
 def information_source_entropy(image):
-    return
+    width, height = image.size
+    color_mode = sp.analyse_color_channels(image)[1]
+    if color_mode == 1:
+        total_pixels = width * height
+        # Get the histogram
+        histogram = sp.histogram(image)
+
+        # Calculate the sum of pixel values
+        pixel_sum = 0
+        for i in range(256):
+            if histogram[i] > 0:
+                pixel_sum += (histogram[i] * math.log2((histogram[i])/total_pixels))
+
+        result = (-1) * pixel_sum / total_pixels
+        return result
+    elif color_mode == 3:
+        total_pixels = 3 * width * height
+        result_array = []
+        # Get the histogram
+        histogram = sp.histogram(image)
+
+        # Calculate the sum of pixel values
+        for j in histogram:
+            pixel_sum = 0
+            for i in range(256):
+                if j[i] > 0:
+                    pixel_sum += (j[i] * math.log2(j[i] / total_pixels))
+
+            result = (-1) * pixel_sum / total_pixels
+            result_array.append(result)
+        return result_array
+    else:
+        return
