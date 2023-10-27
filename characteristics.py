@@ -181,7 +181,37 @@ def flattening_coefficient(image):
 
 
 def variation_coefficient_ii(image):
-    return
+    width, height = image.size
+    color_mode = sp.analyse_color_channels(image)[1]
+    if color_mode == 1:
+        total_pixels = width * height
+        # Get the histogram
+        histogram = sp.histogram(image)
+
+        # Calculate the sum of pixel values
+        pixel_sum = 0
+        for i in range(256):
+            pixel_sum += ((histogram[i]) ** 2)
+
+        result = pixel_sum / (total_pixels ** 2)
+        return result
+    elif color_mode == 3:
+        total_pixels = 3 * width * height
+        result = []
+        # Get the histogram
+        histogram = sp.histogram(image)
+        pixel_sum = 0
+        # Calculate the sum of pixel values
+        for j in histogram:
+
+            for i in range(256):
+                pixel_sum += ((j[i]) ** 2)
+            before_result = pixel_sum / (total_pixels ** 2)
+            result.append(before_result)
+
+        return result
+    else:
+        return
 
 
 def information_source_entropy(image):
