@@ -13,7 +13,7 @@ import characteristics
 # characteristics.mean(Image.open("lena.bmp"))
 # characteristics.mean(Image.open("lenac.bmp"))
 # characteristics.variance(Image.open("lena.bmp"))
-print(characteristics.asymmetry_coefficient(Image.open("lenac.bmp")))
+print(characteristics.flattening_coefficient(Image.open("lena.bmp")))
 
 
 def show_help():
@@ -125,7 +125,18 @@ def show_help():
           "\tuse case: --casyco [image_path]\n"
           "\t\tPositive value means the distribution is skewed to the right and negative indicates skewing to the left.\n"
           "\n"
-          "--"
+          "--: measures the shape of the pixel value distribution\n"
+          "\tuse case: -- [image_path]\n"
+          "\t\tThe higher positive coefficient, the sharper peak (more outliers).\n"
+          "\t\tNegative coefficient indicates a flatter peak (fewer outliers).\n"
+          "\n"
+          "--cvarcoii:\n"
+          "\tuse case: --cvarcoii [image_path]\n"
+          "\n"
+          "--centropy: measures the amount of information contained in an image\n"
+          "\tuse case: --centropy [image_path]\n"
+          "\t\tIt quantifies the randomness or uncertainty of pixel values.\n"
+          "\t\tHigher entropy values indicate more complex and diverse pixel distributions.\n"
           )
 
 
@@ -231,6 +242,26 @@ elif sys.argv[1] == "--cvarcoi":
         print("Please provide a correct number of parameters.")
     else:
         print(characteristics.variation_coefficient_i(Image.open(sys.argv[2])))
+elif sys.argv[1] == "--casyco":
+    if len(sys.argv) != 3:
+        print("Please provide a correct number of parameters.")
+    else:
+        print(characteristics.asymmetry_coefficient(Image.open(sys.argv[2])))
+elif sys.argv[1] == "--":
+    if len(sys.argv) != 3:
+        print("Please provide a correct number of parameters.")
+    else:
+        print(characteristics.flattening_coefficient(Image.open(sys.argv[2])))
+elif sys.argv[1] == "--cvarcoii":
+    if len(sys.argv) != 3:
+        print("Please provide a correct number of parameters.")
+    else:
+        print(characteristics.variation_coefficient_ii(Image.open(sys.argv[2])))
+elif sys.argv[1] == "--centropy":
+    if len(sys.argv) != 3:
+        print("Please provide a correct number of parameters.")
+    else:
+        print(characteristics.information_source_entropy(Image.open(sys.argv[2])))
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")

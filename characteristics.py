@@ -139,3 +139,50 @@ def asymmetry_coefficient(image):
         return a_coefficient
     else:
         return
+
+
+def flattening_coefficient(image):
+    color_mode = sp.analyse_color_channels(image)[1]
+    total_pixels = sp.total_pixels(image)
+    histogram = sp.histogram(image)
+    mean_value = mean(image)
+    sd_value = standard_deviation(image)
+
+    if color_mode == 1:
+
+        sum_forth_diff = 0
+
+        # Iterate over pixel values (0 to 255)
+        for i in range(256):
+            forth_diff = ((i - mean_value) ** 4) * histogram[i]
+            sum_forth_diff += forth_diff
+
+        # Calculate the variance as the average of squared differences
+        f_coefficient = (1 / (total_pixels * sd_value ** 4)) * sum_forth_diff - 3
+
+        return f_coefficient
+    elif color_mode == 3:
+        mean_values = mean(image)
+
+        f_coefficient = [0, 0, 0]
+
+        # Iterate over pixel values (0 to 255) and channels (R, G, B)
+        for i in range(256):
+            for j in range(3):
+                forth_diff = ((i - mean_values[j]) ** 4) * histogram[j][i]
+                f_coefficient[j] += forth_diff
+
+        for i in range(len(f_coefficient)):  # len = 3
+            f_coefficient[i] = (1 / (total_pixels * sd_value[i] ** 4)) * f_coefficient[i] - 3
+
+        return f_coefficient
+    else:
+        return
+
+
+def variation_coefficient_ii(image):
+    return
+
+
+def information_source_entropy(image):
+    return
