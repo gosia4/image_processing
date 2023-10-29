@@ -13,8 +13,8 @@ import characteristics
 # characteristics.mean(Image.open("lena.bmp"))
 # characteristics.mean(Image.open("lenac.bmp"))
 # characteristics.variance(Image.open("lena.bmp"))
-print(characteristics.information_source_entropy(Image.open("lenac.bmp")))
-
+# print(characteristics.information_source_entropy(Image.open("lenac.bmp")))
+spatial_filters.edge_sharpening(Image.open("lena.bmp"), 3, "new_image.bmp")
 
 def show_help():
     print("---------------Basic operations:-----------------\n"
@@ -137,6 +137,11 @@ def show_help():
           "\tuse case: --centropy [image_path]\n"
           "\t\tIt quantifies the randomness or uncertainty of pixel values.\n"
           "\t\tHigher entropy values indicate more complex and diverse pixel distributions.\n"
+          "\n"
+          "--sedgesharp: enhance the perceived sharpness of edges in an image\n"
+          "\tuse case: --sedgesharp [first_image_path] [kernel_size] [output_image_path]\n"
+          "\t\t A larger kernel size will result in a stronger sharpening effect\n"
+          ""
           )
 
 
@@ -262,6 +267,11 @@ elif sys.argv[1] == "--centropy":
         print("Please provide a correct number of parameters.")
     else:
         print(characteristics.information_source_entropy(Image.open(sys.argv[2])))
+elif sys.argv[1] == "--sedgesharp":
+    if len(sys.argv) != 5:
+        print("Please provide a correct number of parameters.")
+    else:
+        print(spatial_filters.edge_sharpening(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4]))
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
