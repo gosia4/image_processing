@@ -14,7 +14,10 @@ import characteristics
 # characteristics.mean(Image.open("lenac.bmp"))
 # characteristics.variance(Image.open("lena.bmp"))
 # print(characteristics.information_source_entropy(Image.open("lenac.bmp")))
-spatial_filters.edge_sharpening(Image.open("lena.bmp"), 3, "new_image.bmp")
+# spatial_filters.edge_sharpening(Image.open("lena.bmp"), 3, "new_image.bmp")
+import support_functions as sp
+import characteristics as c
+print(c.mean_pixel_value(Image.open("lena.bmp")))
 
 def show_help():
     print("---------------Basic operations:-----------------\n"
@@ -231,7 +234,7 @@ elif sys.argv[1] == "--mean":
     if len(sys.argv) != 3:
         print("Please provide a correct number of parameters.")
     else:
-        print(characteristics.mean(Image.open(sys.argv[2])))
+        print(characteristics.mean_pixel_value(Image.open(sys.argv[2])))
 elif sys.argv[1] == "--cvariance":
     if len(sys.argv) != 3:
         print("Please provide a correct number of parameters.")

@@ -2,153 +2,133 @@ import support_functions as sp
 import math
 
 
-def mean(image):
+def mean_pixel_value(image):
     width, height = image.size
-    color_mode = sp.analyse_color_channels(image)[1]
-    if color_mode == 1:
-        total_pixels = width * height
-        # Get the histogram
-        histogram = sp.histogram(image)
+    color_channels = sp.analyse_color_channels(image)[1]
+    total_pixels = width * height
 
-        # Calculate the sum of pixel values
-        pixel_sum = 0
+    # Get the histogram
+    histogram = sp.create_histogram(image)
+
+    # Calculate the sum of pixel values
+    pixel_sum = []
+    for c in range(color_channels):
+        pixel_sum.append(0)
         for i in range(256):
-            pixel_sum += i * histogram[i]
-        mean_value = pixel_sum / total_pixels
-        # print(mean_value)
-        return mean_value
-    elif color_mode == 3:
-        total_pixels = 3 * width * height
-        mean_values = []
-        # Get the histogram
-        histogram = sp.histogram(image)
+            pixel_sum[c] += i * histogram[c][i]
 
-        # Calculate the sum of pixel values
-        for j in histogram:
-            pixel_sum = 0
-            for i in range(256):
-                pixel_sum += i * j[i]
-            mean_value = pixel_sum / total_pixels
-            mean_values.append(mean_value)
-        # print(mean_values)
-        return mean_values
-    else:
-        return
+    mean_value = []
+    for c in range(color_channels):
+        mean_value.append(0)
+        mean_value[c] = pixel_sum[c] / total_pixels
+
+    return mean_value
 
 
 def variance(image):
-    color_mode = sp.analyse_color_channels(image)[1]
-    total_pixels = sp.total_pixels(image)
-    histogram = sp.histogram(image)
+    width, height = image.size
+    color_channels = sp.analyse_color_channels(image)[1]
+    total_pixels = width * height
+    histogram = sp.create_histogram(image)
 
-    if color_mode == 1:
-        mean_value = mean(image)
-        sum_squared_diff = 0
+    mean_value = mean_pixel_value(image)
 
-        # Iterate over pixel values (0 to 255)
+    sum_squared_diff = []
+    for c in range(color_channels):
+        sum_squared_diff.append(0)
         for i in range(256):
-            squared_diff = ((i - mean_value) ** 2) * histogram[i]
-            sum_squared_diff += squared_diff
+            squared_diff = ((i - mean_value[c]) ** 2) * histogram[c][i]
+            sum_squared_diff[c] += squared_diff
 
-        # Calculate the variance as the average of squared differences
-        variance_value = (1 / total_pixels) * sum_squared_diff
+    # Calculate the variance as the average of squared differences
+    variance_value = []
+    for c in range(color_channels):
+        variance_value.append(0)
+        variance_value[c] = sum_squared_diff[c] / total_pixels
 
-        return variance_value
-    elif color_mode == 3:
-        mean_values = mean(image)
-
-        variances = [0, 0, 0]
-
-        # Iterate over pixel values (0 to 255) and channels (R, G, B)
-        for i in range(256):
-            for j in range(3):
-                squared_diff = ((i - mean_values[j]) ** 2) * histogram[j][i]
-                variances[j] += squared_diff
-
-        for i in range(len(variances)):  # len = 3
-            variances[i] /= total_pixels
-
-        return variances
-    else:
-        return
+    return variance_value
 
 
 def standard_deviation(image):
     variance_value = variance(image)
     color_channel = sp.analyse_color_channels(image)[1]
-    if color_channel == 1:
-        result = math.sqrt(variance_value)
-    elif color_channel == 3:
-        result = [0, 0, 0]
-        for i in range(color_channel):
-            result[i] = math.sqrt(variance_value[i])
-    else:
-        return
-    return result
+    standard_deviation_value = []
+
+    for c in range(color_channel):
+        standard_deviation_value.append(0)
+        standard_deviation_value[c] = math.sqrt(variance_value[c])
+
+    return standard_deviation_value
 
 
 def variation_coefficient_i(image):
     color_channel = sp.analyse_color_channels(image)[1]
-    mean_value = mean(image)
+    mean_value = mean_pixel_value(image)
     sd_value = standard_deviation(image)
-    if color_channel == 1:
-        result = sd_value / mean_value
-    elif color_channel == 3:
-        result = [0, 0, 0]
-        for i in range(color_channel):
-            result[i] = sd_value[i] / mean_value[i]
-    else:
-        return
-    return result
 
+    for c in range(color_channel):
+        vc_i_value = []
+        vc_i_value[c] = sd_value[c] / mean_value[c]
+
+    return vc_i_value
+
+
+
+# def asymmetry_coefficient_2(image):
+#     width, height = image.size
+#     color_channels = sp.analyse_color_channels(image)[1]
+#     total_pixels = width * height * color_channels
+#     histogram = sp.create_histogram(image)
+#     mean_value = mean_pixel_value(image)
+#     sd_value = standard_deviation(image)
+#
+#     sum_cubed_diff = []
+#         for c in range(color_channels):
+#             sum_cubed_diff.append(0)
+#             for i in range(256):
+#                 cubed_diff = ((i - mean_value[c]) ** 2) * histogram[c][i]
+#                 sum_cubed_diff[c] += cubed_diff
+#
+#         variance3_value = []
+#         for c in range(color_channels):
+#             variance3_value.append(0)
+#             variance3_value[c] = sum_cubed_diff[c] / total_pixels
 
 def asymmetry_coefficient(image):
-    color_mode = sp.analyse_color_channels(image)[1]
-    total_pixels = sp.total_pixels(image)
-    histogram = sp.histogram(image)
-    mean_value = mean(image)
+    width, height = image.size
+    color_channels = sp.analyse_color_channels(image)[1]
+    total_pixels = width * height
+    histogram = sp.create_histogram(image)
+    mean_value = mean_pixel_value(image)
     sd_value = standard_deviation(image)
 
-    if color_mode == 1:
-
-        sum_cubed_diff = 0
-
-        # Iterate over pixel values (0 to 255)
+    sum_cubed_diff = []
+    for c in range(color_channels):
+        sum_cubed_diff.append(0)
         for i in range(256):
-            cubed_diff = ((i - mean_value) ** 3) * histogram[i]
-            sum_cubed_diff += cubed_diff
+            cubed_diff = ((i - mean_value[c]) ** 3) * histogram[i]
+            sum_cubed_diff[c] += cubed_diff
 
-        # Calculate the variance as the average of squared differences
-        a_coefficient = (1 / (total_pixels * sd_value ** 3)) * sum_cubed_diff
+    # Calculate the variance as the average of squared differences
+    a_coefficient = []
+    for c in range(color_channels):
+        a_coefficient.append(0)
+        a_coefficient[c] = (1 / (total_pixels * sd_value[c] ** 3)) * sum_cubed_diff[c]
 
-        return a_coefficient
-    elif color_mode == 3:
-        mean_values = mean(image)
+    return a_coefficient
 
-        a_coefficient = [0, 0, 0]
 
-        # Iterate over pixel values (0 to 255) and channels (R, G, B)
-        for i in range(256):
-            for j in range(3):
-                cubed_diff = ((i - mean_values[j]) ** 3) * histogram[j][i]
-                a_coefficient[j] += cubed_diff
-
-        for i in range(len(a_coefficient)):  # len = 3
-            a_coefficient[i] = (1 / (total_pixels * sd_value[i] ** 3)) * a_coefficient[i]
-
-        return a_coefficient
-    else:
-        return
+# Stopped working here. All above functions are optimized.
 
 
 def flattening_coefficient(image):
-    color_mode = sp.analyse_color_channels(image)[1]
+    color_channels = sp.analyse_color_channels(image)[1]
     total_pixels = sp.total_pixels(image)
-    histogram = sp.histogram(image)
-    mean_value = mean(image)
+    histogram = sp.create_histogram(image)
+    mean_value = mean_pixel_value(image)
     sd_value = standard_deviation(image)
 
-    if color_mode == 1:
+    if color_channels == 1:
 
         sum_forth_diff = 0
 
@@ -161,8 +141,8 @@ def flattening_coefficient(image):
         f_coefficient = (1 / (total_pixels * sd_value ** 4)) * sum_forth_diff - 3
 
         return f_coefficient
-    elif color_mode == 3:
-        mean_values = mean(image)
+    elif color_channels == 3:
+        mean_values = mean_pixel_value(image)
 
         f_coefficient = [0, 0, 0]
 
@@ -182,11 +162,11 @@ def flattening_coefficient(image):
 
 def variation_coefficient_ii(image):
     width, height = image.size
-    color_mode = sp.analyse_color_channels(image)[1]
-    if color_mode == 1:
+    color_channels = sp.analyse_color_channels(image)[1]
+    if color_channels == 1:
         total_pixels = width * height
         # Get the histogram
-        histogram = sp.histogram(image)
+        histogram = sp.create_histogram(image)
 
         # Calculate the sum of pixel values
         pixel_sum = 0
@@ -195,11 +175,11 @@ def variation_coefficient_ii(image):
 
         result = pixel_sum / (total_pixels ** 2)
         return result
-    elif color_mode == 3:
+    elif color_channels == 3:
         total_pixels = 3 * width * height
         result = []
         # Get the histogram
-        histogram = sp.histogram(image)
+        histogram = sp.create_histogram(image)
         # Calculate the sum of pixel values
         for j in histogram:
             pixel_sum = 0
@@ -215,11 +195,11 @@ def variation_coefficient_ii(image):
 
 def information_source_entropy(image):
     width, height = image.size
-    color_mode = sp.analyse_color_channels(image)[1]
-    if color_mode == 1:
+    color_channels = sp.analyse_color_channels(image)[1]
+    if color_channels == 1:
         total_pixels = width * height
         # Get the histogram
-        histogram = sp.histogram(image)
+        histogram = sp.create_histogram(image)
 
         # Calculate the sum of pixel values
         pixel_sum = 0
@@ -229,11 +209,11 @@ def information_source_entropy(image):
 
         result = (-1) * pixel_sum / total_pixels
         return result
-    elif color_mode == 3:
+    elif color_channels == 3:
         total_pixels = 3 * width * height
         result_array = []
         # Get the histogram
-        histogram = sp.histogram(image)
+        histogram = sp.create_histogram(image)
 
         # Calculate the sum of pixel values
         for j in histogram:

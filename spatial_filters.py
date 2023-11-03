@@ -6,12 +6,8 @@ import numpy as np
 def uniform_histogram(image, min_brightness, max_brightness, output):
     if sp.analyse_color_channels(image)[1] == 1:
         width, height = image.size
-        histogram = [0] * 256  # Create a histogram with 256 bins.
 
-        for x in range(width):
-            for y in range(height):
-                pixel_value = image.getpixel((x, y))
-                histogram[pixel_value] += 1
+        histogram = sp.calculate_histogram(image)
 
         total_pixels = 0
 

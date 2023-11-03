@@ -2,8 +2,8 @@ import numpy as np
 from PIL import Image
 import time
 
+# global measure_time function flag-variable
 time_start = 0
-
 
 # saves the image to the desired path
 def save_image(image, output_path):
@@ -42,42 +42,41 @@ def measure_time(start):
         print(time.time() - time_start)
 
 
-def histogram(image):
+def create_histogram(image):
     width, height = image.size
-    color_mode = analyse_color_channels(image)[1]
+    color_channels = analyse_color_channels(image)[1]
 
-    if color_mode == 1:
-        histogram = [0] * 256  # Create a histogram with 256 bins.
+    if color_channels == 1:
+        histogram = [[0] * 256]  # Create a histogram with 256 ints.
 
         for x in range(width):
             for y in range(height):
                 pixel_value = image.getpixel((x, y))
-                histogram[pixel_value] += 1
+                histogram[0][pixel_value] += 1
 
         return histogram
 
-    elif color_mode == 3:
-        histogram_r = [0] * 256
-        histogram_g = [0] * 256
-        histogram_b = [0] * 256
+    elif color_channels == 3:
+        histogram = [[0] * 256 for _ in range(3)]
+
 
         for x in range(width):
             for y in range(height):
                 r, g, b = image.getpixel((x, y))
-                histogram_r[r] += 1
-                histogram_g[g] += 1
-                histogram_b[b] += 1
+                histogram[0][r] += 1
+                histogram[1][g] += 1
+                histogram[2][b] += 1
 
-        return histogram_r, histogram_g, histogram_b
+        return histogram
 
 
-def total_pixels(image):
+def calculate_histogram(image):
     width, height = image.size
-    color_mode = analyse_color_channels(image)[1]
-    if color_mode == 1:
-        total = width * height
-    elif color_mode == 3:
-        total = 3 * width * height
-    else:
-        return
-    return total
+    histogram = [0] * 256  # Create a histogram with 256 bins.
+
+    for x in range(width):
+        for y in range(height):
+            pixel_value = image.getpixel((x, y))
+            histogram[pixel_value] += 1
+
+    return histogram
