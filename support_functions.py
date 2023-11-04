@@ -41,7 +41,6 @@ def measure_time(start):
     else:
         print(time.time() - time_start)
 
-
 def create_histogram(image):
     width, height = image.size
     color_channels = analyse_color_channels(image)[1]

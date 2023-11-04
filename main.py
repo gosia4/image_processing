@@ -16,8 +16,7 @@ import characteristics
 # print(characteristics.information_source_entropy(Image.open("lenac.bmp")))
 # spatial_filters.edge_sharpening(Image.open("lena.bmp"), 3, "new_image.bmp")
 import support_functions as sp
-import characteristics as c
-print(c.mean_pixel_value(Image.open("lena.bmp")))
+spatial_filters.uniform_fpd(Image.open("lena.bmp"), 20, 180, "new_image.bmp")
 
 def show_help():
     print("---------------Basic operations:-----------------\n"

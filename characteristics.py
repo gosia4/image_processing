@@ -121,109 +121,120 @@ def asymmetry_coefficient(image):
 # Stopped working here. All above functions are optimized.
 
 
-def flattening_coefficient(image):
+def asymmetry_coefficient_2(image):
+    width, height = image.size
     color_channels = sp.analyse_color_channels(image)[1]
-    total_pixels = sp.total_pixels(image)
+    total_pixels = width * height
+    histogram = sp.create_histogram(image)
+    mean_value = mean_pixel_value(image)
+    v = variance(image)
+
+    third_deviation = []
+    sum_cubed_diff = []
+    for c in range(color_channels):
+        sum_cubed_diff.append(0)
+        third_deviation.append(0)
+        third_deviation[c] = v[c] ** (3 / 2)
+        for i in range(256):
+            cubed_diff = ((i - mean_value[c]) ** 3) * histogram[i]
+            sum_cubed_diff[c] += cubed_diff
+
+    # Calculate the variance as the average of squared differences
+    a_coefficient = []
+    for c in range(color_channels):
+        a_coefficient.append(0)
+        a_coefficient[c] = sum_cubed_diff[c] / (third_deviation[c] * total_pixels)
+
+    return a_coefficient
+
+def flattening_coefficient(image):
+    width, height = image.size
+    color_channels = sp.analyse_color_channels(image)[1]
+    total_pixels = height * width
     histogram = sp.create_histogram(image)
     mean_value = mean_pixel_value(image)
     sd_value = standard_deviation(image)
 
-    if color_channels == 1:
-
-        sum_forth_diff = 0
-
+    sum_fourth_diff = []
+    for c in range(color_channels):
+        sum_fourth_diff.append(0)
         # Iterate over pixel values (0 to 255)
         for i in range(256):
-            forth_diff = ((i - mean_value) ** 4) * histogram[i]
-            sum_forth_diff += forth_diff
+            forth_diff = ((i - mean_value[c]) ** 4) * histogram[i]
+            sum_fourth_diff[c] += forth_diff
 
+    f_coefficient = []
+    for c in range (color_channels):
+        f_coefficient.append(0)
         # Calculate the variance as the average of squared differences
-        f_coefficient = (1 / (total_pixels * sd_value ** 4)) * sum_forth_diff - 3
+        f_coefficient[c] = ((1 / (total_pixels * sd_value[c] ** 4)) * sum_fourth_diff[c]) - 3
 
         return f_coefficient
-    elif color_channels == 3:
-        mean_values = mean_pixel_value(image)
 
-        f_coefficient = [0, 0, 0]
+def flattening_coefficient_2(image):
+    width, height = image.size
+    color_channels = sp.analyse_color_channels(image)[1]
+    total_pixels = height * width
+    histogram = sp.create_histogram(image)
+    mean_value = mean_pixel_value(image)
+    v = variance(image)
 
-        # Iterate over pixel values (0 to 255) and channels (R, G, B)
+    fourth_deviation = []
+    sum_fourth_diff = []
+    for c in range(color_channels):
+        sum_fourth_diff.append(0)
+        fourth_deviation.append(0)
+        fourth_deviation[c] = v[c] ** 2
         for i in range(256):
-            for j in range(3):
-                forth_diff = ((i - mean_values[j]) ** 4) * histogram[j][i]
-                f_coefficient[j] += forth_diff
+            cubed_diff = ((i - mean_value[c]) ** 3) * histogram[i]
+            sum_fourth_diff[c] += cubed_diff
 
-        for i in range(len(f_coefficient)):  # len = 3
-            f_coefficient[i] = (1 / (total_pixels * sd_value[i] ** 4)) * f_coefficient[i] - 3
+    # Calculate the variance as the average of squared differences
+    f_coefficient = []
+    for c in range(color_channels):
+        f_coefficient.append(0)
+        f_coefficient[c] = (sum_fourth_diff[c] / (fourth_deviation[c] * total_pixels)) - 3
 
-        return f_coefficient
-    else:
-        return
+    return f_coefficient
 
 
 def variation_coefficient_ii(image):
     width, height = image.size
     color_channels = sp.analyse_color_channels(image)[1]
-    if color_channels == 1:
-        total_pixels = width * height
-        # Get the histogram
-        histogram = sp.create_histogram(image)
+    total_pixels_squared = (width * height) ** 2
+    histogram = sp.create_histogram(image)
 
-        # Calculate the sum of pixel values
-        pixel_sum = 0
+
+    pixel_sum = []
+    for c in range(color_channels):
+        pixel_sum.append(0)
         for i in range(256):
-            pixel_sum += ((histogram[i]) ** 2)
+            pixel_sum[c] += ((histogram[c][i]) ** 2)
 
-        result = pixel_sum / (total_pixels ** 2)
-        return result
-    elif color_channels == 3:
-        total_pixels = 3 * width * height
-        result = []
-        # Get the histogram
-        histogram = sp.create_histogram(image)
-        # Calculate the sum of pixel values
-        for j in histogram:
-            pixel_sum = 0
-            for i in range(256):
-                pixel_sum += ((j[i]) ** 2)
-            before_result = pixel_sum / (total_pixels ** 2)
-            result.append(before_result)
+    variant_ii = []
+    for c in range(color_channels):
+        variant_ii.append(0)
+        variant_ii[c] = pixel_sum[c] / total_pixels_squared
 
-        return result
-    else:
-        return
+    return variant_ii
 
 
 def information_source_entropy(image):
     width, height = image.size
     color_channels = sp.analyse_color_channels(image)[1]
-    if color_channels == 1:
-        total_pixels = width * height
-        # Get the histogram
-        histogram = sp.create_histogram(image)
+    total_pixels = width * height
+    histogram = sp.create_histogram(image)
 
-        # Calculate the sum of pixel values
-        pixel_sum = 0
+    pixel_sum = []
+    for c in range(color_channels):
+        pixel_sum.append(0)
         for i in range(256):
             if histogram[i] > 0:
                 pixel_sum += (histogram[i] * math.log2((histogram[i])/total_pixels))
 
-        result = (-1) * pixel_sum / total_pixels
-        return result
-    elif color_channels == 3:
-        total_pixels = 3 * width * height
-        result_array = []
-        # Get the histogram
-        histogram = sp.create_histogram(image)
+    ise = []
+    for c in range(color_channels):
+        ise.append(0)
+        ise[c] = (-1) * pixel_sum[c] / total_pixels
 
-        # Calculate the sum of pixel values
-        for j in histogram:
-            pixel_sum = 0
-            for i in range(256):
-                if j[i] > 0:
-                    pixel_sum += (j[i] * math.log2(j[i] / total_pixels))
-
-            result = (-1) * pixel_sum / total_pixels
-            result_array.append(result)
-        return result_array
-    else:
-        return
+    return ise

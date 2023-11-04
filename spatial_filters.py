@@ -2,6 +2,30 @@ import support_functions as sp
 from PIL import Image
 import numpy as np
 
+def uniform_fpd(image, min_brightness, max_brightness, output):
+    width, height = image.size
+    result_image, color_channels = sp.analyse_color_channels(image)
+    total_pixels = height * width
+    histogram = sp.create_histogram(image)
+
+    lut = []
+    for c in range(color_channels):
+        lut.append([])
+        for i in range(255):
+            lut[c].append(0)
+            lut[c][i] = int(min_brightness + ((max_brightness - min_brightness) * histogram[c][i] * i / total_pixels))
+
+    for x in range(width):
+        for y in range(height):
+            new_pixel_value = []
+            old_pixel = sp.process_int_or_tuple(image.getpixel((x, y)))
+            for c in range(color_channels):
+                new_pixel_value.append(lut[c][old_pixel[c]])
+            result_image.putpixel((x,y), tuple(new_pixel_value))
+
+    result_image.show()
+    sp.save_image(result_image, output)
+
 
 def uniform_histogram(image, min_brightness, max_brightness, output):
     if sp.analyse_color_channels(image)[1] == 1:
