@@ -26,15 +26,15 @@ def modify_brightness(image, factor, output):
 
 
 def modify_contrast(image, factor, output):
-    if factor > 10:
-        factor = 10
-    if factor < -10:
-        factor = -10
+    if factor > 10.0:
+        factor = 10.0
+    if factor < -10.0:
+        factor = -10.0
 
     lut = []
     # creates a look-up table (all 256 possible transformations)
     for i in range(256):
-        new = 128 + ((i - 128) * (math.e ** factor))
+        new = int(128 + ((i - 128) * (math.e ** factor)))
         lut.append(new)
 
     width, height = image.size

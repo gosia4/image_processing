@@ -61,6 +61,7 @@ def standard_deviation(image):
     return standard_deviation_value
 
 
+# nie kompiluje się!
 def variation_coefficient_i(image):
     color_channel = sp.analyse_color_channels(image)[1]
     mean_value = mean_pixel_value(image)
@@ -106,7 +107,7 @@ def asymmetry_coefficient(image):
     for c in range(color_channels):
         sum_cubed_diff.append(0)
         for i in range(256):
-            cubed_diff = ((i - mean_value[c]) ** 3) * histogram[i]
+            cubed_diff = ((i - mean_value[c]) ** 3) * histogram[c][i]
             sum_cubed_diff[c] += cubed_diff
 
     # Calculate the variance as the average of squared differences
@@ -136,7 +137,7 @@ def asymmetry_coefficient_2(image):
         third_deviation.append(0)
         third_deviation[c] = v[c] ** (3 / 2)
         for i in range(256):
-            cubed_diff = ((i - mean_value[c]) ** 3) * histogram[i]
+            cubed_diff = ((i - mean_value[c]) ** 3) * histogram[c][i]
             sum_cubed_diff[c] += cubed_diff
 
     # Calculate the variance as the average of squared differences
@@ -160,16 +161,16 @@ def flattening_coefficient(image):
         sum_fourth_diff.append(0)
         # Iterate over pixel values (0 to 255)
         for i in range(256):
-            forth_diff = ((i - mean_value[c]) ** 4) * histogram[i]
+            forth_diff = ((i - mean_value[c]) ** 4) * histogram[c][i]
             sum_fourth_diff[c] += forth_diff
 
     f_coefficient = []
-    for c in range (color_channels):
+    for c in range(color_channels):
         f_coefficient.append(0)
         # Calculate the variance as the average of squared differences
         f_coefficient[c] = ((1 / (total_pixels * sd_value[c] ** 4)) * sum_fourth_diff[c]) - 3
 
-        return f_coefficient
+    return f_coefficient
 
 def flattening_coefficient_2(image):
     width, height = image.size
@@ -186,7 +187,7 @@ def flattening_coefficient_2(image):
         fourth_deviation.append(0)
         fourth_deviation[c] = v[c] ** 2
         for i in range(256):
-            cubed_diff = ((i - mean_value[c]) ** 3) * histogram[i]
+            cubed_diff = ((i - mean_value[c]) ** 3) * histogram[c][i]
             sum_fourth_diff[c] += cubed_diff
 
     # Calculate the variance as the average of squared differences

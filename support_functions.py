@@ -1,9 +1,11 @@
 import numpy as np
 from PIL import Image
 import time
+from matplotlib import pyplot as plt
 
 # global measure_time function flag-variable
 time_start = 0
+
 
 # saves the image to the desired path
 def save_image(image, output_path):
@@ -16,7 +18,7 @@ def process_int_or_tuple(item):
     if type(item) is tuple:
         return np.array(item)
     else:
-        return (item, item, item)
+        return item, item, item
 
 
 # reads the color mode of the image
@@ -41,23 +43,23 @@ def measure_time(start):
     else:
         print(time.time() - time_start)
 
-def create_histogram(image):
+
+def create_histogram(image, save_path=None):
     width, height = image.size
     color_channels = analyse_color_channels(image)[1]
 
     if color_channels == 1:
         histogram = [[0] * 256]  # Create a histogram with 256 ints.
-
         for x in range(width):
             for y in range(height):
                 pixel_value = image.getpixel((x, y))
                 histogram[0][pixel_value] += 1
-
+        if save_path:
+            show_histogram_image(histogram, save_path)
         return histogram
 
     elif color_channels == 3:
         histogram = [[0] * 256 for _ in range(3)]
-
 
         for x in range(width):
             for y in range(height):
@@ -65,7 +67,8 @@ def create_histogram(image):
                 histogram[0][r] += 1
                 histogram[1][g] += 1
                 histogram[2][b] += 1
-
+        if save_path:
+            show_histogram_image(histogram, save_path)
         return histogram
 
 
@@ -79,3 +82,27 @@ def calculate_histogram(image):
             histogram[pixel_value] += 1
 
     return histogram
+
+
+def show_histogram_image(histogram, save_path=None):
+    if isinstance(histogram[0], list):# to jest tak naprawdę tu niepotrzebne
+
+        fig, axs = plt.subplots(1, len(histogram), figsize=(15, 5))
+        color = ['red', 'green', 'blue']
+        for i in range(len(histogram)):
+            axs[i].bar(range(256), histogram[i], color=['red', 'green', 'blue'][i])
+            axs[i].set_title(f'Channel {color[i]}')
+            axs[i].set_xlabel('Pixel Value')
+            axs[i].set_ylabel('Frequency')
+
+            fig.suptitle('RGB Histogram')
+
+    else:# a to w ogóle się nie wywołuje
+        plt.bar(range(256), histogram[0], color='black')
+        plt.title('Histogram')
+        plt.xlabel('Pixel Value')
+        plt.ylabel('Frequency')
+
+    if save_path:
+        plt.savefig(save_path)
+    plt.show()

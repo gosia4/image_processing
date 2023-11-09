@@ -1,5 +1,6 @@
 import support_functions as sp
 from PIL import Image
+from matplotlib import pyplot as plt
 import math
 import numpy as np
 
@@ -161,42 +162,42 @@ def edge_sharpening(image, kernel_size, output):
     result_image.show()
 
 
-def uolis_operator(image, output):
-    width, height = image.size
-    result_image, channel = sp.analyse_color_channels(image)
-
-    if channel == 0:
-        print("This program does not support this color model.")
-        return
-
-    for x in range(1, width - 1):
-        for y in range(1, height - 1):
-            sample_arr = []
-
-            for i in range(-1, 2):
-                for j in range(-1, 2):
-                    target_x = x + i
-                    target_y = y + j
-
-                    if 0 <= target_x < width and 0 <= target_y < height:
-                        sample_arr.append(image.getpixel((target_x, target_y)))
-                    else:
-                        # If the neighborhood is out of bounds, use a default value or skip the pixel.
-                        sample_arr.append((0, 0, 0))
-
-            # Choose the relevant values from the neighborhood
-            a1, a3, a5, a7 = [sp.process_int_or_tuple(sample_arr[i]) for i in [1, 3, 5, 7]]
-            x_nm = sp.process_int_or_tuple(sample_arr[4])
-
-            numerator = 0
-            for z in range(channel):
-                if x_nm < 0:
-                    x_nm = -x_nm
-                numerator = x_nm ** 4
-            denominator = a1 * a3 * a5 * a7
-            g_nm = (1 / 4) * math.log(numerator / denominator)
-
-            result_image.putpixel((x, y), int(g_nm))
-
-    sp.save_image(result_image, output)
-    result_image.show()
+# def uolis_operator(image, output):
+#     width, height = image.size
+#     result_image, channel = sp.analyse_color_channels(image)
+#
+#     if channel == 0:
+#         print("This program does not support this color model.")
+#         return
+#
+#     for x in range(1, width - 1):
+#         for y in range(1, height - 1):
+#             sample_arr = []
+#
+#             for i in range(-1, 2):
+#                 for j in range(-1, 2):
+#                     target_x = x + i
+#                     target_y = y + j
+#
+#                     if 0 <= target_x < width and 0 <= target_y < height:
+#                         sample_arr.append(image.getpixel((target_x, target_y)))
+#                     else:
+#                         # If the neighborhood is out of bounds, use a default value or skip the pixel.
+#                         sample_arr.append((0, 0, 0))
+#
+#             # Choose the relevant values from the neighborhood
+#             a1, a3, a5, a7 = [sp.process_int_or_tuple(sample_arr[i]) for i in [1, 3, 5, 7]]
+#             x_nm = sp.process_int_or_tuple(sample_arr[4])
+#
+#             numerator = 0
+#             for z in range(channel):
+#                 if x_nm < 0:
+#                     x_nm = -x_nm
+#                 numerator = x_nm ** 4
+#             denominator = a1 * a3 * a5 * a7
+#             g_nm = (1 / 4) * math.log(numerator / denominator)
+#
+#             result_image.putpixel((x, y), int(g_nm))
+#
+#     sp.save_image(result_image, output)
+#     result_image.show()

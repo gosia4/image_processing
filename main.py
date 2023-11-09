@@ -7,6 +7,8 @@ import basic_operations
 import noise_removal
 import spatial_filters
 import characteristics
+import support_functions as sp
+sp.create_histogram(Image.open("lenac.bmp"), "histogram.png")
 
 # geometric_operations.horizontal_flip(Image.open("lena.bmp"), "new_image.bmp")
 # spatial_filters.uniform_histogram(Image.open("lenac.bmp"), 0, 1110, "new_image.bmp")
@@ -16,7 +18,14 @@ import characteristics
 # print(characteristics.information_source_entropy(Image.open("lenac.bmp")))
 # spatial_filters.edge_sharpening(Image.open("lena.bmp"), 3, "new_image.bmp")
 import support_functions as sp
-spatial_filters.uniform_fpd(Image.open("lena.bmp"), 20, 180, "new_image.bmp")
+# spatial_filters.uniform_fpd(Image.open("lena.bmp"), 20, 180, "new_image.bmp")
+# sp.measure_time(1)
+# print(characteristics.asymmetry_coefficient(Image.open("lenac_impulse1.bmp")))
+# sp.measure_time(0)
+# sp.measure_time(1)
+# print(characteristics.flattening_coefficient(Image.open("lenac_impulse1.bmp")))
+# sp.measure_time(0)
+
 
 def show_help():
     print("---------------Basic operations:-----------------\n"
@@ -98,6 +107,8 @@ def show_help():
           "\n"
           "---------------Filtration in spatial domain  :-----------------\n"
           "\n"
+          "--histogram:"
+          "\tuse case: --histogram [image_path} [output_path]"
           "--uhistogram: Uniform final probability density function, improves image quality\n"
           "\tuse case: --uhistogram [image_path] [min_brightness] [max_brightness] [output_path]\n"
           "\t\tUniform histogram describes the distribution of pixel intensities\n"
@@ -158,7 +169,7 @@ elif sys.argv[1] == "--contrast":
     if len(sys.argv) < 5:
         print("Please provide a correct number of parameters.")
     else:
-        basic_operations.modify_contrast(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4])
+        basic_operations.modify_contrast(Image.open(sys.argv[2]), float(sys.argv[3]), sys.argv[4])
 elif sys.argv[1] == "--negative":
     if len(sys.argv) < 4:
         print("Please provide a correct number of parameters.")
