@@ -8,7 +8,7 @@ import noise_removal
 import spatial_filters
 import characteristics
 import support_functions as sp
-sp.create_histogram(Image.open("lenac.bmp"), "histogram.png")
+# sp.create_histogram(Image.open("lenac.bmp"), "histogram.png")
 
 # geometric_operations.horizontal_flip(Image.open("lena.bmp"), "new_image.bmp")
 # spatial_filters.uniform_histogram(Image.open("lenac.bmp"), 0, 1110, "new_image.bmp")
@@ -25,7 +25,8 @@ import support_functions as sp
 # sp.measure_time(1)
 # print(characteristics.flattening_coefficient(Image.open("lenac_impulse1.bmp")))
 # sp.measure_time(0)
-
+# sp.show_histogram_image(Image.open("lena.bmp"))
+sp.show_histogram_image(Image.open("lenac.bmp"),None,"histogram")
 
 def show_help():
     print("---------------Basic operations:-----------------\n"

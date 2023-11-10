@@ -54,8 +54,6 @@ def create_histogram(image, save_path=None):
             for y in range(height):
                 pixel_value = image.getpixel((x, y))
                 histogram[0][pixel_value] += 1
-        if save_path:
-            show_histogram_image(histogram, save_path)
         return histogram
 
     elif color_channels == 3:
@@ -67,8 +65,6 @@ def create_histogram(image, save_path=None):
                 histogram[0][r] += 1
                 histogram[1][g] += 1
                 histogram[2][b] += 1
-        if save_path:
-            show_histogram_image(histogram, save_path)
         return histogram
 
 
@@ -84,25 +80,43 @@ def calculate_histogram(image):
     return histogram
 
 
-def show_histogram_image(histogram, save_path=None):
-    if isinstance(histogram[0], list):# to jest tak naprawdę tu niepotrzebne
+def show_histogram_image(image, channel=None, save_path=None):
+    color_channels = analyse_color_channels(image)[1]
+    histogram = create_histogram(image)
+    image_count = 1
+    color = ['red', 'green', 'blue']
 
-        fig, axs = plt.subplots(1, len(histogram), figsize=(15, 5))
-        color = ['red', 'green', 'blue']
-        for i in range(len(histogram)):
-            axs[i].bar(range(256), histogram[i], color=['red', 'green', 'blue'][i])
-            axs[i].set_title(f'Channel {color[i]}')
-            axs[i].set_xlabel('Pixel Value')
-            axs[i].set_ylabel('Frequency')
+    if color_channels == 1:
+        color = ['black']
+        channel = 0
+    elif channel is None:
+        image_count = 3
 
-            fig.suptitle('RGB Histogram')
+    if channel is None:
+        for i in range(3):
+            result_histogram = generate_single_channel_histogram(histogram[i], color, i)
+            if save_path is not None:
+                result_histogram.savefig(f'{save_path}{i}.png')
+            result_histogram.show()
 
-    else:# a to w ogóle się nie wywołuje
-        plt.bar(range(256), histogram[0], color='black')
-        plt.title('Histogram')
-        plt.xlabel('Pixel Value')
-        plt.ylabel('Frequency')
+    else:
+        if channel > 2:
+            print("Could not find color channel no. ", channel, " generating histogram of default color channel 0")
+            channel = 0
+        result_histogram = generate_single_channel_histogram(histogram[channel], color, channel)
+        if save_path is not None:
+            result_histogram.savefig(f'{save_path}.png')
+        result_histogram.show()
 
-    if save_path:
-        plt.savefig(save_path)
-    plt.show()
+
+def generate_single_channel_histogram(histogram, color, channel):
+    plt.figure(figsize=(10, 6))
+    plt.bar(range(256), histogram, color=color[channel])
+    if color[0] == 'black':
+        plt.title('Grayscale Image')
+    else:
+        plt.title(f'Channel {color[channel]}')
+    plt.xlabel('Pixel Value')
+    plt.ylabel('Frequency')
+    return plt
+
