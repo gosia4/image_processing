@@ -26,6 +26,7 @@ import support_functions as sp
 # sp.measure_time(0)
 # sp.show_histogram_image(Image.open("lena.bmp"))
 #sp.show_histogram_image(Image.open("lena.bmp"), None, "histogram")
+#spatial_filters.edge_sharpening_2(Image.open("lenac.bmp"), [[-1, -1, -1],[-1, 9, -1],[-1, -1, -1]], "output.bmp")
 
 def show_help():
     print("---------------Basic operations:-----------------\n"
@@ -152,6 +153,12 @@ def show_help():
           "\tuse case: --centropy [image_path]\n"
           "\t\tIt quantifies the randomness or uncertainty of pixel values.\n"
           "\t\tHigher entropy values indicate more complex and diverse pixel distributions.\n"
+          "\n"
+          "--sedgesharp_u: enhance the perceived sharpness of edges in an image for a provided mask\n"
+          "\tuse case: --sedgesharp [first_image_path] [mask] [output_image_path]\n"
+          "\t\t A mask should be odd-sized two-dimensional array, for example 3x3 array.\n"
+          "\t\tSmaller kernels (e.g., 3x3) may provide a subtle sharpening,\n"
+          "\t\twhile larger kernels (e.g., 5x5) can yield a more pronounced effect.\n"
           "\n"
           "--sedgesharp: enhance the perceived sharpness of edges in an image\n"
           "\tuse case: --sedgesharp [first_image_path] [kernel_size] [output_image_path]\n"
@@ -296,6 +303,11 @@ elif sys.argv[1] == "--sedgesharp":
         print("Please provide a correct number of parameters.")
     else:
         print(spatial_filters.edge_sharpening(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4]))
+elif sys.argv[1] == "--sedgesharp_u":
+    if len(sys.argv) != 5:
+        print("Please provide a correct number of parameters.")
+    else:
+        print(spatial_filters.edge_sharpening(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4]))
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
