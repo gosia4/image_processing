@@ -80,7 +80,7 @@ def calculate_histogram(image):
     return histogram
 
 
-def show_histogram_image(image, channel=None, save_path=None):
+def show_histogram_image(image, save_path=None, channel=None):
     color_channels = analyse_color_channels(image)[1]
     histogram = create_histogram(image)
     image_count = 1

@@ -108,7 +108,7 @@ def show_help():
           "---------------Filtration in spatial domain  :-----------------\n"
           "\n"
           "--histogram: shows the histogram of the image\n"
-          "\tuse case: --histogram [image_path] [channel] [output_path]\n"
+          "\tuse case: --histogram [image_path] [output_path] [channel]\n"
           "\t\tProviding channel parameter is optional.\n"
           "\t\tIf you not provide the channel, it shows histogram for all chennel of the image.\n"
           "--uhistogram: Uniform final probability density function, improves image quality\n"
@@ -238,10 +238,14 @@ elif sys.argv[1] == "--md":
     else:
         print(error_functions.md(Image.open(sys.argv[2]), Image.open(sys.argv[3])))
 elif sys.argv[1] == "--histogram":
-    if len(sys.argv) < 4:
+    if len(sys.argv) < 3:
         print("Please provide a correct number of parameters.")
     else:
-        print(sp.show_histogram_image(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4]))
+        image_path = sys.argv[2]
+        save_path = sys.argv[3]
+        channel = sys.argv[4] if len(sys.argv) > 4 else None
+
+        print(sp.show_histogram_image(Image.open(image_path), save_path, channel))
 elif sys.argv[1] == "--uhistogram":
     if len(sys.argv) < 6:
         print("Please provide a correct number of parameters.")
@@ -276,7 +280,7 @@ elif sys.argv[1] == "--cflatco":
     if len(sys.argv) != 3:
         print("Please provide a correct number of parameters.")
     else:
-        print(characteristics.flattening_coefficient(Image.open(sys.argv[2])))
+        print(characteristics.flattening_coefficient_2(Image.open(sys.argv[2])))
 elif sys.argv[1] == "--cvarcoii":
     if len(sys.argv) != 3:
         print("Please provide a correct number of parameters.")
