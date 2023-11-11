@@ -17,7 +17,6 @@ import support_functions as sp
 # characteristics.variance(Image.open("lena.bmp"))
 # print(characteristics.information_source_entropy(Image.open("lenac.bmp")))
 # spatial_filters.edge_sharpening(Image.open("lena.bmp"), 3, "new_image.bmp")
-import support_functions as sp
 # spatial_filters.uniform_fpd(Image.open("lena.bmp"), 20, 180, "new_image.bmp")
 # sp.measure_time(1)
 # print(characteristics.asymmetry_coefficient(Image.open("lenac_impulse1.bmp")))
@@ -26,7 +25,7 @@ import support_functions as sp
 # print(characteristics.flattening_coefficient(Image.open("lenac_impulse1.bmp")))
 # sp.measure_time(0)
 # sp.show_histogram_image(Image.open("lena.bmp"))
-sp.show_histogram_image(Image.open("lenac.bmp"),None,"histogram")
+#sp.show_histogram_image(Image.open("lena.bmp"), None, "histogram")
 
 def show_help():
     print("---------------Basic operations:-----------------\n"
@@ -101,15 +100,17 @@ def show_help():
           "\t\tPsnr will be calculated regarding individual pixels of those 2 images.\n"
           "\t\tFirst image is treated as original image and second one as it's modification.\n"
           "\n"
-          "--md: returns Maximum differencevalue for pair of images\n"
+          "--md: returns Maximum difference value for pair of images\n"
           "\tuse case: --md [first_image_path] [second_image_path]\n"
           "\t\tMd will be calculated regarding individual pixels of those 2 images.\n"
           "\t\tFirst image is treated as original image and second one as it's modification.\n"
           "\n"
           "---------------Filtration in spatial domain  :-----------------\n"
           "\n"
-          "--histogram:"
-          "\tuse case: --histogram [image_path} [output_path]"
+          "--histogram: shows the histogram of the image\n"
+          "\tuse case: --histogram [image_path] [channel] [output_path]\n"
+          "\t\tProviding channel parameter is optional.\n"
+          "\t\tIf you not provide the channel, it shows histogram for all chennel of the image.\n"
           "--uhistogram: Uniform final probability density function, improves image quality\n"
           "\tuse case: --uhistogram [image_path] [min_brightness] [max_brightness] [output_path]\n"
           "\t\tUniform histogram describes the distribution of pixel intensities\n"
@@ -139,12 +140,12 @@ def show_help():
           "\tuse case: --casyco [image_path]\n"
           "\t\tPositive value means the distribution is skewed to the right and negative indicates skewing to the left.\n"
           "\n"
-          "--: measures the shape of the pixel value distribution\n"
+          "--cflatco: measures the shape of the pixel value distribution\n"
           "\tuse case: -- [image_path]\n"
           "\t\tThe higher positive coefficient, the sharper peak (more outliers).\n"
           "\t\tNegative coefficient indicates a flatter peak (fewer outliers).\n"
           "\n"
-          "--cvarcoii:\n"
+          "--cvarcoii: measure variability of pixel intensities in an image\n"
           "\tuse case: --cvarcoii [image_path]\n"
           "\n"
           "--centropy: measures the amount of information contained in an image\n"
@@ -236,6 +237,11 @@ elif sys.argv[1] == "--md":
         print("Please provide a correct number of parameters.")
     else:
         print(error_functions.md(Image.open(sys.argv[2]), Image.open(sys.argv[3])))
+elif sys.argv[1] == "--histogram":
+    if len(sys.argv) < 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        print(sp.show_histogram_image(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4]))
 elif sys.argv[1] == "--uhistogram":
     if len(sys.argv) < 6:
         print("Please provide a correct number of parameters.")
@@ -266,7 +272,7 @@ elif sys.argv[1] == "--casyco":
         print("Please provide a correct number of parameters.")
     else:
         print(characteristics.asymmetry_coefficient(Image.open(sys.argv[2])))
-elif sys.argv[1] == "--":
+elif sys.argv[1] == "--cflatco":
     if len(sys.argv) != 3:
         print("Please provide a correct number of parameters.")
     else:

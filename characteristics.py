@@ -230,8 +230,8 @@ def information_source_entropy(image):
     for c in range(color_channels):
         pixel_sum.append(0)
         for i in range(256):
-            if histogram[i] > 0:
-                pixel_sum += (histogram[i] * math.log2((histogram[i])/total_pixels))
+            if histogram[c][i] > 0:
+                pixel_sum[c] += (histogram[c][i] * math.log2((histogram[c][i])/total_pixels))
 
     ise = []
     for c in range(color_channels):
