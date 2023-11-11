@@ -66,9 +66,8 @@ def variation_coefficient_i(image):
     color_channel = sp.analyse_color_channels(image)[1]
     mean_value = mean_pixel_value(image)
     sd_value = standard_deviation(image)
-
+    vc_i_value = [0] * color_channel
     for c in range(color_channel):
-        vc_i_value = []
         vc_i_value[c] = sd_value[c] / mean_value[c]
 
     return vc_i_value
