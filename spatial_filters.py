@@ -115,12 +115,7 @@ def uniform_histogram_color(image, min_brightness, max_brightness, output):
     new_image.save(output)
 
 
-def edge_sharpening(image, kernel_size, output):
-    kernel_size = int(kernel_size)
-    if kernel_size < 3:
-        print("Kernel size must be at least 3")
-        return
-
+def edge_sharpening(image, output):
     width, height = image.size
     result_image, color_channels = sp.analyse_color_channels(image)
 
@@ -128,7 +123,7 @@ def edge_sharpening(image, kernel_size, output):
         print("This program does not support this color model.")
         return
 
-    # Define a Laplacian kernel for edge sharpening
+    # Laplacian kernel for edge sharpening
     laplacian_kernel = [[0, -1, 0],
                         [-1, 5, -1],
                         [0, -1, 0]]
@@ -137,8 +132,8 @@ def edge_sharpening(image, kernel_size, output):
         for y in range(height):
             new_pixel = [0] * color_channels
 
-            for i in range(-kernel_size // 2 + 1, kernel_size // 2 + 1):
-                for j in range(-kernel_size // 2 + 1, kernel_size // 2 + 1):
+            for i in range(-1, 2):
+                for j in range(-1, 2):
 
                     target_x = x + i
                     target_y = y + j
@@ -147,12 +142,13 @@ def edge_sharpening(image, kernel_size, output):
                         if 0 <= target_y < height - 1:
                             pixel = image.getpixel((target_x, target_y))
                             if color_channels == 1:
-                                new_pixel[0] += pixel * laplacian_kernel[i + kernel_size // 2][j + kernel_size // 2]
-                            else:
-                                for c in range(color_channels):
-                                    new_pixel[c] += pixel[c] * laplacian_kernel[i + kernel_size // 2][j + kernel_size // 2]
+                                new_pixel[0] += pixel * laplacian_kernel[i + 1][j + 1]
 
-            # new_pixel = [int(val) for val in new_pixel]
+                            else:
+
+                                for c in range(color_channels):
+                                    new_pixel[c] += pixel[c] * laplacian_kernel[i + 1][j + 1]
+
             for i in range(len(new_pixel)):
                 new_pixel[i] = int(new_pixel[i])
 

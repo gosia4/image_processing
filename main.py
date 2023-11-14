@@ -250,9 +250,9 @@ elif sys.argv[1] == "--histogram":
     else:
         image_path = sys.argv[2]
         save_path = sys.argv[3]
-        channel = sys.argv[4] if len(sys.argv) > 4 else None
+        channel = int(sys.argv[4]) if len(sys.argv) > 4 else None
 
-        print(sp.show_histogram_image(Image.open(image_path), save_path, channel))
+        sp.show_histogram_image(Image.open(image_path), save_path, channel)
 elif sys.argv[1] == "--uhistogram":
     if len(sys.argv) < 6:
         print("Please provide a correct number of parameters.")
@@ -299,15 +299,15 @@ elif sys.argv[1] == "--centropy":
     else:
         print(characteristics.information_source_entropy(Image.open(sys.argv[2])))
 elif sys.argv[1] == "--sedgesharp":
-    if len(sys.argv) != 5:
+    if len(sys.argv) != 4:
         print("Please provide a correct number of parameters.")
     else:
-        print(spatial_filters.edge_sharpening(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4]))
+        spatial_filters.edge_sharpening(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--sedgesharp_u":
     if len(sys.argv) != 5:
         print("Please provide a correct number of parameters.")
     else:
-        print(spatial_filters.edge_sharpening(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4]))
+        spatial_filters.edge_sharpening_2(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4])
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
