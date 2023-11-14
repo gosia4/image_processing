@@ -8,28 +8,8 @@ import noise_removal
 import spatial_filters
 import characteristics
 import support_functions as sp
-# sp.create_histogram(Image.open("lenac.bmp"), "histogram.png")
 
-# geometric_operations.horizontal_flip(Image.open("lena.bmp"), "new_image.bmp")
-# spatial_filters.uniform_histogram(Image.open("lenac.bmp"), 0, 1110, "new_image.bmp")
-# characteristics.mean(Image.open("lena.bmp"))
-# characteristics.mean(Image.open("lenac.bmp"))
-# characteristics.variance(Image.open("lena.bmp"))
-# print(characteristics.information_source_entropy(Image.open("lenac.bmp")))
-# spatial_filters.edge_sharpening(Image.open("lena.bmp"), 3, "new_image.bmp")
-# spatial_filters.uniform_fpd(Image.open("lena.bmp"), 20, 180, "new_image.bmp")
-# sp.measure_time(1)
-# print(characteristics.asymmetry_coefficient(Image.open("lenac_impulse1.bmp")))
-# sp.measure_time(0)
-# sp.measure_time(1)
-# print(characteristics.flattening_coefficient(Image.open("lenac_impulse1.bmp")))
-# sp.measure_time(0)
-# sp.show_histogram_image(Image.open("lenac.bmp"), "new_image.jpg", )
-#sp.show_histogram_image(Image.open("lena.bmp"), None, "histogram")
-#spatial_filters.edge_sharpening_2(Image.open("lenac.bmp"), [[-1, -1, -1],[-1, 9, -1],[-1, -1, -1]], "output.bmp")
-# spatial_filters.edge_sharpening_1_2(Image.open("lena.bmp"), "new_image.bmp")
-spatial_filters.edge_sharpening(Image.open("lena.bmp"), "new_image2.bmp")
-
+spatial_filters.uolis_operator(Image.open("lena.bmp"), "output.bmp")
 
 
 def show_help():
@@ -167,6 +147,8 @@ def show_help():
           "--sedgesharp: enhance the perceived sharpness of edges in an image\n"
           "\tuse case: --sedgesharp [first_image_path] [kernel_size] [output_image_path]\n"
           "\t\t A larger kernel size will result in a stronger sharpening effect\n"
+          "\n--ouolis:\n"
+          "\tuse case: --ouolis [image_path] [output_image_path]\n"
           ""
           )
 
@@ -312,6 +294,11 @@ elif sys.argv[1] == "--sedgesharp_u":
         print("Please provide a correct number of parameters.")
     else:
         spatial_filters.edge_sharpening_2(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4])
+elif sys.argv[1] == "--ouolis":
+    if len(sys.argv) != 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        spatial_filters.uolis_operator(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
