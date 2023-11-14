@@ -9,8 +9,7 @@ import spatial_filters
 import characteristics
 import support_functions as sp
 
-spatial_filters.uolis_operator(Image.open("lena.bmp"), "output.bmp")
-spatial_filters.
+
 # spatial_filters.edge_sharpening_2(Image.open("lena.bmp"), [[-1,-1,-1],[-1,9,-1],[-1,-1,-1]], "output.bmp")
 
 
