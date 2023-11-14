@@ -93,11 +93,19 @@ def show_histogram_image(image, save_path=None, channel=None):
         image_count = 3
 
     if channel is None:
-        for i in range(3):
-            result_histogram = generate_single_channel_histogram(histogram[i], color, i)
-            if save_path is not None:
-                result_histogram.savefig(f'{save_path}{i}.png')
-            result_histogram.show()
+
+        result_histogram, axs = plt.subplots(1, len(histogram), figsize=(15, 5))
+        color = ['red', 'green', 'blue']
+        for i in range(len(histogram)):
+            axs[i].bar(range(256), histogram[i], color=['red', 'green', 'blue'][i])
+            axs[i].set_title(f'Channel {color[i]}')
+            axs[i].set_xlabel('Pixel Value')
+            axs[i].set_ylabel('Frequency')
+
+            result_histogram.suptitle('RGB Histogram')
+        if save_path is not None:
+            result_histogram.savefig(f'{save_path}{i}.png')
+        result_histogram.show()
 
     else:
         if channel > 2:
