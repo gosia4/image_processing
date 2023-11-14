@@ -4,32 +4,6 @@ from matplotlib import pyplot as plt
 import math
 import numpy as np
 
-
-def uniform_fpd(image, min_brightness, max_brightness, output):
-    width, height = image.size
-    result_image, color_channels = sp.analyse_color_channels(image)
-    total_pixels = height * width
-    histogram = sp.create_histogram(image)
-
-    lut = []
-    for c in range(color_channels):
-        lut.append([])
-        for i in range(255):
-            lut[c].append(0)
-            lut[c][i] = int(min_brightness + ((max_brightness - min_brightness) * histogram[c][i] * i / total_pixels))
-
-    for x in range(width):
-        for y in range(height):
-            new_pixel_value = []
-            old_pixel = sp.process_int_or_tuple(image.getpixel((x, y)))
-            for c in range(color_channels):
-                new_pixel_value.append(lut[c][old_pixel[c]])
-            result_image.putpixel((x,y), tuple(new_pixel_value))
-
-    result_image.show()
-    sp.save_image(result_image, output)
-
-
 def uniform_histogram(image, min_brightness, max_brightness, output):
     if sp.analyse_color_channels(image)[1] == 1:
         width, height = image.size
@@ -128,6 +102,12 @@ def edge_sharpening(image, output):
                         [-1, 5, -1],
                         [0, -1, 0]]
 
+    edge_values = 0
+    for i in range(3):
+        edge_values += laplacian_kernel[0][i]
+    for j in range(3):
+        edge_values += laplacian_kernel[j][0]
+
     for x in range(width):
         for y in range(height):
             new_pixel = [0] * color_channels
@@ -161,47 +141,7 @@ def edge_sharpening(image, output):
     sp.save_image(result_image, output)
     result_image.show()
 
-def edge_sharpening_1_2(image, output):
 
-    width, height = image.size
-    result_image, color_channels = sp.analyse_color_channels(image)
-
-    if color_channels == 0:
-        print("This program does not support this color model.")
-        return
-
-    # Define a Laplacian kernel for edge sharpening
-    laplacian_kernel = [[0, -1, 0],
-                        [-1, 5, -1],
-                        [0, -1, 0]]
-
-    for x in range(width):
-        for y in range(height):
-            new_pixel = [0] * color_channels
-
-            for i in range(-1, 2):
-                for j in range(-1, 2):
-
-                    target_x = x + i
-                    target_y = y + j
-
-                    if 0 <= target_x < width - 1:
-                        if 0 <= target_y < height - 1:
-                            pixel = image.getpixel((target_x, target_y))
-                            if color_channels == 1:
-                                new_pixel[0] += pixel * laplacian_kernel[i + 1][j + 1]
-                            else:
-                                for c in range(color_channels):
-                                    new_pixel[c] += pixel[c] * laplacian_kernel[i + 1][j + 1]
-
-            # new_pixel = [int(val) for val in new_pixel]
-            for i in range(len(new_pixel)):
-                new_pixel[i] = int(new_pixel[i])
-
-            result_image.putpixel((x, y), tuple(new_pixel))
-
-    sp.save_image(result_image, output)
-    result_image.show()
 def edge_sharpening_2(image, kernel, output):
     width, height = image.size
     result_image, color_channels = sp.analyse_color_channels(image)
@@ -232,10 +172,6 @@ def edge_sharpening_2(image, kernel, output):
                                 for c in range(color_channels):
                                     new_pixel[c] += pixel[c] * kernel[i + kernel_radius][j + kernel_radius]
 
-            # new_pixel = [int(val) for val in new_pixel]
-            for i in range(len(new_pixel)):
-                new_pixel[i] = int(new_pixel[i])
-
             result_image.putpixel((x, y), tuple(new_pixel))
 
     sp.save_image(result_image, output)
@@ -244,15 +180,15 @@ def edge_sharpening_2(image, kernel, output):
 
 def uolis_operator(image, output):
     width, height = image.size
-    result_image, channel = sp.analyse_color_channels(image)
+    result_image, channels = sp.analyse_color_channels(image)
 
-    if channel == 0:
+    if channels == 0:
         print("This program does not support this color model.")
         return
 
     for x in range(1, width - 1):
         for y in range(1, height - 1):
-            sample_arr = []
+            sample_arr = [] * channels
 
             for i in range(-1, 2):
                 for j in range(-1, 2):
@@ -260,28 +196,140 @@ def uolis_operator(image, output):
                     target_y = y + j
 
                     if 0 <= target_x < width and 0 <= target_y < height:
-                        sample_arr.append(image.getpixel((target_x, target_y)))
-                    else:
-                        # If the neighborhood is out of bounds, use a default value or skip the pixel.
-                        sample_arr.append((0, 0, 0))
+                        if channels == 1:
+                            sample_arr.append([image.getpixel((target_x, target_y))])
+                        else:
+                            sample_arr.append(list(image.getpixel((target_x, target_y))))
 
-            # Choose the relevant values from the neighborhood
-            # a1, a3, a5, a7 = [sp.process_int_or_tuple(sample_arr[i]) for i in [1, 3, 5, 7]]
-            a1, a3, a5, a7 = [sample_arr[i] for i in [1, 3, 5, 7]]
-            # x_nm = sp.process_int_or_tuple(sample_arr[4])
+            a1 = sample_arr[1]
+            a3 = sample_arr[5]
+            a5 = sample_arr[7]
+            a7 = sample_arr[3]
             x_nm = sample_arr[4]
 
+            numerator = []
+            denominator = []
+            g_nm = []
 
-            numerator = 0
-            # for z in range(channel):
-            #     if x_nm[z] < 0:
-            #         x_nm[z] = -x_nm[z]
-            numerator = x_nm ** 4
-            denominator = a1 * a3 * a5 * a7
-            g_nm = (1 / 4) * math.log10(numerator / denominator)
+            for c in range(channels):
+                g_nm.append(0)
+                numerator.append(0)
+                denominator.append(0)
+                numerator[c] = x_nm[c] ** 4
+                denominator[c] = a1[c] * a3[c] * a5[c] * a7[c]
+                if denominator[c] == 0:
+                    g_nm[c] = 255
+                elif numerator[c] <= 0:
+                    g_nm[c] = 0
+                else:
+                    g_nm[c] = int(1/4 * math.log10(numerator[c] / denominator[c]))
 
-            result_image.putpixel((x, y), int(g_nm))
+            # print(g_nm)
+            result_image.putpixel((x, y), tuple(g_nm))
 
     sp.save_image(result_image, output)
     result_image.show()
 
+def uolis_operator_times_300(image, output):
+    width, height = image.size
+    result_image, channels = sp.analyse_color_channels(image)
+
+    if channels == 0:
+        print("This program does not support this color model.")
+        return
+
+    for x in range(1, width - 1):
+        for y in range(1, height - 1):
+            sample_arr = [] * channels
+
+            for i in range(-1, 2):
+                for j in range(-1, 2):
+                    target_x = x + i
+                    target_y = y + j
+
+                    if 0 <= target_x < width and 0 <= target_y < height:
+                        if channels == 1:
+                            sample_arr.append([image.getpixel((target_x, target_y))])
+                        else:
+                            sample_arr.append(list(image.getpixel((target_x, target_y))))
+
+            a1 = sample_arr[1]
+            a3 = sample_arr[5]
+            a5 = sample_arr[7]
+            a7 = sample_arr[3]
+            x_nm = sample_arr[4]
+
+            numerator = []
+            denominator = []
+            g_nm = []
+
+            for c in range(channels):
+                g_nm.append(0)
+                numerator.append(0)
+                denominator.append(0)
+                numerator[c] = x_nm[c] ** 4
+                denominator[c] = a1[c] * a3[c] * a5[c] * a7[c]
+                if denominator[c] == 0:
+                    g_nm[c] = 255
+                elif numerator[c] <= 0:
+                    g_nm[c] = 0
+                else:
+                    g_nm[c] = int(300 * math.log10(numerator[c] / denominator[c]))
+
+            # print(g_nm)
+            result_image.putpixel((x, y), tuple(g_nm))
+
+    sp.save_image(result_image, output)
+    result_image.show()
+
+def uolis_operator_no_log(image, output):
+    width, height = image.size
+    result_image, channels = sp.analyse_color_channels(image)
+
+    if channels == 0:
+        print("This program does not support this color model.")
+        return
+
+    for x in range(1, width - 1):
+        for y in range(1, height - 1):
+            sample_arr = [] * channels
+
+            for i in range(-1, 2):
+                for j in range(-1, 2):
+                    target_x = x + i
+                    target_y = y + j
+
+                    if 0 <= target_x < width and 0 <= target_y < height:
+                        if channels == 1:
+                            sample_arr.append([image.getpixel((target_x, target_y))])
+                        else:
+                            sample_arr.append(list(image.getpixel((target_x, target_y))))
+
+            a1 = sample_arr[1]
+            a3 = sample_arr[5]
+            a5 = sample_arr[7]
+            a7 = sample_arr[3]
+            x_nm = sample_arr[4]
+
+            numerator = []
+            denominator = []
+            g_nm = []
+
+            for c in range(channels):
+                g_nm.append(0)
+                numerator.append(0)
+                denominator.append(0)
+                numerator[c] = x_nm[c] ** 4
+                denominator[c] = a1[c] * a3[c] * a5[c] * a7[c]
+                if denominator[c] == 0:
+                    g_nm[c] = 255
+                elif numerator[c] <= 0:
+                    g_nm[c] = 0
+                else:
+                    g_nm[c] = int(300 * (numerator[c] / denominator[c]))
+
+            # print(g_nm)
+            result_image.putpixel((x, y), tuple(g_nm))
+
+    sp.save_image(result_image, output)
+    result_image.show()
