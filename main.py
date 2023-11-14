@@ -1,4 +1,5 @@
 import sys
+import ast
 from PIL import Image
 
 import error_functions
@@ -10,7 +11,7 @@ import characteristics
 import support_functions as sp
 
 
-# spatial_filters.edge_sharpening_2(Image.open("lena.bmp"), [[-1,-1,-1],[-1,9,-1],[-1,-1,-1]], "output.bmp")
+# spatial_filters.edge_sharpening_2(Image.open("lenac.bmp"), [[-1,-1,-1],[-1,9,-1],[-1,-1,-1]], "output.bmp")
 
 
 def show_help():
@@ -294,7 +295,9 @@ elif sys.argv[1] == "--sedgesharp_u":
     if len(sys.argv) != 5:
         print("Please provide a correct number of parameters.")
     else:
-        spatial_filters.edge_sharpening_2(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4])
+        kernel_str = sys.argv[3]
+        kernel = ast.literal_eval(kernel_str)
+        spatial_filters.edge_sharpening_2(Image.open(sys.argv[2]), kernel, sys.argv[4])
 elif sys.argv[1] == "--ouolis":
     if len(sys.argv) != 4:
         print("Please provide a correct number of parameters.")
