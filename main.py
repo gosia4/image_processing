@@ -24,9 +24,11 @@ import support_functions as sp
 # sp.measure_time(1)
 # print(characteristics.flattening_coefficient(Image.open("lenac_impulse1.bmp")))
 # sp.measure_time(0)
-# sp.show_histogram_image(Image.open("lena.bmp"))
+sp.show_histogram_image(Image.open("lenac.bmp"), "new_image.jpg", )
 #sp.show_histogram_image(Image.open("lena.bmp"), None, "histogram")
 #spatial_filters.edge_sharpening_2(Image.open("lenac.bmp"), [[-1, -1, -1],[-1, 9, -1],[-1, -1, -1]], "output.bmp")
+# spatial_filters.edge_sharpening_1_2(Image.open("lena.bmp"), "new_image.bmp")
+
 
 def show_help():
     print("---------------Basic operations:-----------------\n"
