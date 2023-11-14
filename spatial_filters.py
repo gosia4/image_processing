@@ -124,33 +124,37 @@ def edge_sharpening(image, output):
         return
 
     # Define a Laplacian kernel for edge sharpening
-    laplacian_kernel = [[1, -2, 1],
-                        [-2, 5, -2],
-                        [1, -2, 1]]
+    laplacian_kernel = [[0, -1, 0],
+                        [-1, 5, -1],
+                        [0, -1, 0]]
 
     for x in range(width):
         for y in range(height):
             new_pixel = [0] * color_channels
+            border_pixels = 0
 
             for i in range(-1, 2):
                 for j in range(-1, 2):
-
                     target_x = x + i
                     target_y = y + j
 
-                    if 0 <= target_x < width:
-                        if 0 <= target_y < height:
+                    if 0 <= target_y < height:
+                        if 0 <= target_x < width:
                             pixel = image.getpixel((target_x, target_y))
                             if color_channels == 1:
                                 new_pixel[0] += pixel * laplacian_kernel[i + 1][j + 1]
 
                             else:
-
                                 for c in range(color_channels):
                                     new_pixel[c] += pixel[c] * laplacian_kernel[i + 1][j + 1]
+                        else:
+                            border_pixels += 1
+                    else:
+                        border_pixels += 1
 
-            for i in range(len(new_pixel)):
-                new_pixel[i] = int(new_pixel[i])
+            for b in range(border_pixels % 2):
+                for c in range(color_channels):
+                    new_pixel[c] -= int(new_pixel[c] / (2 - b))
 
             result_image.putpixel((x, y), tuple(new_pixel))
 
