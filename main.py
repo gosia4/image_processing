@@ -11,7 +11,10 @@ import characteristics
 import support_functions as sp
 
 
-# spatial_filters.edge_sharpening_2(Image.open("lenac.bmp"), [[-1,-1,-1],[-1,9,-1],[-1,-1,-1]], "output.bmp")
+# spatial_filters.uniform_histogram(Image.open("lenac.bmp"), 30,255, "output.bmp")
+sp.show_histogram_image(Image.open("output.bmp"), "histogram_o")
+sp.show_histogram_image(Image.open("output.bmp"), "histogram")
+# spatial_filters.edge_sharpening(Image.open("lena.bmp"), "output.bmp")
 
 
 def show_help():

@@ -20,6 +20,12 @@ def process_int_or_tuple(item):
     else:
         return item, item, item
 
+def int_or_tuple_to_list(item):
+    if type(item) is tuple:
+        return list(item)
+    else:
+        return [item]
+
 
 # reads the color mode of the image
 #   returns new empty canvas with appropriate format (mode) [Grayscale / RGB]
@@ -44,7 +50,7 @@ def measure_time(start):
         print(time.time() - time_start)
 
 
-def create_histogram(image, save_path=None):
+def create_histogram(image):
     width, height = image.size
     color_channels = analyse_color_channels(image)[1]
 
@@ -66,18 +72,6 @@ def create_histogram(image, save_path=None):
                 histogram[1][g] += 1
                 histogram[2][b] += 1
         return histogram
-
-
-def calculate_histogram(image):
-    width, height = image.size
-    histogram = [0] * 256  # Create a histogram with 256 bins.
-
-    for x in range(width):
-        for y in range(height):
-            pixel_value = image.getpixel((x, y))
-            histogram[pixel_value] += 1
-
-    return histogram
 
 
 def show_histogram_image(image, save_path=None, channel=None):
