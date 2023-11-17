@@ -11,6 +11,7 @@ import characteristics
 import support_functions as sp
 
 
+
 # spatial_filters.uniform_histogram(Image.open("lenac.bmp"), 30,255, "output.bmp")
 sp.show_histogram_image(Image.open("output.bmp"), "histogram_o")
 sp.show_histogram_image(Image.open("output.bmp"), "histogram")
@@ -240,7 +241,7 @@ elif sys.argv[1] == "--histogram":
         print("Please provide a correct number of parameters.")
     else:
         image_path = sys.argv[2]
-        save_path = sys.argv[3]
+        save_path = sys.argv[3] if len(sys.argv) > 3 else None
         channel = int(sys.argv[4]) if len(sys.argv) > 4 else None
 
         sp.show_histogram_image(Image.open(image_path), save_path, channel)
@@ -278,7 +279,7 @@ elif sys.argv[1] == "--cflatco":
     if len(sys.argv) != 3:
         print("Please provide a correct number of parameters.")
     else:
-        print(characteristics.flattening_coefficient_2(Image.open(sys.argv[2])))
+        print(characteristics.flattening_coefficient(Image.open(sys.argv[2])))
 elif sys.argv[1] == "--cvarcoii":
     if len(sys.argv) != 3:
         print("Please provide a correct number of parameters.")

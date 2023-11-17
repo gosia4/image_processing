@@ -98,7 +98,7 @@ def show_histogram_image(image, save_path=None, channel=None):
 
             result_histogram.suptitle('RGB Histogram')
         if save_path is not None:
-            result_histogram.savefig(f'{save_path}{i}.png')
+            result_histogram.savefig(f'{save_path}.png')
         result_histogram.show()
 
     else:
