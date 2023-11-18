@@ -41,50 +41,40 @@ def edge_sharpening(image, output):
     width, height = image.size
     result_image, color_channels = sp.analyse_color_channels(image)
 
-    if color_channels == 0:
-        print("This program does not support this color model.")
-        return
-
-    # Define a Laplacian kernel for edge sharpening
-    laplacian_kernel = [[0, -1, 0],
-                        [-1, 5, -1],
-                        [0, -1, 0]]
-
-    edge_values = 0
-    for i in range(3):
-        edge_values += laplacian_kernel[0][i]
-    for j in range(3):
-        edge_values += laplacian_kernel[j][0]
-
+    # laplacian_kernel = [[0, -1, 0],
+    #                     [-1, 5, -1],
+    #                     [0, -1, 0]]
     for x in range(width):
-        for y in range(height):
-            new_pixel = [0] * color_channels
-            border_pixels = 0
+        result_image.putpixel((x,0), image.getpixel((x,0)))
+        result_image.putpixel((x,height-1), image.getpixel((x,height-1)))
+    for y in range(height):
+        result_image.putpixel((0, y), image.getpixel((0, y)))
+        result_image.putpixel((width-1, y), image.getpixel((width-1, y)))
 
-            for i in range(-1, 2):
-                for j in range(-1, 2):
-                    target_x = x + i
-                    target_y = y + j
 
-                    if 0 <= target_y < height:
-                        if 0 <= target_x < width:
-                            pixel = image.getpixel((target_x, target_y))
-                            if color_channels == 1:
-                                new_pixel[0] += pixel * laplacian_kernel[i + 1][j + 1]
+    if color_channels == 1:
+        for x in range(1, width - 1):
+            for y in range(1, height - 1):
 
-                            else:
-                                for c in range(color_channels):
-                                    new_pixel[c] += pixel[c] * laplacian_kernel[i + 1][j + 1]
-                        else:
-                            border_pixels += 1
-                    else:
-                        border_pixels += 1
+                result_image.putpixel((x, y), tuple(image.getpixel((x - 1, y)) -
+                                                    image.getpixel((x, y - 1)) -
+                                                    image.getpixel((x + 1, y)) -
+                                                    image.getpixel((x, y + 1)) +
+                                                    image.getpixel((x, y)) * 5))
 
-            for b in range(border_pixels % 2):
+    else:
+        for x in range(1, width - 1):
+            for y in range(1, height - 1):
+                new_pixel = [0, 0, 0]
+
                 for c in range(color_channels):
-                    new_pixel[c] -= int(new_pixel[c] / (2 - b))
+                    new_pixel[c] = (-image.getpixel((x-1, y))[c] -
+                                    image.getpixel((x, y-1))[c] -
+                                    image.getpixel((x+1, y))[c] -
+                                    image.getpixel((x, y+1))[c] +
+                                    image.getpixel((x, y))[c] * 5)
 
-            result_image.putpixel((x, y), tuple(new_pixel))
+                result_image.putpixel((x, y), tuple(new_pixel))
 
     sp.save_image(result_image, output)
     result_image.show()
@@ -274,7 +264,7 @@ def uolis_operator_no_log(image, output):
                 elif numerator[c] <= 0:
                     g_nm[c] = 0
                 else:
-                    g_nm[c] = int(300 * (numerator[c] / denominator[c]))
+                    g_nm[c] = int((numerator[c] / denominator[c]))
 
             # print(g_nm)
             result_image.putpixel((x, y), tuple(g_nm))
