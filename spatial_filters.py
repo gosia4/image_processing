@@ -56,11 +56,12 @@ def edge_sharpening(image, output):
         for x in range(1, width - 1):
             for y in range(1, height - 1):
 
-                result_image.putpixel((x, y), tuple(image.getpixel((x - 1, y)) -
-                                                    image.getpixel((x, y - 1)) -
-                                                    image.getpixel((x + 1, y)) -
-                                                    image.getpixel((x, y + 1)) +
-                                                    image.getpixel((x, y)) * 5))
+                result_image.putpixel((x, y), ((image.getpixel((x, y)) * 5) -
+                                               image.getpixel((x - 1, y)) -
+                                               image.getpixel((x, y - 1)) -
+                                               image.getpixel((x + 1, y)) -
+                                               image.getpixel((x, y + 1)))
+                )
 
     else:
         for x in range(1, width - 1):
