@@ -11,7 +11,16 @@ import characteristics
 import support_functions as sp
 import morphological_operations as mo
 
-mo.erosion(Image.open("lenabw.bmp"))
+
+
+
+mo.region_growing_2(Image.open("lena.bmp"), 200, 200, 1, "output_region.bmp")
+
+
+# mo.hmt_transformation_general(Image.open("lenabw.bmp"), [[1, 2, 2], [1, 0, 2], [1, 2, 2]],"output4.bmp")
+
+
+
 
 def show_help():
     print("---------------Basic operations:-----------------\n"
