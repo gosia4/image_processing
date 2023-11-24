@@ -78,7 +78,7 @@ def closing(image, output):
 
 def hmt_transformation(image, output):
     width, height = image.size
-    result_image = Image.new('1', (width, height), 1)
+    result_image = Image.new('1', (width, height))
     one_bit_image_array = np.array(image)
 
     for x in range(width-2):
