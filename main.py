@@ -9,6 +9,9 @@ import noise_removal
 import spatial_filters
 import characteristics
 import support_functions as sp
+import morphological_operations as mo
+
+mo.dilation(Image.open("lenabw.bmp"))
 
 def show_help():
     print("---------------Basic operations:-----------------\n"
