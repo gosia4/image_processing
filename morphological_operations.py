@@ -74,3 +74,17 @@ def closing(image, output):
     result_image = dilation(erosion_image, None, False)
     #result_image.save(output)
     result_image.show()
+
+
+def hmt_transformation(image, output):
+    width, height = image.size
+    result_image = Image.new('1', (width, height), 1)
+    one_bit_image_array = np.array(image)
+
+    for x in range(width-2):
+        for y in range(height-2):
+            sample_arr = []
+            if (one_bit_image_array[x][y] and one_bit_image_array[x][y + 1] and one_bit_image_array[x][y + 2]) == 0:
+                if one_bit_image_array[x + 1][y + 1] == 1:
+                    result_image.putpixel((y, x), 1)
+    result_image.show()
