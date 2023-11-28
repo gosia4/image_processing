@@ -68,6 +68,9 @@ def variation_coefficient_i(image):
     sd_value = standard_deviation(image)
     vc_i_value = [0] * color_channel
     for c in range(color_channel):
+        if mean_value[c] == 0:
+            print("Cannot divide by 0")
+            return
         vc_i_value[c] = sd_value[c] / mean_value[c]
 
     return vc_i_value
@@ -113,6 +116,9 @@ def asymmetry_coefficient(image):
     a_coefficient = []
     for c in range(color_channels):
         a_coefficient.append(0)
+        if (total_pixels * sd_value[c] ** 3) == 0:
+            print("Cannot divide by 0")
+            return
         a_coefficient[c] = (1 / (total_pixels * sd_value[c] ** 3)) * sum_cubed_diff[c]
 
     return a_coefficient
@@ -147,6 +153,7 @@ def asymmetry_coefficient_2(image):
 
     return a_coefficient
 
+
 def flattening_coefficient(image):
     width, height = image.size
     color_channels = sp.analyse_color_channels(image)[1]
@@ -167,6 +174,9 @@ def flattening_coefficient(image):
     for c in range(color_channels):
         f_coefficient.append(0)
         # Calculate the variance as the average of squared differences
+        if total_pixels * sd_value[c] ** 4 == 0:
+            print("Cannot divide by zero")
+            return
         f_coefficient[c] = ((1 / (total_pixels * sd_value[c] ** 4)) * sum_fourth_diff[c]) - 3
 
     return f_coefficient
@@ -203,7 +213,6 @@ def variation_coefficient_ii(image):
     color_channels = sp.analyse_color_channels(image)[1]
     total_pixels_squared = (width * height) ** 2
     histogram = sp.create_histogram(image)
-
 
     pixel_sum = []
     for c in range(color_channels):
