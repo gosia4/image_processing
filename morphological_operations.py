@@ -32,6 +32,45 @@ def dilation(image, output, show=True):
     #result_image.save(output)
     return result_image
 
+def dilation_with_mask(image, output, show=True, mask_number=None):
+    masks = [
+        np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]]),  # Mask 1
+        np.array([[1, 1]]),  # Mask 2
+        np.array([[1], [1]]),  # Mask 3
+        np.array([[2, 1, 2], [1, 1, 1], [2, 1, 2]])  # Mask 4
+    ]
+
+    selected_mask = masks[mask_number - 1]  # to be sure that the right mask is chosen
+
+    width, height = image.size
+    result_image = Image.new('1', (width, height))
+    one_bit_image_array = np.array(image)
+
+    for x in range(width):
+        for y in range(height):
+            max_pixel_value = 0 # if the surrounding pixel and the origin is 1, then it is set to one
+
+            struct_width, struct_height = selected_mask.shape
+            for i in range(struct_width):
+                for j in range(struct_height):
+                    target_x = x + i - (struct_width // 2)
+                    target_y = y + j - (struct_height // 2)
+
+                    if 0 <= target_x < width and 0 <= target_y < height:
+                        if selected_mask[i, j] == 1 and one_bit_image_array[target_y, target_x] == 1: # odwrotnie działa
+                            max_pixel_value = 1
+                            break
+
+                if max_pixel_value == 1:
+                    break
+
+            result_image.putpixel((x, y), max_pixel_value)
+
+    if show:
+        result_image.show()
+    result_image.save(output)
+    return result_image
+
 
 def erosion(image, output, show=True):
     width, height = image.size
