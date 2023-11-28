@@ -103,7 +103,7 @@ def erosion(image, output, show=True):
     return result_image
 
 
-def erosion_with_mask(image, mask_number, output = None, show=True):
+def erosion_with_mask(image, mask_number, output=None, show=True):
     masks = [
         np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]]),  # Mask 1
         np.array([[1, 1]]),  # Mask 2
@@ -160,8 +160,8 @@ def closing(image, output, mask_number):
     width, height = image.size
     # erosion_image = erosion(image, None, False)
     # result_image = dilation(erosion_image, None, False)
-    erosion_image = erosion_with_mask(image, None, mask_number, False)
-    result_image = dilation_with_mask(erosion_image, None, mask_number, False)
+    erosion_image = erosion_with_mask(image, mask_number, None, False)
+    result_image = dilation_with_mask(erosion_image, mask_number, None, False)
     sp.save_image(result_image, output)
     result_image.show()
 
