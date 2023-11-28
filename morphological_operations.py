@@ -32,7 +32,8 @@ def dilation(image, output, show=True):
     #result_image.save(output)
     return result_image
 
-def dilation_with_mask(image, output, show=True, mask_number=None):
+
+def dilation_with_mask(image, mask_number, output=None, show=True):
     masks = [
         np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]]),  # Mask 1
         np.array([[1, 1]]),  # Mask 2
@@ -68,7 +69,8 @@ def dilation_with_mask(image, output, show=True, mask_number=None):
 
     if show:
         result_image.show()
-    result_image.save(output)
+    if output is not None:
+        sp.save_image(result_image, output)
     return result_image
 
 
@@ -101,19 +103,66 @@ def erosion(image, output, show=True):
     return result_image
 
 
-def opening(image, output):
+def erosion_with_mask(image, mask_number, output = None, show=True):
+    masks = [
+        np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]]),  # Mask 1
+        np.array([[1, 1]]),  # Mask 2
+        np.array([[1], [1]]),  # Mask 3
+        np.array([[2, 1, 2], [1, 1, 1], [2, 1, 2]])  # Mask 4
+    ]
+
+    selected_mask = masks[mask_number - 1]  # to be sure that the right mask is chosen
+
     width, height = image.size
-    dilation_image = dilation(image, None, False)
-    result_image = erosion(dilation_image, None, False)
+    result_image = Image.new('1', (width, height), 1)
+    one_bit_image_array = np.transpose(np.array(image))
+
+    for x in range(width):
+        for y in range(height):
+
+            max_pixel_value = 1  # if the surrounding pixel and the origin is 1, then it is set to one
+
+            struct_width, struct_height = selected_mask.shape
+
+            for i in range(struct_width):
+                for j in range(struct_height):
+                    target_x = x + i - (struct_width // 2)
+                    target_y = y + j - (struct_height // 2)
+                    if 0 <= target_x < width - 1 and 0 <= target_y < height - 1:
+                        if one_bit_image_array[target_x][target_y] == 0:
+                            result_image.putpixel((x, y), 0)
+                            max_pixel_value = 0
+                            break
+
+                if max_pixel_value == 0:
+                    break
+
+            result_image.putpixel((x, y), max_pixel_value)
+
+    if show:
+        result_image.show()
+    if output is not None:
+        sp.save_image(result_image, output)
+    return result_image
+
+
+def opening(image, output, mask_number):
+    width, height = image.size
+    # dilation_image = dilation(image, None, False)
+    # result_image = erosion(dilation_image, None, False)
+    dilated_image = dilation_with_mask(image, mask_number, None, False)
+    result_image = erosion_with_mask(dilated_image, mask_number, None, False)
     result_image.show()
-    #result_image.save(output)
+    sp.save_image(result_image, output)
 
 
-def closing(image, output):
+def closing(image, output, mask_number):
     width, height = image.size
-    erosion_image = erosion(image, None, False)
-    result_image = dilation(erosion_image, None, False)
-    #result_image.save(output)
+    # erosion_image = erosion(image, None, False)
+    # result_image = dilation(erosion_image, None, False)
+    erosion_image = erosion_with_mask(image, None, mask_number, False)
+    result_image = dilation_with_mask(erosion_image, None, mask_number, False)
+    sp.save_image(result_image, output)
     result_image.show()
 
 
