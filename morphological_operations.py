@@ -201,11 +201,18 @@ def hmt_transformation_xi1(image, output):
     sp.save_image(result_image, output)
 
 
-def hmt_transformation_general(image, mask, output):
+def hmt_transformation_general(image, mask_number, output):
     width, height = image.size
     result_image = Image.new('1', (width, height))
     one_bit_image_array = np.transpose(np.array(image))
-    mask = np.transpose(mask)
+    masks = [
+        np.array([[1, 1, 1], [2, 0, 2], [0, 0, 0]]),  # Mask XII 1
+        np.array([[0, 0, 0], [2, 1, 2], [2, 2, 2]]),  # Mask XI 2
+        np.array([[2, 2, 0], [2,1, 0], [2, 2, 0]]),  # Mask XI 3
+        np.array([[1, 1, 2], [1, 0, 0], [2, 0, 0]])  # Mask XII 8
+    ]
+    # mask = np.transpose(mask)
+    mask = masks[mask_number - 1]
 
     for x in range(1, width-1):
         for y in range(1, height-1):
