@@ -124,7 +124,7 @@ def show_help():
           "\t\tPositive value means the distribution is skewed to the right and negative indicates skewing to the left.\n"
           "\n"
           "--cflatco: measures the shape of the pixel value distribution\n"
-          "\tuse case: -- [image_path]\n"
+          "\tuse case: --cflatco [image_path]\n"
           "\t\tThe higher positive coefficient, the sharper peak (more outliers).\n"
           "\t\tNegative coefficient indicates a flatter peak (fewer outliers).\n"
           "\n"
@@ -299,6 +299,16 @@ elif sys.argv[1] == "--ouolis":
         print("Please provide a correct number of parameters.")
     else:
         spatial_filters.uolis_operator(Image.open(sys.argv[2]), sys.argv[3])
+elif sys.argv[1] == "--ouolis300":
+    if len(sys.argv) != 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        spatial_filters.uolis_operator_times_300(Image.open(sys.argv[2]), sys.argv[3])
+elif sys.argv[1] == "--ouolis_no_log":
+    if len(sys.argv) != 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        spatial_filters.uolis_operator_no_log(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
