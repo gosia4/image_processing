@@ -14,9 +14,9 @@ import morphological_operations as mo
 
 
 
-mo.region_growing_static(Image.open("lena.bmp"), 200, 200, 30, "output_region.bmp")
-
-
+# mo.region_growing_static(Image.open("lena.bmp"), 200, 200, 30, "output_region.bmp")
+mo.m3(Image.open("lenabw.bmp"), 200, 200, None)
+mo.dilation(Image.open("lenabw.bmp"), None)
 # mo.hmt_transformation_general(Image.open("lenabw.bmp"), [[1, 2, 2], [1, 0, 2], [1, 2, 2]],"output4.bmp")
 
 

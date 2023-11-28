@@ -213,6 +213,17 @@ def region_growing_contagious(image, chosen_x, chosen_y, treshold, output):
     result_image.show()
     sp.save_image(result_image, output)
 
+def intersection(image1, image2):
+    width, height = image1.size
+    result_image = Image.new('1', (width, height))
 
-
+    for i in range(width):
+        for j in range(height):
+            pixel1 = image1.getpixel((i, j))
+            pixel2 = image2.getpixel((i, j))
+            if pixel1 == 1 and pixel2 == 1:
+                result_image.putpixel((i, j), 1)
+            else:
+                result_image.putpixel((i, j), 0)
+    return result_image
 
