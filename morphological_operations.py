@@ -35,9 +35,9 @@ def dilation(image, output, show=True):
 
 def dilation_with_mask(image, mask_number, output=None, show=True):
     masks = [
-        np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]]),  # Mask 1
-        np.array([[1, 1]]),  # Mask 2
-        np.array([[1], [1]]),  # Mask 3
+        np.array([[1, 1]]),  # Mask 1
+        np.array([[1], [1]]),  # Mask 2
+        np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]]),  # Mask 3
         np.array([[2, 1, 2], [1, 1, 1], [2, 1, 2]])  # Mask 4
     ]
 
@@ -105,9 +105,9 @@ def erosion(image, output, show=True):
 
 def erosion_with_mask(image, mask_number, output=None, show=True):
     masks = [
-        np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]]),  # Mask 1
-        np.array([[1, 1]]),  # Mask 2
-        np.array([[1], [1]]),  # Mask 3
+        np.array([[1, 1]]),  # Mask 1
+        np.array([[1], [1]]),  # Mask 2
+        np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]]),  # Mask 3
         np.array([[2, 1, 2], [1, 1, 1], [2, 1, 2]])  # Mask 4
     ]
 
@@ -145,8 +145,17 @@ def erosion_with_mask(image, mask_number, output=None, show=True):
         sp.save_image(result_image, output)
     return result_image
 
-
 def opening(image, output, mask_number):
+    width, height = image.size
+    # erosion_image = erosion(image, None, False)
+    # result_image = dilation(erosion_image, None, False)
+    erosion_image = erosion_with_mask(image, mask_number, None, False)
+    result_image = dilation_with_mask(erosion_image, mask_number, None, False)
+    sp.save_image(result_image, output)
+    result_image.show()
+
+
+def closing(image, output, mask_number):
     width, height = image.size
     # dilation_image = dilation(image, None, False)
     # result_image = erosion(dilation_image, None, False)
@@ -155,15 +164,6 @@ def opening(image, output, mask_number):
     result_image.show()
     sp.save_image(result_image, output)
 
-
-def closing(image, output, mask_number):
-    width, height = image.size
-    # erosion_image = erosion(image, None, False)
-    # result_image = dilation(erosion_image, None, False)
-    erosion_image = erosion_with_mask(image, mask_number, None, False)
-    result_image = dilation_with_mask(erosion_image, mask_number, None, False)
-    sp.save_image(result_image, output)
-    result_image.show()
 
 
 def hmt_transformation(image, output):
