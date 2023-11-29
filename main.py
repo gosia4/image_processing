@@ -11,15 +11,29 @@ import characteristics
 import support_functions as sp
 import morphological_operations as mo
 
+# mo.opening(Image.open("lenabw.bmp"), None)
+# mo.closing(Image.open("lenabw.bmp"), None)
+# mo.dilation(Image.open("lenabw.bmp"), None)
+# mo.erosion(Image.open("lenabw.bmp"), None)
+# mo.dilation(Image.open("lenabw.bmp"), None)
+# mo.dilation_with_mask(Image.open("lenabw.bmp"), "output1.bmp", True, 2)
+# mo.dilation_with_mask(Image.open("lenabw.bmp"), "output2.bmp", True, 3)
+# mo.dilation_with_mask(Image.open("lenabw.bmp"), "output3.bmp", True, 1)
+# mo.dilation_with_mask(Image.open("lenabw.bmp"), "output4.bmp", True, 4)
 
-
+# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 1, "output1.bmp")
+# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 2, "output2.bmp")
+# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 3, "output3.bmp")
+# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 4, "output4.bmp")
+mo.region_growing_static(Image.open("lena.bmp"), 200, 200, 20, "output.bmp")
+mo.region_growing_contagious(Image.open("lena.bmp"), 200, 200, 20, "output.bmp")
 
 # mo.region_growing_static(Image.open("lena.bmp"), 200, 200, 30, "output_region.bmp")
-mo.m3(Image.open("lenabw.bmp"), 200, 200, None)
-mo.dilation(Image.open("lenabw.bmp"), None)
+# mo.m3(Image.open("lenabw.bmp"), 200, 200, None)
+# mo.dilation(Image.open("lenabw.bmp"), None)
 # mo.hmt_transformation_general(Image.open("lenabw.bmp"), [[1, 2, 2], [1, 0, 2], [1, 2, 2]],"output4.bmp")
-
-
+# mo.region_growing_dilation2(Image.open("lenabw.bmp"), 200, 200, None)
+# mo.dilation(Image.open("lenabw.bmp"), None)
 
 
 def show_help():
@@ -159,6 +173,48 @@ def show_help():
           "\t\t A larger kernel size will result in a stronger sharpening effect\n"
           "\n--ouolis:\n"
           "\tuse case: --ouolis [image_path] [output_image_path]\n"
+          "\n"
+          "---------------Morphological operation:-----------------\n"
+          "\n"
+          "\tAvailable masks for basic morphological operations:\n"
+          "\t\tMask 1:[[1, 1]]\n"
+          "\t\tMask 2:[[1], [1]]\n"
+          "\t\tMask 3:[[1, 1, 1], [1, 1, 1], [1, 1, 1]]\n"
+          "\t\tMask 4:[[2, 1, 2], [1, 1, 1], [2, 1, 2]]"
+          "\t\t\twhere 1 represents white pixel and 2 inactive points\n"
+          "--dilation: increases the size of the objects\n"
+          "\tuse case: --dilation [mask_number] [image_path] [output_image_path]\n"
+          "\t\tDilation increases the brightness of the objects.\n"
+          "\n"
+          "--erosion: decreases the size of the objects\n"
+          "\tuse case: --erosion [image_path] [mask_number] [output_image_path]\n"
+          "\t\t \n"
+          "\n"
+          "--opening: \n"
+          "\tuse case: --opening [image_path] [mask_number] [output_image_path]\n"
+          "\t\t \n"
+          "\n"
+          "--closing: \n"
+          "\tuse case: --closing [image_path] [mask_number] [output_image_path]\n"
+          "\t\t \n"
+          "\n"
+          "--hmt: Hit-or-miss transformation\n"
+          "\tuse case: --hmt [image_path] [mask_number] [output_image_path]\n"
+          "\t\tAvailable masks:\n"
+          "\t\tMask 1:[[1, 1, 1], [2, 0, 2], [0, 0, 0]])\n"
+          "\t\tMask 2:[[0, 0, 0], [2, 1, 2], [2, 2, 2]]\n"
+          "\t\tMask 3:[[2, 2, 0], [2,1, 0], [2, 2, 0]]\n"
+          "\t\tMask 4:[[1, 1, 2], [1, 0, 0], [2, 0, 0]]"
+          "\t\t\twhere 1 represents white pixel, 0 black pixel and 2 inactive points\n"
+          "\n"
+          "--m3: \n"
+          "\tuse case: \n"
+          "\t\t \n"
+          "\n"
+          "--rgrowing: \n"
+          "\tuse case: \n"
+          "\t\t \n"
+          "\n"
           ""
           )
 
@@ -311,6 +367,36 @@ elif sys.argv[1] == "--ouolis":
         print("Please provide a correct number of parameters.")
     else:
         spatial_filters.uolis_operator(Image.open(sys.argv[2]), sys.argv[3])
+elif sys.argv[1] == "--dilation":
+    if len(sys.argv) != 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        mo.dilation_with_mask(Image.open(sys.argv[2]), sys.argv[3], sys.argv[3])
+elif sys.argv[1] == "--erosion":
+    if len(sys.argv) != 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        mo.erosion_with_mask(Image.open(sys.argv[2]), sys.argv[3], sys.argv[3])
+elif sys.argv[1] == "--opening":
+    if len(sys.argv) != 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        mo.opening(Image.open(sys.argv[2]), sys.argv[3], sys.argv[3])
+elif sys.argv[1] == "--closing":
+    if len(sys.argv) != 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        mo.closing(Image.open(sys.argv[2]), sys.argv[3], sys.argv[3])
+elif sys.argv[1] == "--hmt":
+    if len(sys.argv) != 5:
+        print("Please provide a correct number of parameters.")
+    else:
+        mo.hmt_transformation_general(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4])
+elif sys.argv[1] == "--rgrowing":
+    if len(sys.argv) != 6:
+        print("Please provide a correct number of parameters.")
+    else:
+        mo.region_growing_static(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
