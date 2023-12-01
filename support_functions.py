@@ -122,3 +122,26 @@ def generate_single_channel_histogram(histogram, color, channel):
     plt.ylabel('Frequency')
     return plt
 
+
+def display_red_dot(image, x, y):
+    result_image = image.copy()
+    result_image = result_image.convert("RGB")
+    dot_color = (255, 0, 0)
+    result_image.putpixel((x, y), dot_color)
+    result_image.show()
+
+
+def display_red_dot2(image, x, y, output, dot_size=5):
+    result_image = image.copy()
+
+    # Convert the image to RGB mode to add red color
+    result_image = result_image.convert("RGB")
+    dot_color = (255, 0, 0)
+
+    # Modify the pixel color in the copied image for a square region around (x, y)
+    for i in range(x - dot_size // 2, x + dot_size // 2 + 1):
+        for j in range(y - dot_size // 2, y + dot_size // 2 + 1):
+            result_image.putpixel((i, j), dot_color)
+
+    result_image.show()
+    result_image.save(output)
