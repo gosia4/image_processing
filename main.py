@@ -28,7 +28,14 @@ import morphological_operations as mo
 # mo.region_growing_static(Image.open("lena.bmp"), 200, 200, 20, "output.bmp")
 # mo.region_growing_contagious(Image.open("lena.bmp"), 200, 200, 20, "output.bmp")
 # sp.display_red_dot2(Image.open("lena.bmp"), 200, 200)
-mo.m3_region_flexible(Image.open("lenabw.bmp"), 250, 110, 2, None)
+sp.display_red_dot2(Image.open("girlbw.bmp"), 10, 100, "dot1.bmp")
+# sp.display_red_dot2(Image.open("lenabw.bmp"), 98, 98, "dot2.bmp")
+
+mo.m3_region_flexible(Image.open("girlbw.bmp"), 10, 100, 1, "1.bmp")
+mo.m3_region_flexible(Image.open("girlbw.bmp"), 10, 100, 2, "2.bmp")
+# mo.m3_region_flexible(Image.open("lenabw.bmp"), 250, 110, 2, "2.bmp")
+# mo.m3_region_flexible(Image.open("lenabw.bmp"), 98, 98, 1, "11.bmp")
+# mo.m3_region_flexible(Image.open("lenabw.bmp"), 98, 98, 2, "12.bmp")
 # mo.region_growing_dilation(Image.open("lenabw.bmp"), 200, 200, None)
 # mo.region_growing_dilation(Image.open("lenabw.bmp"), 200, 200, 1, None)
 # mo.region_growing_dilation3(Image.open("lenabw.bmp"), 200, 200, 1, None)
@@ -219,14 +226,25 @@ def show_help():
           "--m3: It overlays white pixels in the neighborhood of the chosen x and y based on the chosen mask\n"
           "\tuse case: [image_path] [chosen_x] [chosen_y] [mask_number] [output_path]\n"
           "\t\t Available masks:\n"
-          "\t\t 1: [1, 1, 1], [1, 1, 1],[1, 1, 1]"
+          "\t\t 1: [1, 1, 1], [1, 1, 1],[1, 1, 1]\n"
           "\t\t [2, 1, 2],[1, 1, 1],[2, 1, 2]\n"
+          "\t\tThe mask determines the neighbors considered for region expansion\n"
+          "and the identified region is marked in white (pixel value 1) in the output image.\n"
           "\n"
           "--rgrowing: Region growing\n"
           "\tuse case: [image_path] [chosen_x] [chosen_y] [treshold] [output_path]\n"
-          "\t\t \n"
+          "\t\tThe result is an image with the identified region marked in white \n"
           "\n"
           "--rgrowingi: Region growing function overlayed on the original image\n"
+          "\tuse case: [image_path] [chosen_x] [chosen_y] [treshold] [output_path]\n"
+          "\t\t The region grows by adding neighboring pixels\n"
+          "whose values are within a specified threshold of the initially chosen pixel's value.\n"
+          "\n"
+          "--rgc: Region growing contagoius\n"
+          "\tuse case: [image_path] [chosen_x] [chosen_y] [treshold] [output_path]\n"
+          "\t\t\n"
+          "\n"
+          "--rgci: Region growing contagious function overlayed on the original image\n"
           "\tuse case: [image_path] [chosen_x] [chosen_y] [treshold] [output_path]\n"
           "\t\t \n"
           "\n"
@@ -422,6 +440,16 @@ elif sys.argv[1] == "--rgrowingi":
         print("Please provide a correct number of parameters.")
     else:
         mo.region_growing_static_with_image(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
+elif sys.argv[1] == "--rgc":
+    if len(sys.argv) != 6:
+        print("Please provide a correct number of parameters.")
+    else:
+        mo.region_growing_contagious(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
+elif sys.argv[1] == "--rgci":
+    if len(sys.argv) != 6:
+        print("Please provide a correct number of parameters.")
+    else:
+        mo.region_growing_contagious_with_image(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
