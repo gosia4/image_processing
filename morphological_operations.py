@@ -391,9 +391,108 @@ def intersection(image1, image2):
         for j in range(height):
             pixel1 = image1.getpixel((i, j))
             pixel2 = image2.getpixel((i, j))
+
+            # print(f"Pixel1: {pixel1}, Pixel2: {pixel2}")
+
             if pixel1 == 1 and pixel2 == 1:
                 result_image.putpixel((i, j), 1)
             else:
                 result_image.putpixel((i, j), 0)
+
     return result_image
 
+
+def m3_region(image, chosen_x, chosen_y, mask_no, output):
+    width, height = image.size
+    result_image = Image.new('1', (width, height))
+    image_array = np.transpose(np.array(image))
+
+    region = [[chosen_x, chosen_y]]
+
+    masks = {
+        1: np.array([[1, 1, 1],
+                     [1, 1, 1],
+                     [1, 1, 1]]),
+        2: np.array([[2, 1, 2],
+                     [1, 1, 1],
+                     [2, 1, 2]])
+    }
+
+    mask = masks[mask_no]
+
+    # each new added region pixel will be stored here (pixel in the new_region list are the ones on the edges of the region)
+    new_region = []
+
+    result_image.putpixel((chosen_x, chosen_y), 1)
+    while True:  # while region still has some new members to investigate: repeat
+        # investigate each and every member of the current region
+        for a in range(len(region)):
+            for i in range(-1, 2):
+                for j in range(-1, 2):
+                    if result_image.getpixel((region[a][0] + i, region[a][1] + j)) != 1 and 0 <= region[a][
+                        0] + i < width - 1 and 0 <= region[a][1] + j < height - 1:
+                        if mask[i + 1][j + 1] == 1:
+                            potential_region_member = image_array[region[a][0] + i][region[a][1] + j]
+                            # minimal and maximal values are based on the originally chosen pixel
+                            if (image.getpixel((region[a][0] + i, region[a][1] + j))):
+                                new_region.append([region[a][0] + i, region[a][1] + j])
+                                result_image.putpixel((region[a][0] + i, region[a][1] + j), 1)
+
+        # all region members are dropped and exchanged for the new_region members (which are located on the edges of the region)
+        # while growing the region does not need to consider pixels already deep inside the region
+        region = new_region
+        new_region = []
+        if (len(region) == 0):
+            break
+    result_image.show()
+    sp.save_image(result_image, output)
+    return result_image
+
+def m3_region_flexible(image, chosen_x, chosen_y, mask_no, output):
+    width, height = image.size
+    result_image = Image.new('1', (width, height))
+    image_array = np.transpose(np.array(image))
+
+    pixel_color = image_array[chosen_x][chosen_y]
+    region = [[chosen_x, chosen_y]]
+
+    masks = {
+        1: np.array([[1, 1, 1],
+                     [1, 1, 1],
+                     [1, 1, 1]]),
+        2: np.array([[2, 1, 2],
+                     [1, 1, 1],
+                     [2, 1, 2]])
+    }
+
+    mask = masks[mask_no]
+
+    # each new added region pixel will be stored here (pixel in the new_region list are the ones on the edges of the region)
+    new_region = []
+
+    result_image.putpixel((chosen_x, chosen_y), 1)
+    while True:  # while region still has some new members to investigate: repeat
+        # investigate each and every member of the current region
+        for a in range(len(region)):
+            for i in range(-1, 2):
+                for j in range(-1, 2):
+                    if result_image.getpixel((region[a][0] + i, region[a][1] + j)) != 1 and 0 <= region[a][
+                        0] + i < width - 1 and 0 <= region[a][1] + j < height - 1:
+                        if mask[i+1][j+1] == 1:
+
+                            potential_region_member = image_array[region[a][0] + i][region[a][1] + j]
+                            # minimal and maximal values are based on the originally chosen pixel
+                            if (image_array[region[a][0] + i][region[a][1] + j] == pixel_color):
+                                new_region.append([region[a][0] + i, region[a][1] + j])
+                                result_image.putpixel((region[a][0] + i, region[a][1] + j), 1)
+
+
+        # all region members are dropped and exchanged for the new_region members (which are located on the edges of the region)
+        # while growing the region does not need to consider pixels already deep inside the region
+        region = new_region
+        new_region = []
+        if (len(region) == 0):
+            break
+    result_image.show()
+    sp.save_image(result_image, output)
+    return result_image

@@ -28,9 +28,15 @@ import morphological_operations as mo
 # mo.region_growing_static(Image.open("lena.bmp"), 200, 200, 20, "output.bmp")
 # mo.region_growing_contagious(Image.open("lena.bmp"), 200, 200, 20, "output.bmp")
 # sp.display_red_dot2(Image.open("lena.bmp"), 200, 200)
+mo.m3_region_flexible(Image.open("lenabw.bmp"), 250, 110, 2, None)
+# mo.region_growing_dilation(Image.open("lenabw.bmp"), 200, 200, None)
+# mo.region_growing_dilation(Image.open("lenabw.bmp"), 200, 200, 1, None)
+# mo.region_growing_dilation3(Image.open("lenabw.bmp"), 200, 200, 1, None)
+# mo.perform_m3(Image.open("lenabw.bmp"), 400, 400)
+# mo.dilation_with_mask(Image.open("lenabw.bmp"), 3)
+# mo.dilation_with_mask(Image.open("lenabw.bmp"), 1, "c.bmp")
 
-mo.region_growing_contagious(Image.open("lena.bmp"), 200, 200, 10, "output_region.bmp")
-mo.region_growing_contagious_with_image(Image.open("lena.bmp"), 200, 200, 10, "output.bmp")
+
 # sp.display_red_dot2(Image.open("boat.bmp"), 450, 450, "dot.bmp")
 # mo.m3(Image.open("lenabw.bmp"), 200, 200, None)
 # mo.dilation(Image.open("lenabw.bmp"), None)
@@ -210,12 +216,18 @@ def show_help():
           "\t\tMask 4:[[1, 1, 2], [1, 0, 0], [2, 0, 0]]"
           "\t\t\twhere 1 represents white pixel, 0 black pixel and 2 inactive points\n"
           "\n"
-          "--m3: \n"
-          "\tuse case: \n"
+          "--m3: It overlays white pixels in the neighborhood of the chosen x and y based on the chosen mask\n"
+          "\tuse case: [image_path] [chosen_x] [chosen_y] [mask_number] [output_path]\n"
+          "\t\t Available masks:\n"
+          "\t\t 1: [1, 1, 1], [1, 1, 1],[1, 1, 1]"
+          "\t\t [2, 1, 2],[1, 1, 1],[2, 1, 2]\n"
+          "\n"
+          "--rgrowing: Region growing\n"
+          "\tuse case: [image_path] [chosen_x] [chosen_y] [treshold] [output_path]\n"
           "\t\t \n"
           "\n"
-          "--rgrowing: \n"
-          "\tuse case: \n"
+          "--rgrowingi: Region growing function overlayed on the original image\n"
+          "\tuse case: [image_path] [chosen_x] [chosen_y] [treshold] [output_path]\n"
           "\t\t \n"
           "\n"
           ""
@@ -395,11 +407,21 @@ elif sys.argv[1] == "--hmt":
         print("Please provide a correct number of parameters.")
     else:
         mo.hmt_transformation_general(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4])
+elif sys.argv[1] == "--m3":
+    if len(sys.argv) != 6:
+        print("Please provide a correct number of parameters.")
+    else:
+        mo.m3_region_flexible(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
 elif sys.argv[1] == "--rgrowing":
     if len(sys.argv) != 6:
         print("Please provide a correct number of parameters.")
     else:
         mo.region_growing_static(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
+elif sys.argv[1] == "--rgrowingi":
+    if len(sys.argv) != 6:
+        print("Please provide a correct number of parameters.")
+    else:
+        mo.region_growing_static_with_image(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
