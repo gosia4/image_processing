@@ -11,45 +11,48 @@ import characteristics
 import support_functions as sp
 import morphological_operations as mo
 
-# mo.opening(Image.open("lenabw.bmp"), None)
-# mo.closing(Image.open("lenabw.bmp"), None)
-# mo.dilation(Image.open("lenabw.bmp"), None)
-# mo.erosion(Image.open("lenabw.bmp"), None)
-# mo.dilation(Image.open("lenabw.bmp"), None)
-# mo.dilation_with_mask(Image.open("lenabw.bmp"), "output1.bmp", True, 2)
-# mo.dilation_with_mask(Image.open("lenabw.bmp"), "output2.bmp", True, 3)
-# mo.dilation_with_mask(Image.open("lenabw.bmp"), "output3.bmp", True, 1)
-# mo.dilation_with_mask(Image.open("lenabw.bmp"), "output4.bmp", True, 4)
 
-# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 1, "output1.bmp")
-# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 2, "output2.bmp")
-# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 3, "output3.bmp")
-# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 4, "output4.bmp")
-# mo.region_growing_static(Image.open("lena.bmp"), 200, 200, 20, "output.bmp")
-# mo.region_growing_contagious(Image.open("lena.bmp"), 200, 200, 20, "output.bmp")
-# sp.display_red_dot2(Image.open("lena.bmp"), 200, 200)
-sp.display_red_dot2(Image.open("girlbw.bmp"), 10, 100, "dot1.bmp")
-# sp.display_red_dot2(Image.open("lenabw.bmp"), 98, 98, "dot2.bmp")
+# sp.display_red_dot2(Image.open("girlbw.bmp"), 10, 100, "dot1.bmp")
+#
+# mo.m3_region_flexible(Image.open("girlbw.bmp"), 10, 100, 1, "1.bmp")
+# mo.m3_region_flexible(Image.open("girlbw.bmp"), 10, 100, 2, "2.bmp")
+# mo.dilation_with_mask(Image.open("lenabw.bmp"), 1, "dil1.bmp", False)
+# mo.dilation_with_mask(Image.open("lenabw.bmp"), 2, "dil2.bmp", False)
+# mo.dilation_with_mask(Image.open("lenabw.bmp"), 3, "dil3.bmp", False)
+# mo.dilation_with_mask(Image.open("lenabw.bmp"), 4, "dil4.bmp", False)
+#
+# mo.erosion_with_mask(Image.open("lenabw.bmp"), 1, "ers1.bmp", False)
+# mo.erosion_with_mask(Image.open("lenabw.bmp"), 2, "ers2.bmp", False)
+# mo.erosion_with_mask(Image.open("lenabw.bmp"), 3, "ers3.bmp", False)
+# mo.erosion_with_mask(Image.open("lenabw.bmp"), 4, "ers4.bmp", False)
+#
+# mo.opening(Image.open("lenabw.bmp"), "opn1.bmp", 1)
+# mo.opening(Image.open("lenabw.bmp"), "opn2.bmp", 2)
+# mo.opening(Image.open("lenabw.bmp"), "opn3.bmp", 3)
+# mo.opening(Image.open("lenabw.bmp"), "opn4.bmp", 4)
+#
+# mo.closing(Image.open("lenabw.bmp"), "cls1.bmp", 1)
+# mo.closing(Image.open("lenabw.bmp"), "cls2.bmp", 2)
+# mo.closing(Image.open("lenabw.bmp"), "cls3.bmp", 3)
+# mo.closing(Image.open("lenabw.bmp"), "cls4.bmp", 4)
 
-mo.m3_region_flexible(Image.open("girlbw.bmp"), 10, 100, 1, "1.bmp")
-mo.m3_region_flexible(Image.open("girlbw.bmp"), 10, 100, 2, "2.bmp")
-# mo.m3_region_flexible(Image.open("lenabw.bmp"), 250, 110, 2, "2.bmp")
-# mo.m3_region_flexible(Image.open("lenabw.bmp"), 98, 98, 1, "11.bmp")
-# mo.m3_region_flexible(Image.open("lenabw.bmp"), 98, 98, 2, "12.bmp")
-# mo.region_growing_dilation(Image.open("lenabw.bmp"), 200, 200, None)
-# mo.region_growing_dilation(Image.open("lenabw.bmp"), 200, 200, 1, None)
-# mo.region_growing_dilation3(Image.open("lenabw.bmp"), 200, 200, 1, None)
-# mo.perform_m3(Image.open("lenabw.bmp"), 400, 400)
-# mo.dilation_with_mask(Image.open("lenabw.bmp"), 3)
-# mo.dilation_with_mask(Image.open("lenabw.bmp"), 1, "c.bmp")
+mo.hmt_transformation_general(Image.open("lenabw.bmp"), 1, "hmt1.bmp")
+mo.hmt_transformation_general(Image.open("lenabw.bmp"), 2, "hmt2.bmp")
+mo.hmt_transformation_general(Image.open("lenabw.bmp"), 3, "hmt3.bmp")
+mo.hmt_transformation_general(Image.open("lenabw.bmp"), 4, "hmt4.bmp")
 
 
-# sp.display_red_dot2(Image.open("boat.bmp"), 450, 450, "dot.bmp")
-# mo.m3(Image.open("lenabw.bmp"), 200, 200, None)
-# mo.dilation(Image.open("lenabw.bmp"), None)
-# mo.hmt_transformation_general(Image.open("lenabw.bmp"), [[1, 2, 2], [1, 0, 2], [1, 2, 2]],"output4.bmp")
-# mo.region_growing_dilation2(Image.open("lenabw.bmp"), 200, 200, None)
-# mo.dilation(Image.open("lenabw.bmp"), None)
+
+
+
+
+
+
+
+
+
+
+
 
 
 def show_help():
@@ -439,7 +442,7 @@ elif sys.argv[1] == "--rgrowingi":
     if len(sys.argv) != 6:
         print("Please provide a correct number of parameters.")
     else:
-        mo.region_growing_static_with_image(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
+        mo.region_growing_static_with_image_background(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
 elif sys.argv[1] == "--rgc":
     if len(sys.argv) != 6:
         print("Please provide a correct number of parameters.")
@@ -449,7 +452,7 @@ elif sys.argv[1] == "--rgci":
     if len(sys.argv) != 6:
         print("Please provide a correct number of parameters.")
     else:
-        mo.region_growing_contagious_with_image(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
+        mo.region_growing_contagious_with_image_background(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")

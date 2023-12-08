@@ -33,15 +33,17 @@ def dilation(image, output, show=True):
     return result_image
 
 
-def dilation_with_mask(image, mask_number, output=None, show=True):
+def dilation_with_mask(image, mask, output=None, show=True):
     masks = [
         np.array([[1, 1]]),  # Mask 1
         np.array([[1], [1]]),  # Mask 2
         np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]]),  # Mask 3
         np.array([[2, 1, 2], [1, 1, 1], [2, 1, 2]])  # Mask 4
     ]
-
-    selected_mask = masks[mask_number - 1]  # to be sure that the right mask is chosen
+    if isinstance(mask, int):
+        selected_mask = np.transpose(masks[mask - 1])  # to be sure that the right mask is chosen
+    else:
+        selected_mask = np.transpose(mask)
 
     width, height = image.size
     result_image = Image.new('1', (width, height))
@@ -103,7 +105,7 @@ def erosion(image, output, show=True):
     return result_image
 
 
-def erosion_with_mask(image, mask_number, output=None, show=True):
+def erosion_with_mask(image, mask, output=None, show=True):
     masks = [
         np.array([[1, 1]]),  # Mask 1
         np.array([[1], [1]]),  # Mask 2
@@ -111,7 +113,10 @@ def erosion_with_mask(image, mask_number, output=None, show=True):
         np.array([[2, 1, 2], [1, 1, 1], [2, 1, 2]])  # Mask 4
     ]
 
-    selected_mask = masks[mask_number - 1]  # to be sure that the right mask is chosen
+    if isinstance(mask, int):
+        selected_mask = np.transpose(masks[mask - 1])  # to be sure that the right mask is chosen
+    else:
+        selected_mask = np.transpose(mask)
 
     width, height = image.size
     result_image = Image.new('1', (width, height), 1)
@@ -145,43 +150,28 @@ def erosion_with_mask(image, mask_number, output=None, show=True):
         sp.save_image(result_image, output)
     return result_image
 
-def opening(image, output, mask_number):
+
+def opening(image, output, mask):
     width, height = image.size
     # erosion_image = erosion(image, None, False)
     # result_image = dilation(erosion_image, None, False)
-    erosion_image = erosion_with_mask(image, mask_number, None, False)
-    result_image = dilation_with_mask(erosion_image, mask_number, None, False)
+    erosion_image = erosion_with_mask(image, mask, None, False)
+    result_image = dilation_with_mask(erosion_image, mask, None, False)
     sp.save_image(result_image, output)
     result_image.show()
 
 
-def closing(image, output, mask_number):
+def closing(image, output, mask):
     width, height = image.size
     # dilation_image = dilation(image, None, False)
     # result_image = erosion(dilation_image, None, False)
-    dilated_image = dilation_with_mask(image, mask_number, None, False)
-    result_image = erosion_with_mask(dilated_image, mask_number, None, False)
+    dilated_image = dilation_with_mask(image, mask, None, False)
+    result_image = erosion_with_mask(dilated_image, mask, None, False)
     result_image.show()
     sp.save_image(result_image, output)
 
 
-
-def hmt_transformation(image, output):
-    width, height = image.size
-    result_image = Image.new('1', (width, height))
-    one_bit_image_array = np.transpose(np.array(image))
-
-    for x in range(width-2):
-        for y in range(height-2):
-            sample_arr = []
-            if (one_bit_image_array[x][y] and one_bit_image_array[x][y + 1] and one_bit_image_array[x][y + 2]) == 1:
-                if one_bit_image_array[x + 1][y + 1] == 0:
-                    result_image.putpixel((x + 1, y + 1), 1)
-    result_image.show()
-    sp.save_image(result_image, output)
-
-
-def hmt_transformation_xi1(image, output):
+def hmt_transformation_xi(image, output):
     width, height = image.size
     result_image = Image.new('1', (width, height))
     one_bit_image_array = np.transpose(np.array(image))
@@ -201,7 +191,7 @@ def hmt_transformation_xi1(image, output):
     sp.save_image(result_image, output)
 
 
-def hmt_transformation_general(image, mask_number, output):
+def hmt_transformation_general(image, mask, output):
     width, height = image.size
     result_image = Image.new('1', (width, height))
     one_bit_image_array = np.transpose(np.array(image))
@@ -211,8 +201,10 @@ def hmt_transformation_general(image, mask_number, output):
         np.array([[2, 2, 0], [2,1, 0], [2, 2, 0]]),  # Mask XI 3
         np.array([[1, 1, 2], [1, 0, 0], [2, 0, 0]])  # Mask XII 8
     ]
-    # mask = np.transpose(mask)
-    mask = masks[mask_number - 1]
+    if isinstance(mask, int):
+        selected_mask = np.transpose(masks[mask - 1])  # to be sure that the right mask is chosen
+    else:
+        selected_mask = np.transpose(mask)
 
     for x in range(1, width-1):
         for y in range(1, height-1):
@@ -222,9 +214,9 @@ def hmt_transformation_general(image, mask_number, output):
                     target_x = x + i
                     target_y = y + j
                     if 0 <= target_x < width - 1 and 0 <= target_y < height - 1:
-                        if mask[i+1][j+1] == 2:
+                        if selected_mask[i+1][j+1] == 2:
                             continue
-                        if one_bit_image_array[target_x][target_y] != mask[i+1][j+1]:
+                        if one_bit_image_array[target_x][target_y] != selected_mask[i+1][j+1]:
                             matching = False
                             break
                 if matching == False:
@@ -271,7 +263,7 @@ def region_growing_static(image, chosen_x, chosen_y, treshold, output):
     sp.save_image(result_image, output)
     return result_image
 
-def region_growing_static_with_image(image, chosen_x, chosen_y, treshold, output):
+def region_growing_static_with_image_background(image, chosen_x, chosen_y, treshold, output):
     width, height = image.size
     result_image = image.copy()
     image_array = np.transpose(np.array(image))
@@ -346,7 +338,7 @@ def region_growing_contagious(image, chosen_x, chosen_y, treshold, output):
     result_image.show()
     sp.save_image(result_image, output)
 
-def region_growing_contagious_with_image(image, chosen_x, chosen_y, treshold, output):
+def region_growing_contagious_with_image_background(image, chosen_x, chosen_y, treshold, output):
     width, height = image.size
     result_image = image.copy()
     image_array = np.transpose(np.array(image))
@@ -448,7 +440,7 @@ def m3_region(image, chosen_x, chosen_y, mask_no, output):
     sp.save_image(result_image, output)
     return result_image
 
-def m3_region_flexible(image, chosen_x, chosen_y, mask_no, output):
+def m3_region_flexible(image, chosen_x, chosen_y, mask, output):
     width, height = image.size
     result_image = Image.new('1', (width, height))
     image_array = np.transpose(np.array(image))
@@ -465,7 +457,10 @@ def m3_region_flexible(image, chosen_x, chosen_y, mask_no, output):
                      [2, 1, 2]])
     }
 
-    mask = masks[mask_no]
+    if isinstance(mask, int):
+        selected_mask = np.transpose(masks[mask - 1])  # to be sure that the right mask is chosen
+    else:
+        selected_mask = np.transpose(mask)
 
     # each new added region pixel will be stored here (pixel in the new_region list are the ones on the edges of the region)
     new_region = []
@@ -478,7 +473,7 @@ def m3_region_flexible(image, chosen_x, chosen_y, mask_no, output):
                 for j in range(-1, 2):
                     if result_image.getpixel((region[a][0] + i, region[a][1] + j)) != 1 and 0 <= region[a][
                         0] + i < width - 1 and 0 <= region[a][1] + j < height - 1:
-                        if mask[i+1][j+1] == 1:
+                        if selected_mask[i+1][j+1] == 1:
 
                             potential_region_member = image_array[region[a][0] + i][region[a][1] + j]
                             # minimal and maximal values are based on the originally chosen pixel
