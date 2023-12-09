@@ -29,11 +29,11 @@ def dilation(image, output, show=True):
 
     if show:
         result_image.show()
-    #result_image.save(output)
+    result_image.save(output)
     return result_image
 
 
-def dilation_with_mask(image, mask, output=None, show=True):
+def dilation_with_mask(image, mask, output, show=True):
     masks = [
         np.array([[1, 1]]),  # Mask 1
         np.array([[1], [1]]),  # Mask 2
@@ -101,11 +101,11 @@ def erosion(image, output, show=True):
 
     if show:
         result_image.show()
-    #result_image.save(output)
+    result_image.save(output)
     return result_image
 
 
-def erosion_with_mask(image, mask, output=None, show=True):
+def erosion_with_mask(image, mask, output, show=True):
     masks = [
         np.array([[1, 1]]),  # Mask 1
         np.array([[1], [1]]),  # Mask 2
@@ -151,7 +151,7 @@ def erosion_with_mask(image, mask, output=None, show=True):
     return result_image
 
 
-def opening(image, output, mask):
+def opening(image, mask, output):
     width, height = image.size
     # erosion_image = erosion(image, None, False)
     # result_image = dilation(erosion_image, None, False)
@@ -161,7 +161,7 @@ def opening(image, output, mask):
     result_image.show()
 
 
-def closing(image, output, mask):
+def closing(image, mask, output):
     width, height = image.size
     # dilation_image = dilation(image, None, False)
     # result_image = erosion(dilation_image, None, False)

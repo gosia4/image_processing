@@ -17,7 +17,7 @@ import morphological_operations as mo
 # mo.m3_region_flexible(Image.open("girlbw.bmp"), 10, 100, 1, "1.bmp")
 # mo.m3_region_flexible(Image.open("girlbw.bmp"), 10, 100, 2, "2.bmp")
 # mo.dilation_with_mask(Image.open("lenabw.bmp"), 1, "dil1.bmp", False)
-# mo.dilation_with_mask(Image.open("lenabw.bmp"), 2, "dil2.bmp", False)
+# mo.dilation_with_mask(Image.open("lenabw.bmp"), 2, "dil2.bmp")
 # mo.dilation_with_mask(Image.open("lenabw.bmp"), 3, "dil3.bmp", False)
 # mo.dilation_with_mask(Image.open("lenabw.bmp"), 4, "dil4.bmp", False)
 #
@@ -36,21 +36,12 @@ import morphological_operations as mo
 # mo.closing(Image.open("lenabw.bmp"), "cls3.bmp", 3)
 # mo.closing(Image.open("lenabw.bmp"), "cls4.bmp", 4)
 
-mo.hmt_transformation_general(Image.open("lenabw.bmp"), 1, "hmt1.bmp")
-mo.hmt_transformation_general(Image.open("lenabw.bmp"), 2, "hmt2.bmp")
-mo.hmt_transformation_general(Image.open("lenabw.bmp"), 3, "hmt3.bmp")
-mo.hmt_transformation_general(Image.open("lenabw.bmp"), 4, "hmt4.bmp")
-
-
-
-
-
-
-
-
-
-
-
+# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 1, "hmt1.bmp")
+# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 2, "hmt2.bmp")
+# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 3, "hmt3.bmp")
+# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 4, "hmt4.bmp")
+#
+# mo.region_growing_static(Image.open("lena.bmp"), 100, 100, 30, "test.bmp")
 
 
 
@@ -404,55 +395,72 @@ elif sys.argv[1] == "--ouolis":
     else:
         spatial_filters.uolis_operator(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--dilation":
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print("Please provide a correct number of parameters.")
     else:
-        mo.dilation_with_mask(Image.open(sys.argv[2]), sys.argv[3], sys.argv[3])
+        kernel_str = sys.argv[3]
+        kernel = ast.literal_eval(kernel_str)
+        mo.dilation_with_mask(Image.open(sys.argv[2]), kernel, sys.argv[4])
 elif sys.argv[1] == "--erosion":
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print("Please provide a correct number of parameters.")
     else:
-        mo.erosion_with_mask(Image.open(sys.argv[2]), sys.argv[3], sys.argv[3])
+        kernel_str = sys.argv[3]
+        kernel = ast.literal_eval(kernel_str)
+        mo.erosion_with_mask(Image.open(sys.argv[2]), kernel, sys.argv[4])
 elif sys.argv[1] == "--opening":
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print("Please provide a correct number of parameters.")
     else:
-        mo.opening(Image.open(sys.argv[2]), sys.argv[3], sys.argv[3])
+        kernel_str = sys.argv[3]
+        kernel = ast.literal_eval(kernel_str)
+        mo.opening(Image.open(sys.argv[2]), kernel, sys.argv[4])
 elif sys.argv[1] == "--closing":
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print("Please provide a correct number of parameters.")
     else:
-        mo.closing(Image.open(sys.argv[2]), sys.argv[3], sys.argv[3])
+        kernel_str = sys.argv[3]
+        kernel = ast.literal_eval(kernel_str)
+        mo.closing(Image.open(sys.argv[2]), kernel, sys.argv[4])
 elif sys.argv[1] == "--hmt":
     if len(sys.argv) != 5:
         print("Please provide a correct number of parameters.")
     else:
-        mo.hmt_transformation_general(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4])
+        kernel_str = sys.argv[3]
+        kernel = ast.literal_eval(kernel_str)
+        mo.hmt_transformation_general(Image.open(sys.argv[2]), kernel, sys.argv[4])
+elif sys.argv[1] == "--hmtxi":
+    if len(sys.argv) != 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        mo.hmt_transformation_xi(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--m3":
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 7:
         print("Please provide a correct number of parameters.")
     else:
-        mo.m3_region_flexible(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
+        kernel_str = sys.argv[5]
+        kernel = ast.literal_eval(kernel_str)
+        mo.m3_region_flexible(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), kernel, sys.argv[6])
 elif sys.argv[1] == "--rgrowing":
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 7:
         print("Please provide a correct number of parameters.")
     else:
-        mo.region_growing_static(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
+        mo.region_growing_static(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]), sys.argv[6])
 elif sys.argv[1] == "--rgrowingi":
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 7:
         print("Please provide a correct number of parameters.")
     else:
-        mo.region_growing_static_with_image_background(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
+        mo.region_growing_static_with_image_background(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]), sys.argv[6])
 elif sys.argv[1] == "--rgc":
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 7:
         print("Please provide a correct number of parameters.")
     else:
-        mo.region_growing_contagious(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
+        mo.region_growing_contagious(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]), sys.argv[6])
 elif sys.argv[1] == "--rgci":
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 7:
         print("Please provide a correct number of parameters.")
     else:
-        mo.region_growing_contagious_with_image_background(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[4], sys.argv[5])
+        mo.region_growing_contagious_with_image_background(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]), sys.argv[6])
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
