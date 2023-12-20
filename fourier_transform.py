@@ -44,30 +44,30 @@ def dft2d(image):
     return dft_column(dft_row(image))
 
 
-# częstotliwość róna zero na środku obrazu
-def dft(image):
-    dft_rows = dft_row(image)
-    dft_columns = dft_column(dft_rows)
-    arr = np.transpose(np.array(image))
-
+def fft_shift(arr):
     rows, cols = arr.shape
-
     mid_row, mid_col = rows // 2, cols // 2
 
     shifted_arr = np.empty_like(arr, dtype=np.complex128)
 
     for i in range(mid_row):
         for j in range(mid_col):
-            # Zamień miejscami odpowiednie elementy
             shifted_arr[i, j] = arr[i + mid_row, j + mid_col]
             shifted_arr[i + mid_row, j + mid_col] = arr[i, j]
             shifted_arr[i, j + mid_col] = arr[i + mid_row, j]
             shifted_arr[i + mid_row, j] = arr[i, j + mid_col]
 
-
-    # dft_shifted = np.fft.fftshift(dft_columns)
-    # dft_adjusted = 10 * np.log(1 + np.abs(dft_shifted))
-
-    # return dft_adjusted, dft_columns
+    return shifted_arr
 
 
+def plot_fourier_transform(image):
+    fourier_transform = dft2d(image)
+    shifted_transform = fft_shift(fourier_transform)
+    magnitude_spectrum = np.log(np.abs(shifted_transform) + 1)
+
+    plt.subplot(1, 1, 1)
+    plt.imshow(magnitude_spectrum, cmap='gray')
+    plt.title('Amplituda Transformaty Fouriera')
+    plt.colorbar()
+
+    plt.show()
