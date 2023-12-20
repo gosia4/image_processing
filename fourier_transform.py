@@ -1,5 +1,5 @@
+import math
 import numpy as np
-
 from matplotlib import pyplot as plt
 
 def one_dimensional_dft(data):  # 1d fourier transform
@@ -71,3 +71,27 @@ def plot_fourier_transform(image):
     plt.colorbar()
 
     plt.show()
+
+def discrete_fourier_transform_2d(image):
+    # Discrete Fourier Transform means we are dealing with a finite amount of samples.
+    # In this case we use width * height samples that belong to the image
+    width, height = image.size
+    # empty arrays for ft results both imaginary and real:
+    result_real = [[0 for _ in range(width)] for _ in range(height)]
+    result_imag = [[0 for _ in range(width)] for _ in range(height)]
+
+    for u in range(width):
+        for v in range(height):
+            sum_real = 0
+            sum_imag = 0
+            for x in range(width):
+                for y in range(height):
+                    pixel = image.getpixel((u, v))
+                    angle = 2 * math.pi * ((u * x) / width + (v * y) / height)
+                    sum_real += pixel * math.cos(angle)
+                    sum_imag -= pixel * math.sin(angle)
+            result_real[u][v] = sum_real
+            result_imag[u][v] = sum_imag
+
+    return result_real, result_imag
+

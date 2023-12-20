@@ -10,6 +10,7 @@ import spatial_filters
 import characteristics
 import support_functions as sp
 import morphological_operations as mo
+import fourier_transform as ft
 
 
 # sp.display_red_dot2(Image.open("girlbw.bmp"), 10, 100, "dot1.bmp")
@@ -43,6 +44,7 @@ import morphological_operations as mo
 #
 # mo.region_growing_static(Image.open("lena.bmp"), 100, 100, 30, "test.bmp")
 
+print(ft.discrete_fourier_transform_2d(Image.open("box.bmp")))
 
 
 
