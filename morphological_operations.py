@@ -448,14 +448,14 @@ def m3_region_flexible(image, chosen_x, chosen_y, mask, output):
     pixel_color = image_array[chosen_x][chosen_y]
     region = [[chosen_x, chosen_y]]
 
-    masks = {
-        1: np.array([[1, 1, 1],
+    masks = [
+        np.array([[1, 1, 1],
                      [1, 1, 1],
                      [1, 1, 1]]),
-        2: np.array([[2, 1, 2],
+        np.array([[2, 1, 2],
                      [1, 1, 1],
                      [2, 1, 2]])
-    }
+    ]
 
     if isinstance(mask, int):
         selected_mask = np.transpose(masks[mask - 1])  # to be sure that the right mask is chosen
