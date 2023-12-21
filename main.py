@@ -1,6 +1,8 @@
 import sys
 import ast
 from PIL import Image
+import matplotlib.pyplot as plt
+import numpy as np
 
 import error_functions
 import geometric_operations
@@ -44,9 +46,10 @@ import fourier_transform as ft
 #
 # mo.region_growing_static(Image.open("lena.bmp"), 100, 100, 30, "test.bmp")
 
-print(ft.discrete_fourier_transform_2d(Image.open("box.bmp")))
 
+frequency_domain = ft.discrete_fourier_transform_2d(Image.open("box.bmp"), True, True)
 
+restored_image = ft.inverse_fourier_transform_2d(frequency_domain, True)
 
 def show_help():
     print("---------------Basic operations:-----------------\n"
