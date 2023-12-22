@@ -132,12 +132,15 @@ def fft(x):
     if N <= 1:
         return x
 
+    # divide into even and odd elements
     even = fft(x[0::2])
     odd = fft(x[1::2])
 
+    # initialize with zeros
     result = [0] * N
 
     for k in range(N // 2):
+        # twiddle factor, before adding or subtracting results of the fft for even elements
         T = np.exp(-2j * np.pi * k / N) * odd[k]
         result[k] = even[k] + T
         result[k + N // 2] = even[k] - T
@@ -146,34 +149,46 @@ def fft(x):
 
 
 def fft2d(image):
-    # Transpose image to match the function implementation
+    # transpose to be sure that rows and columns are properly calculated
     transposed_image = np.transpose(image)
-    fft_rows = np.array([fft(row) for row in transposed_image])
-    fft_cols = np.array([fft(col) for col in np.transpose(fft_rows)])
+
+    # Apply FFT along rows
+    fft_rows = []
+    for row in transposed_image:
+        fft_rows.append(fft(row))
+    fft_rows = np.array(fft_rows)
+
+    # Transpose the result (because rows have now shifted phase) and apply FFT for columns
+    fft_cols = []
+    for col in np.transpose(fft_rows):
+        fft_cols.append(fft(col))
+    fft_cols = np.array(fft_cols)
+
     return fft_cols
 
-def fourierVisualise(arr):
-    res_arr = np.zeros_like(arr)
-
-    if arr.ndim == 2:
-        res_arr = fft2d(arr)
-        res_arr_shift = np.fft.fftshift(res_arr)
-        res_arr_adjusted = 10 * np.log(1 + np.abs(res_arr_shift))
-    elif arr.ndim == 3:
-        res_arr[:, :, 0] = fft2d(arr[:, :, 0])
-        res_arr[:, :, 1] = fft2d(arr[:, :, 1])
-        res_arr[:, :, 2] = fft2d(arr[:, :, 2])
-        res_arr_shift = np.fft.fftshift(res_arr)
-        res_arr_adjusted = 10 * np.log(1 + np.abs(res_arr_shift))
-
-    return res_arr_adjusted
+# def visualize_spectrum(image_fft):
+#     spectrum = np.log(np.abs(image_fft) + 1)
+#     shifted_spectrum = phase_shift(spectrum)
+#
+#     plt.imshow(shifted_spectrum, cmap='gray')
+#     plt.title("Fourier Spectrum")
+#     plt.show()
 
 
+def visualize_image(image_fft):
+    # without logharitmic function there is only one dot in the middle
+    image_magnitude = np.abs(image_fft)
+    shifted_image = phase_shift(image_magnitude)
 
-def display_spectrum(image):
-    plt.subplot(1, 1, 1)
-    plt.imshow(np.log(np.abs(image) + 1), cmap='gray')
+    plt.subplot(1, 2, 1)
+    plt.imshow(shifted_image, cmap='gray')
+    plt.title("Image after FFT without log function")
+    # plt.show()
 
+    spectrum = np.log(np.abs(image_fft) + 1)
+    shifted_spectrum = phase_shift(spectrum)
+    plt.subplot(1, 2, 2)
+    plt.imshow(shifted_spectrum, cmap='gray')
+    plt.title("Fourier Spectrum")
     plt.show()
-
 

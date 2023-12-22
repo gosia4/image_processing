@@ -14,42 +14,14 @@ import support_functions as sp
 import morphological_operations as mo
 import fourier_transform as ft
 
+image_fft = ft.fft2d(Image.open("lena.bmp"))
+ft.visualize_image(image_fft)
+# ft.visualize_spectrum(image_fft)
 
-# sp.display_red_dot2(Image.open("girlbw.bmp"), 10, 100, "dot1.bmp")
+# ft.fourierVisualise(np.transpose(np.array(Image.open("lena.bmp"))))
+# frequency_domain = ft.discrete_fourier_transform_2d(Image.open("box.bmp"), True, True)
 #
-# mo.m3_region_flexible(Image.open("girlbw.bmp"), 10, 100, 1, "1.bmp")
-# mo.m3_region_flexible(Image.open("girlbw.bmp"), 10, 100, 2, "2.bmp")
-# mo.dilation_with_mask(Image.open("lenabw.bmp"), 1, "dil1.bmp", False)
-# mo.dilation_with_mask(Image.open("lenabw.bmp"), 2, "dil2.bmp")
-# mo.dilation_with_mask(Image.open("lenabw.bmp"), 3, "dil3.bmp", False)
-# mo.dilation_with_mask(Image.open("lenabw.bmp"), 4, "dil4.bmp", False)
-#
-# mo.erosion_with_mask(Image.open("lenabw.bmp"), 1, "ers1.bmp", False)
-# mo.erosion_with_mask(Image.open("lenabw.bmp"), 2, "ers2.bmp", False)
-# mo.erosion_with_mask(Image.open("lenabw.bmp"), 3, "ers3.bmp", False)
-# mo.erosion_with_mask(Image.open("lenabw.bmp"), 4, "ers4.bmp", False)
-#
-# mo.opening(Image.open("lenabw.bmp"), "opn1.bmp", 1)
-# mo.opening(Image.open("lenabw.bmp"), "opn2.bmp", 2)
-# mo.opening(Image.open("lenabw.bmp"), "opn3.bmp", 3)
-# mo.opening(Image.open("lenabw.bmp"), "opn4.bmp", 4)
-#
-# mo.closing(Image.open("lenabw.bmp"), "cls1.bmp", 1)
-# mo.closing(Image.open("lenabw.bmp"), "cls2.bmp", 2)
-# mo.closing(Image.open("lenabw.bmp"), "cls3.bmp", 3)
-# mo.closing(Image.open("lenabw.bmp"), "cls4.bmp", 4)
-
-# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 1, "hmt1.bmp")
-# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 2, "hmt2.bmp")
-# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 3, "hmt3.bmp")
-# mo.hmt_transformation_general(Image.open("lenabw.bmp"), 4, "hmt4.bmp")
-#
-# mo.region_growing_static(Image.open("lena.bmp"), 100, 100, 30, "test.bmp")
-
-
-frequency_domain = ft.discrete_fourier_transform_2d(Image.open("box.bmp"), True, True)
-
-restored_image = ft.inverse_fourier_transform_2d(frequency_domain, True)
+# restored_image = ft.inverse_fourier_transform_2d(frequency_domain, True)
 
 def show_help():
     print("---------------Basic operations:-----------------\n"
