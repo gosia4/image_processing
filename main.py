@@ -13,9 +13,10 @@ import characteristics
 import support_functions as sp
 import morphological_operations as mo
 import fourier_transform as ft
-# import filters_freuency_domain as ffd
+import filters_freuency_domain as ffd
 
-# ffd.low_pass_filter(Image.open("lena.bmp"), 550)
+
+ffd.low_pass_filter(Image.open("lena.bmp"), 50)
 
 
 
