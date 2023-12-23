@@ -13,10 +13,20 @@ import characteristics
 import support_functions as sp
 import morphological_operations as mo
 import fourier_transform as ft
+# import filters_freuency_domain as ffd
 
-image_fft = ft.fft2d(Image.open("lena.bmp"))
-ft.visualize_image(image_fft)
-# ft.visualize_spectrum(image_fft)
+# ffd.low_pass_filter(Image.open("lena.bmp"), 550)
+
+
+
+# do wywołania inverse fft:
+# image_fft = ft.fft2d(Image.open("lena.bmp"))
+# image_reconstructed = ft.ifft2d(image_fft)
+# ft.visualize_image_ifft(image_reconstructed)
+
+# do wywołania fft
+# ft.visualize_image(ft.fft2d(Image.open("lena.bmp")))
+
 
 # ft.fourierVisualise(np.transpose(np.array(Image.open("lena.bmp"))))
 # frequency_domain = ft.discrete_fourier_transform_2d(Image.open("box.bmp"), True, True)
@@ -438,6 +448,35 @@ elif sys.argv[1] == "--rgci":
         print("Please provide a correct number of parameters.")
     else:
         mo.region_growing_contagious_with_image_background(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]), sys.argv[6])
+elif sys.argv[1] == "--dft":
+    if len(sys.argv) != 3:
+        print("Please provide a correct number of parameters.")
+    else:
+        ft.discrete_fourier_transform_2d(Image.open(sys.argv[2]))
+elif sys.argv[1] == "--idft":
+    if len(sys.argv) != 3:
+        print("Please provide a correct number of parameters.")
+    else:
+        ft.inverse_fourier_transform_2d(Image.open(sys.argv[2]))
+elif sys.argv[1] == "--fft":
+    if len(sys.argv) != 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        # ft.fft2d(Image.open(sys.argv[2]), sys.argv[3])
+        ft.visualize_image(ft.fft2d(Image.open(sys.argv[2]), sys.argv[3]))
+elif sys.argv[1] == "--ifft":
+    if len(sys.argv) != 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        ft.ifft2d(Image.open(sys.argv[2]), sys.argv[3])
+elif sys.argv[1] == "--lpf":
+    if len(sys.argv) != 4:
+        print("Please provide a correct number of parameters.")
+    else:
+        # ft.inverse_fourier_transform_2d(Image.open(sys.argv[2]), sys.argv[3])
+        ft.visualize_image_ifft(ft.inverse_fourier_transform_2d(Image.open(sys.argv[2]), sys.argv[3]))
+
+
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")

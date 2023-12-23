@@ -148,7 +148,7 @@ def fft(x):
     return result
 
 
-def fft2d(image):
+def fft2d(image, output=None):
     # transpose to be sure that rows and columns are properly calculated
     transposed_image = np.transpose(image)
 
@@ -163,6 +163,9 @@ def fft2d(image):
     for col in np.transpose(fft_rows):
         fft_cols.append(fft(col))
     fft_cols = np.array(fft_cols)
+
+    if output:
+        np.save(output, fft_cols)
 
     return fft_cols
 
@@ -191,4 +194,62 @@ def visualize_image(image_fft):
     plt.imshow(shifted_spectrum, cmap='gray')
     plt.title("Fourier Spectrum")
     plt.show()
+
+
+
+def ifft(x):
+    N = len(x)
+
+    if N <= 1:
+        return x
+
+    # divide into even and odd elements
+    even = ifft(x[0::2])
+    odd = ifft(x[1::2])
+
+    # initialize with zeros
+    result = [0] * N
+
+    for k in range(N // 2):
+        # twiddle factor, before adding or subtracting results of the ifft for even elements
+        # like in the fft, but 2j instead of -2j
+        T = np.exp(2j * np.pi * k / N) * odd[k]
+        result[k] = even[k] + T
+        result[k + N // 2] = even[k] - T
+
+    return result
+
+
+def ifft2d(image_fft, output=None):
+    # Transpose the image to ensure proper calculation of rows and columns
+    transposed_image_fft = np.transpose(image_fft)
+
+    # Apply ifft along rows
+    ifft_rows = []
+    for row in transposed_image_fft:
+        ifft_rows.append(ifft(row))
+    ifft_rows = np.array(ifft_rows)
+
+    # Transpose the result and apply ifft along columns
+    ifft_cols = []
+    for col in np.transpose(ifft_rows):
+        ifft_cols.append(ifft(col))
+    ifft_cols = np.array(ifft_cols)
+
+    if output:
+        np.save(output, ifft_cols)
+
+    return ifft_cols
+
+def visualize_image_ifft(image_ifft):
+    plt.imshow(np.abs(image_ifft), cmap='gray')
+    plt.title("Reconstructed Image")
+    plt.show()
+
+    # Normalize the image to the range [0, 255] for display, otherwise it is an error with converting to float
+    # image_ifft_display = np.abs(image_ifft) * 255 / np.max(np.abs(image_ifft))
+
+    # plt.imshow(image_ifft_display, cmap='gray')
+    # plt.title("Image after Inverse Fourier Transform")
+    # plt.show()
 
