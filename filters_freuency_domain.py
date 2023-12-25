@@ -162,3 +162,29 @@ def band_pass_filter(image, high_frequency, low_frequency, output):
     plt.imsave(output, np.abs(image_filtered), cmap='gray')
 
     return image_filtered
+
+
+# works good :-)
+def band_cut_filter(image, treshold_1, treshold_2, output):
+    image_fft = np.fft.fft2(image)
+    M, N = image_fft.shape
+    H = np.zeros((M, N), dtype=np.float32)
+
+    for i in range(M):
+        for j in range(N):
+            D = np.sqrt((i - M // 2) ** 2 + (j - N // 2) ** 2)
+            if treshold_1 <= D <= treshold_2:
+                H[i, j] = 0
+            else:
+                H[i, j] = 1
+
+    image_fft_filtered = H * image_fft
+    image_filtered = ft.ifft2d(image_fft_filtered, None, False)
+
+    plt.imshow(np.abs(image_filtered), cmap='gray')
+    plt.title("Image after band-cut filter")
+    plt.show()
+
+    plt.imsave(output, np.abs(image_filtered), cmap='gray')
+
+    return image_filtered

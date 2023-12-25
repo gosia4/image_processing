@@ -15,7 +15,9 @@ import morphological_operations as mo
 import fourier_transform as ft
 import filters_freuency_domain as ffd
 
-# wartości low i hgi frequency trzeba podać odwrotnie
+ffd.band_cut_filter(Image.open("lena.bmp"), 280, 320, "1.bmp")
+
+# wartości low i high frequency trzeba podać odwrotnie
 # ffd.band_pass_filter(Image.open("lena.bmp"), 360, 320, "1.bmp")
 
 # wartości od 365 wyświetlają praktycznie niezmieniony obraz
@@ -493,7 +495,11 @@ elif sys.argv[1] == "--bpf":
         print("Please provide a correct number of parameters.")
     else:
         ffd.band_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
-
+elif sys.argv[1] == "--bcf":
+    if len(sys.argv) != 6:
+        print("Please provide a correct number of parameters.")
+    else:
+        ffd.band_cut_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
 
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
