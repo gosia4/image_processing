@@ -19,10 +19,10 @@ def low_pass_filter(image, D0, output): # D0 - non-negative integer
     for i in range(M):
         for j in range(N):
             D = np.sqrt((i - M//2) ** 2 + (j - N//2) ** 2)
-            if D > D0:
-                H[i, j] = 0
+            if D <= D0:
+                H[i, j] = 1
             else:
-                H[i,j] = 1
+                H[i, j] = 0
     # plt.subplot(1, 3, 1)
     # plt.imshow(H, cmap='gray')
     # plt.title('Filter')
@@ -30,6 +30,7 @@ def low_pass_filter(image, D0, output): # D0 - non-negative integer
 
     image_fft_filtered = H * image_fft
     image_ifft_filtered = ft.ifft2d(image_fft_filtered, None, False)
+
     plt.imshow(np.abs(image_ifft_filtered), cmap='gray')
     plt.title("Image after low-pass filter")
     plt.show()
@@ -110,7 +111,7 @@ def high_pass_filter(image, D0, output):
     for i in range(M):
         for j in range(N):
             D = np.sqrt((i - M // 2) ** 2 + (j - N // 2) ** 2)
-            if D > D0:
+            if D >= D0:
                 H[i, j] = 1
             else:
                 H[i, j] = 0
@@ -137,3 +138,27 @@ def high_pass_filter(image, D0, output):
 
     return image_filtered
 
+
+def band_pass_filter(image, high_frequency, low_frequency, output):
+    image_fft = np.fft.fft2(image)
+    M, N = image_fft.shape
+    H = np.zeros((M, N), dtype=np.float32)
+
+    for i in range(M):
+        for j in range(N):
+            D = np.sqrt((i - M // 2) ** 2 + (j - N // 2) ** 2)
+            if low_frequency <= D <= high_frequency:
+                H[i, j] = 1
+            else:
+                H[i, j] = 0
+
+    image_fft_filtered = H * image_fft
+    image_filtered = ft.ifft2d(image_fft_filtered, None, False)
+
+    plt.imshow(np.abs(image_filtered), cmap='gray')
+    plt.title("Image after band-pass filter")
+    plt.show()
+
+    plt.imsave(output, np.abs(image_filtered), cmap='gray')
+
+    return image_filtered

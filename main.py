@@ -15,6 +15,9 @@ import morphological_operations as mo
 import fourier_transform as ft
 import filters_freuency_domain as ffd
 
+# wartości low i hgi frequency trzeba podać odwrotnie
+# ffd.band_pass_filter(Image.open("lena.bmp"), 360, 320, "1.bmp")
+
 # wartości od 365 wyświetlają praktycznie niezmieniony obraz
 # ffd.low_pass_filter(Image.open("lena.bmp"), 300, "1.bmp")
 # parameter 1 - image almost unchanged, higher value a bit more blurred
@@ -22,6 +25,7 @@ import filters_freuency_domain as ffd
 # ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
 
 # ffd.low_pass_filter2(Image.open("lena.bmp"), 200, "1.bmp")
+
 
 # do wywołania inverse fft:
 # image_fft = ft.fft2d(Image.open("lena.bmp"))
@@ -484,6 +488,11 @@ elif sys.argv[1] == "--hpf":
         print("Please provide a correct number of parameters.")
     else:
         ffd.high_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4])
+elif sys.argv[1] == "--bpf":
+    if len(sys.argv) != 6:
+        print("Please provide a correct number of parameters.")
+    else:
+        ffd.band_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
 
 
 elif sys.argv[1] == "--help":
