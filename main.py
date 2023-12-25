@@ -15,15 +15,17 @@ import morphological_operations as mo
 import fourier_transform as ft
 import filters_freuency_domain as ffd
 
+# wartości od 365 wyświetlają praktycznie niezmieniony obraz
+# ffd.low_pass_filter(Image.open("lena.bmp"), 300, "1.bmp")
+# parameter 1 - image almost unchanged, higher value a bit more blurred
+# wartości 340 - rozmyty mocno, 0-200 - praktycznie niezmieniony obraz
+# ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
 
-ffd.low_pass_filter(Image.open("lena.bmp"), 50)
-
-
+# ffd.low_pass_filter2(Image.open("lena.bmp"), 200, "1.bmp")
 
 # do wywołania inverse fft:
 # image_fft = ft.fft2d(Image.open("lena.bmp"))
-# image_reconstructed = ft.ifft2d(image_fft)
-# ft.visualize_image_ifft(image_reconstructed)
+# ft.ifft2d(image_fft, "2.bmp")
 
 # do wywołania fft
 # ft.visualize_image(ft.fft2d(Image.open("lena.bmp")))
@@ -471,11 +473,17 @@ elif sys.argv[1] == "--ifft":
     else:
         ft.ifft2d(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--lpf":
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print("Please provide a correct number of parameters.")
     else:
         # ft.inverse_fourier_transform_2d(Image.open(sys.argv[2]), sys.argv[3])
-        ft.visualize_image_ifft(ft.inverse_fourier_transform_2d(Image.open(sys.argv[2]), sys.argv[3]))
+        # ft.visualize_image_ifft(ft.inverse_fourier_transform_2d(Image.open(sys.argv[2]), sys.argv[3]))
+        ffd.low_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4])
+elif sys.argv[1] == "--hpf":
+    if len(sys.argv) != 5:
+        print("Please provide a correct number of parameters.")
+    else:
+        ffd.high_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4])
 
 
 elif sys.argv[1] == "--help":

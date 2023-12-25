@@ -165,7 +165,7 @@ def fft2d(image, output=None):
     fft_cols = np.array(fft_cols)
 
     if output:
-        np.save(output, fft_cols)
+        plt.imsave(output, np.abs(fft_cols), cmap='gray')
 
     return fft_cols
 
@@ -179,7 +179,7 @@ def fft2d(image, output=None):
 
 
 def visualize_image(image_fft):
-    # without logharitmic function there is only one dot in the middle
+    # without logarithmic function there is only one dot in the middle
     image_magnitude = np.abs(image_fft)
     shifted_image = phase_shift(image_magnitude)
 
@@ -220,7 +220,7 @@ def ifft(x):
     return result
 
 
-def ifft2d(image_fft, output=None):
+def ifft2d(image_fft, output=None, show=True):
     # Transpose the image to ensure proper calculation of rows and columns
     transposed_image_fft = np.transpose(image_fft)
 
@@ -237,14 +237,21 @@ def ifft2d(image_fft, output=None):
     ifft_cols = np.array(ifft_cols)
 
     if output:
-        np.save(output, ifft_cols)
+        plt.imsave(output, np.abs(ifft_cols), cmap='gray')
+    if show:
+        plt.imshow(np.abs(ifft_cols), cmap='gray')
+        plt.title("Reconstructed Image")
+        plt.show()
 
     return ifft_cols
 
-def visualize_image_ifft(image_ifft):
-    plt.imshow(np.abs(image_ifft), cmap='gray')
-    plt.title("Reconstructed Image")
-    plt.show()
+
+#  visualize image after inverse fourier transform
+
+# def visualize_image_ifft(image_ifft):
+#     plt.imshow(np.abs(image_ifft), cmap='gray')
+#     plt.title("Reconstructed Image")
+#     plt.show()
 
     # Normalize the image to the range [0, 255] for display, otherwise it is an error with converting to float
     # image_ifft_display = np.abs(image_ifft) * 255 / np.max(np.abs(image_ifft))
