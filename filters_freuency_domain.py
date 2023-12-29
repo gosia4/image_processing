@@ -12,7 +12,7 @@ import fourier_transform as ft
 #  remove noise
 # TODO: check if the filter is not mistaken with high pass filter
 def low_pass_filter(image, D0, output): # D0 - non-negative integer
-    image_fft = np.fft.fft2(image)
+    image_fft = ft.fft2d(image)
     M, N = image_fft.shape
     H = np.zeros((M, N), dtype=np.float32)
 
@@ -104,7 +104,7 @@ def low_pass_filter2(image, D0, output):
 
 # works as low pass filter
 def high_pass_filter(image, D0, output):
-    image_fft = np.fft.fft2(image)
+    image_fft = ft.fft2d(image)
     M, N = image_fft.shape
     H = np.zeros((M, N), dtype=np.float32)
 
@@ -140,7 +140,8 @@ def high_pass_filter(image, D0, output):
 
 
 def band_pass_filter(image, high_frequency, low_frequency, output):
-    image_fft = np.fft.fft2(image)
+    # image_fft = np.fft.fft2(image)
+    image_fft = ft.fft2d(image)
     M, N = image_fft.shape
     H = np.zeros((M, N), dtype=np.float32)
 
@@ -149,7 +150,9 @@ def band_pass_filter(image, high_frequency, low_frequency, output):
             D = np.sqrt((i - M // 2) ** 2 + (j - N // 2) ** 2)
             if low_frequency <= D <= high_frequency:
                 H[i, j] = 1
+                # H[i, j] = 0
             else:
+                # H[i, j] = 1
                 H[i, j] = 0
 
     image_fft_filtered = H * image_fft
@@ -166,7 +169,7 @@ def band_pass_filter(image, high_frequency, low_frequency, output):
 
 # works good :-)
 def band_cut_filter(image, treshold_1, treshold_2, output):
-    image_fft = np.fft.fft2(image)
+    image_fft = ft.fft2d(image)
     M, N = image_fft.shape
     H = np.zeros((M, N), dtype=np.float32)
 
@@ -188,3 +191,34 @@ def band_cut_filter(image, treshold_1, treshold_2, output):
     plt.imsave(output, np.abs(image_filtered), cmap='gray')
 
     return image_filtered
+
+
+# def high_pass_filter_with_edge_detection(image, high_frequency, low_frequency, mask, output=None):
+#     # assuming that the mask and the image are the same size
+#     image_fft = ft.fft2d(image)
+#     M, N = image_fft.shape
+#     # fill with ones
+#     filtered_image = np.ones((M, N), dtype=np.float32)
+#     mask_image = Image.open(mask)
+#     mask_array = np.array(mask_image)
+#     filtered_image *= mask_array
+#
+#     center_frequency = max(M, N) / 2
+#     for i in range(M):
+#         for j in range(N):
+#             D = np.sqrt((i - M // 2) ** 2 + (j - N // 2) ** 2)
+#             if D<= center_frequency - low_frequency /2 or D>=center_frequency + high_frequency /2:
+#                 filtered_image[i, j] = 0
+#
+#
+#     # Apply the filter to the image in the frequency domain
+#     image_fft_filtered = filtered_image * image_fft
+#
+#     # Perform inverse FFT to get the spatial domain representation
+#     # image_filtered = np.fft.ifft2(image_fft_filtered).real
+#     image_filtered = ft.ifft2d(image_fft_filtered, None, False)
+#     # Visualize the result
+#     plt.imshow(np.abs(image_filtered), cmap='gray')
+#     plt.title("Image after high-pass filter with edge detection")
+#     plt.show()
+#     plt.imsave(output, np.abs(filtered_image), cmap='gray')

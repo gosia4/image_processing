@@ -15,8 +15,10 @@ import morphological_operations as mo
 import fourier_transform as ft
 import filters_freuency_domain as ffd
 
-ffd.band_cut_filter(Image.open("lena.bmp"), 280, 320, "1.bmp")
+# ffd.high_pass_filter_with_edge_detection(Image.open("F5test1.bmp"), 200, 100, Image.open("F5mask1.bmp"), "1.bmp")
 
+# ffd.band_cut_filter(Image.open("lena.bmp"), 360, 320, "1.bmp")
+#
 # wartości low i high frequency trzeba podać odwrotnie
 # ffd.band_pass_filter(Image.open("lena.bmp"), 360, 320, "1.bmp")
 
@@ -24,7 +26,7 @@ ffd.band_cut_filter(Image.open("lena.bmp"), 280, 320, "1.bmp")
 # ffd.low_pass_filter(Image.open("lena.bmp"), 300, "1.bmp")
 # parameter 1 - image almost unchanged, higher value a bit more blurred
 # wartości 340 - rozmyty mocno, 0-200 - praktycznie niezmieniony obraz
-# ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
+ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
 
 # ffd.low_pass_filter2(Image.open("lena.bmp"), 200, "1.bmp")
 
