@@ -3,6 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image
 
+
 def one_dimensional_dft(data):  # 1d fourier transform
     size = len(data)
     sample_arr = np.arange(size)  # an array where the index numbers of the elements in the data is stored
@@ -40,6 +41,7 @@ def dft_column(image):
         dft_columns[column] = one_dimensional_dft([column_data])
 
     return dft_columns
+
 
 def dft2d(image):
     return dft_column(dft_row(image))
@@ -101,6 +103,7 @@ def discrete_fourier_transform_2d(image, show_plot=False, logarithmic=False):
 
     return result
 
+
 def inverse_fourier_transform_2d(frequency, show_image=False):
     M, N = frequency.shape
     result = np.zeros((M, N), dtype=np.complex128)
@@ -132,18 +135,39 @@ def fft(x):
     if N <= 1:
         return x
 
-    # divide into even and odd elements
-    even = fft(x[0::2])
-    odd = fft(x[1::2])
+    # # divide into even and odd elements
+    # even = fft(x[0::2])
+    # odd = fft(x[1::2])
+    # to store the number of even and odd indices
+    even_indices = []
+    for i in range(0, N, 2):  # from 0 to N, every 2 element
+        even_indices.append(i)
+
+    odd_indices = []
+    for i in range(1, N, 2):  # from 1 to N, every 2 element
+        odd_indices.append(i)
+
+    # to store values of even and odd indices
+    even_values = []
+    for i in even_indices:
+        even_values.append(x[i])
+
+    odd_values = []
+    for i in odd_indices:
+        odd_values.append(x[i])
+
+    even = fft(even_values)
+    odd = fft(odd_values)
 
     # initialize with zeros
     result = [0] * N
 
     for k in range(N // 2):
         # twiddle factor, before adding or subtracting results of the fft for even elements
+        # factor to rotate values from the spatial domain to the frequency domain
         T = np.exp(-2j * np.pi * k / N) * odd[k]
-        result[k] = even[k] + T
-        result[k + N // 2] = even[k] - T
+        result[k] = even[k] + T  # adding T for the even element
+        result[k + N // 2] = even[k] - T  # subtracting T in the second part of the list
 
     return result
 
@@ -168,6 +192,7 @@ def fft2d(image, output=None):
         plt.imsave(output, np.abs(fft_cols), cmap='gray')
 
     return fft_cols
+
 
 # def visualize_spectrum(image_fft):
 #     spectrum = np.log(np.abs(image_fft) + 1)
@@ -194,7 +219,6 @@ def visualize_image(image_fft):
     plt.imshow(shifted_spectrum, cmap='gray')
     plt.title("Fourier Spectrum")
     plt.show()
-
 
 
 def ifft(x):
@@ -246,7 +270,6 @@ def ifft2d(image_fft, output=None, show=True):
 
     return ifft_cols
 
-
 #  visualize image after inverse fourier transform
 
 # def visualize_image_ifft(image_ifft):
@@ -254,10 +277,9 @@ def ifft2d(image_fft, output=None, show=True):
 #     plt.title("Reconstructed Image")
 #     plt.show()
 
-    # Normalize the image to the range [0, 255] for display, otherwise it is an error with converting to float
-    # image_ifft_display = np.abs(image_ifft) * 255 / np.max(np.abs(image_ifft))
+# Normalize the image to the range [0, 255] for display, otherwise it is an error with converting to float
+# image_ifft_display = np.abs(image_ifft) * 255 / np.max(np.abs(image_ifft))
 
-    # plt.imshow(image_ifft_display, cmap='gray')
-    # plt.title("Image after Inverse Fourier Transform")
-    # plt.show()
-
+# plt.imshow(image_ifft_display, cmap='gray')
+# plt.title("Image after Inverse Fourier Transform")
+# plt.show()
