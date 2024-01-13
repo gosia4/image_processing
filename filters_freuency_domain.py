@@ -27,15 +27,20 @@ def low_pass_filter(image, D0, output): # D0 - non-negative integer
     # plt.imshow(H, cmap='gray')
     # plt.title('Filter')
     # plt.show()
+    # we take into account average value of pixels in the frequency domain, as DC component
+    H[M // 2, N // 2] = 1  # DC component
 
     image_fft_filtered = H * image_fft
     image_ifft_filtered = ft.ifft2d(image_fft_filtered, None, False)
-
-    plt.imshow(np.abs(image_ifft_filtered), cmap='gray')
+    plt.imshow(np.real(image_ifft_filtered), cmap='gray')
     plt.title("Image after low-pass filter")
     plt.show()
+    # plt.imshow(np.abs(image_ifft_filtered), cmap='gray')
+    # plt.title("Image after low-pass filter")
+    # plt.show()
 
-    plt.imsave(output, np.abs(image_ifft_filtered), cmap='gray')
+    # plt.imsave(output, np.abs(image_ifft_filtered), cmap='gray')
+    plt.imsave(output, np.real(image_ifft_filtered), cmap='gray')
 
     return image_ifft_filtered
 
@@ -119,6 +124,7 @@ def high_pass_filter(image, D0, output):
     # plt.imshow(H, cmap='gray')
     # plt.title('Filter')
     # plt.show()
+    H[M // 2, N // 2] = 0 # DC component not taken into accout, as is it set to 0
 
     # applying the filter on the image
     image_fft_filtered = image_fft * H
@@ -130,11 +136,12 @@ def high_pass_filter(image, D0, output):
     image_filtered = ft.ifft2d(image_fft_filtered, None, False)
 
     # Visualize the image
-    plt.imshow(np.abs(image_filtered), cmap='gray')
+    # plt.imshow(np.abs(image_filtered), cmap='gray')
+    plt.imshow(np.real(image_filtered), cmap='gray')
     plt.title("Image after high-pass filter")
     plt.show()
 
-    plt.imsave(output, np.abs(image_filtered), cmap='gray')
+    plt.imsave(output, np.real(image_filtered), cmap='gray')
 
     return image_filtered
 
