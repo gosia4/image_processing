@@ -62,7 +62,7 @@ import fft_testing as f_testing
 # ffd.low_pass_filter(Image.open("boat.bmp"), 300, "2.bmp")
 # parameter 1 - image almost unchanged, higher value a bit more blurred
 # wartości 340 - rozmyty mocno, 0-200 - praktycznie niezmieniony obraz
-ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
+# ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
 
 # ffd.low_pass_filter2(Image.open("lena.bmp"), 200, "1.bmp")
 
