@@ -60,7 +60,8 @@ ffd.high_pass_filter(Image.open("lena.bmp"), 1000, "test2.jpg")
 
 # ffd.high_pass_filter_with_edge_detection(Image.open("F5test1.bmp"), 200, 100, Image.open("F5mask1.bmp"), "1.bmp")
 
-# ffd.band_cut_filter(Image.open("lena.bmp"), 360, 320, "1.bmp")
+# ffd.band_cut_filter(Image.open("lena.bmp"), 280, 360, "1.bmp")
+# ft.visualize_image(ft.fft2d(ffd.band_cut_filter(Image.open("lena.bmp"), 280, 360, "1.bmp")))
 #
 # wartości low i high frequency trzeba podać odwrotnie
 # ffd.band_pass_filter(Image.open("lena.bmp"), 360, 320, "1.bmp")
@@ -70,7 +71,7 @@ ffd.high_pass_filter(Image.open("lena.bmp"), 1000, "test2.jpg")
 # ffd.low_pass_filter(Image.open("boat.bmp"), 300, "2.bmp")
 # parameter 1 - image almost unchanged, higher value a bit more blurred
 # wartości 340 - rozmyty mocno, 0-200 - praktycznie niezmieniony obraz
-# ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
+ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
 
 # ffd.low_pass_filter2(Image.open("lena.bmp"), 200, "1.bmp")
 
@@ -82,7 +83,7 @@ ffd.high_pass_filter(Image.open("lena.bmp"), 1000, "test2.jpg")
 # do wywołania fft
 # ft.visualize_image(ft.fft2d(Image.open("lena.bmp")))
 # ft.visualize_image(ft.fft2d(ffd.low_pass_filter(Image.open("lena.bmp"), 300, "8.bmp")))
-# ft.visualize_image(ft.fft2d(ffd.high_pass_filter(Image.open("lena.bmp"), 330, "4.bmp")))
+# ft.visualize_image(ft.fft2d(ffd.high_pass_filter(Image.open("lena.bmp"), 330, "4.bmp")), "0.png")
 
 
 # ft.fourierVisualise(np.transpose(np.array(Image.open("lena.bmp"))))
@@ -527,32 +528,37 @@ elif sys.argv[1] == "--ifft":
     else:
         ft.ifft2d(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--lpf":
-    if len(sys.argv) != 5:
+    if len(sys.argv) != 7:
         print("Please provide a correct number of parameters.")
     else:
         # ft.inverse_fourier_transform_2d(Image.open(sys.argv[2]), sys.argv[3])
         # ft.visualize_image_ifft(ft.inverse_fourier_transform_2d(Image.open(sys.argv[2]), sys.argv[3]))
-        ffd.low_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4])
+        ffd.low_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5], sys.argv[6])
 elif sys.argv[1] == "--hpf":
-    if len(sys.argv) != 5:
+    if len(sys.argv) != 7:
         print("Please provide a correct number of parameters.")
     else:
-        ffd.high_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4])
+        ffd.high_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5], sys.argv[6])
 elif sys.argv[1] == "--bpf":
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 8:
         print("Please provide a correct number of parameters.")
     else:
-        ffd.band_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
+        ffd.band_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6], sys.argv[7])
 elif sys.argv[1] == "--bcf":
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 8:
         print("Please provide a correct number of parameters.")
     else:
-        ffd.band_cut_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
+        ffd.band_cut_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6], sys.argv[7])
 elif sys.argv[1] == "--spectrum":
-    if len(sys.argv) != 6:
+    if len(sys.argv) != 4:
         print("Please provide a correct number of parameters.")
     else:
-        ft.visualize_image(Image.open(sys.argv[2]))
+        ft.visualize_image(Image.open(sys.argv[2]), sys.argv[3])
+elif sys.argv[1] == "--spectrumf":
+    if len(sys.argv) != 3:
+        print("Please provide a correct number of parameters.")
+    else:
+        ffd.visualize_spectrum(Image.open(sys.argv[2]))
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
