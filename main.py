@@ -1,3 +1,5 @@
+import cmath
+import math
 import sys
 import ast
 from PIL import Image
@@ -14,6 +16,36 @@ import support_functions as sp
 import morphological_operations as mo
 import fourier_transform as ft
 import filters_freuency_domain as ffd
+import fft_testing as f_testing
+
+
+
+# f_testing.fft2(Image.open("box16.bmp"), True)
+# ft.discrete_fourier_transform_2d(Image.open("box16.bmp"), True)
+# ft.visualize_image(ft.fft2d(Image.open("box16.bmp")))
+# f_testing.numpy_fft(Image.open("box16.bmp"), True)
+
+
+
+f_testing.ct_fft2(Image.open("box16.bmp"), True)
+# ft.discrete_fourier_transform_2d(Image.open("box.bmp"), True)
+# ft.visualize_image(ft.fft2d(Image.open("box.bmp")))
+# f_testing.numpy_fft(Image.open("box.bmp"), True)
+
+
+# fft_result = np.fft.fft2(Image.open("box.bmp"))
+# fft_shifted = np.fft.fftshift(fft_result)
+# magnitude_spectrum = np.abs(fft_shifted) + 1
+#
+# plt.figure(figsize=(12, 6))
+#
+# plt.subplot(121), plt.imshow(Image.open("box.bmp"), cmap='gray')
+# plt.title('Original Image')
+#
+# plt.subplot(122), plt.imshow(magnitude_spectrum, cmap='gray')
+# plt.title('Magnitude Spectrum')
+#
+# plt.show()
 
 # ffd.high_pass_filter_with_edge_detection(Image.open("F5test1.bmp"), 200, 100, Image.open("F5mask1.bmp"), "1.bmp")
 
@@ -26,7 +58,7 @@ import filters_freuency_domain as ffd
 # ffd.low_pass_filter(Image.open("lena.bmp"), 300, "1.bmp")
 # parameter 1 - image almost unchanged, higher value a bit more blurred
 # wartości 340 - rozmyty mocno, 0-200 - praktycznie niezmieniony obraz
-ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
+# ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
 
 # ffd.low_pass_filter2(Image.open("lena.bmp"), 200, "1.bmp")
 

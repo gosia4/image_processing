@@ -97,8 +97,10 @@ def discrete_fourier_transform_2d(image, show_plot=False, logarithmic=False):
         shifted_spectrum = phase_shift(ft_spectrum)
         if logarithmic:
             plt.imshow(np.log(shifted_spectrum + 1), cmap='gray')
+            plt.title('Custom, Slow FFT (logarithmic)')
         else:
             plt.imshow(shifted_spectrum, cmap='gray')
+            plt.title('Custom, Slow FFT (logarithmic)')
         plt.show()
 
     return result
