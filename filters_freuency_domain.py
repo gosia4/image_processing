@@ -115,6 +115,7 @@ def band_cut_filter(image, treshold_1, treshold_2, output):
 
     plt.imshow(np.abs(image_filtered), cmap='gray')
     plt.title("Image after band-cut filter")
+    plt.axis("off")
     plt.show()
 
     plt.imsave(output, np.abs(image_filtered), cmap='gray')
