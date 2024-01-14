@@ -1,13 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import fourier_transform as ft
-from scipy import ndimage
 
 
 #  remove high frequency components
 #  used to smooth the image (blur)
 #  remove noise
-def low_pass_filter(image, D0, output, spectrum=False, spectrumf=False):  # D0 - non-negative integer
+def low_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):  # D0 - non-negative integer
     image_fft = ft.fft2d(image)
     M, N = image_fft.shape
     H = np.ones((M, N), dtype=np.float32)
@@ -36,7 +35,8 @@ def low_pass_filter(image, D0, output, spectrum=False, spectrumf=False):  # D0 -
     plt.axis("off")
     plt.show()
 
-    plt.imsave(output, np.abs(image_ifft_filtered), cmap='gray')
+    if output:
+        plt.imsave(output, np.abs(image_ifft_filtered), cmap='gray')
 
     return image_ifft_filtered
 
@@ -45,7 +45,7 @@ def low_pass_filter_2(image, cutoff):
     image_array = np.array(image_array)
 
 
-def high_pass_filter(image, D0, output, spectrum=False, spectrumf=False):
+def high_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):
     image_fft = ft.fft2d(image)
     M, N = image_fft.shape
     H = np.zeros((M, N), dtype=np.float32)
@@ -76,7 +76,8 @@ def high_pass_filter(image, D0, output, spectrum=False, spectrumf=False):
     plt.title("Image after high-pass filter")
     plt.show()
 
-    plt.imsave(output, np.real(image_filtered), cmap='gray')
+    if output:
+        plt.imsave(output, np.abs(image_filtered), cmap='gray')
 
     return image_filtered
 
@@ -90,7 +91,7 @@ def visualize_spectrum(image_fft):
     plt.show()
 
 
-def band_pass_filter(image, high_frequency, low_frequency, output, spectrum=False, spectrumf=False):
+def band_pass_filter(image, high_frequency, low_frequency, spectrum=False, spectrumf=False, output=None):
     image_fft = ft.fft2d(image)
     M, N = image_fft.shape
     H = np.zeros((M, N), dtype=np.float32)
@@ -104,7 +105,6 @@ def band_pass_filter(image, high_frequency, low_frequency, output, spectrum=Fals
             else:
                 # H[i, j] = 1
                 H[i, j] = 0
-    # H[M // 2, N // 2] = 1
     if spectrumf is True:
         plt.imshow(H, cmap='gray')
         plt.axis("off")
@@ -120,12 +120,13 @@ def band_pass_filter(image, high_frequency, low_frequency, output, spectrum=Fals
     plt.axis("off")
     plt.show()
 
-    plt.imsave(output, np.abs(image_filtered), cmap='gray')
+    if output:
+        plt.imsave(output, np.abs(image_filtered), cmap='gray')
 
     return image_filtered
 
 
-def band_cut_filter(image, treshold_1, treshold_2, output, spectrum=False, spectrumf=False):
+def band_cut_filter(image, treshold_1, treshold_2, spectrum=False, spectrumf=False, output=None):
     image_fft = ft.fft2d(image)
     M, N = image_fft.shape
     H = np.zeros((M, N), dtype=np.float32)
@@ -153,12 +154,13 @@ def band_cut_filter(image, treshold_1, treshold_2, output, spectrum=False, spect
     plt.axis("off")
     plt.show()
 
-    plt.imsave(output, np.abs(image_filtered), cmap='gray')
+    if output:
+        plt.imsave(output, np.abs(image_filtered), cmap='gray')
 
     return image_filtered
 
 
-def phase_shift_filter(image, l, k, output=None, show_image=False):
+def phase_shift_filter(image, l, k, show_image=False, output=None):
 
     M, N = image.size
 

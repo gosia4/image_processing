@@ -172,7 +172,7 @@ def fft2d(image, output=None, show_plot=False, logarithmic=False):
 #     plt.show()
 
 
-def visualize_image(image_fft, output):
+def visualize_image(image_fft, output=None):
     # without logarithmic function there is only one dot in the middle
     image_magnitude = np.abs(image_fft)
     shifted_image = phase_shift(image_magnitude)
