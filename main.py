@@ -1,10 +1,6 @@
-import cmath
-import math
 import sys
 import ast
 from PIL import Image
-import matplotlib.pyplot as plt
-import numpy as np
 
 import error_functions
 import geometric_operations
@@ -19,8 +15,7 @@ import filters_freuency_domain as ffd
 import fft_testing as f_testing
 
 
-
-ffd.high_pass_filter(Image.open("lena.bmp"), 1000, "test2.jpg")
+# ffd.high_pass_filter(Image.open("lena.bmp"), 1000, "test2.jpg")
 
 
 # ffd.high_pass_filter(Image.open("lena.bmp"), 100, "test.jpg")
@@ -71,7 +66,7 @@ ffd.high_pass_filter(Image.open("lena.bmp"), 1000, "test2.jpg")
 # ffd.low_pass_filter(Image.open("boat.bmp"), 300, "2.bmp")
 # parameter 1 - image almost unchanged, higher value a bit more blurred
 # wartości 340 - rozmyty mocno, 0-200 - praktycznie niezmieniony obraz
-ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
+# ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
 
 # ffd.low_pass_filter2(Image.open("lena.bmp"), 200, "1.bmp")
 
@@ -327,7 +322,7 @@ elif sys.argv[1] == "--shrink":
     if len(sys.argv) < 5:
         print("Please provide a correct number of parameters.")
     else:
-        geometric_operations.scale(Image.open(sys.argv[2]), 1.0/float(sys.argv[3]), sys.argv[4])
+        geometric_operations.scale(Image.open(sys.argv[2]), 1.0 / float(sys.argv[3]), sys.argv[4])
 elif sys.argv[1] == "--enlarge":
     if len(sys.argv) < 5:
         print("Please provide a correct number of parameters.")
@@ -490,22 +485,26 @@ elif sys.argv[1] == "--rgrowing":
     if len(sys.argv) != 7:
         print("Please provide a correct number of parameters.")
     else:
-        mo.region_growing_static(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]), sys.argv[6])
+        mo.region_growing_static(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]),
+                                 sys.argv[6])
 elif sys.argv[1] == "--rgrowingi":
     if len(sys.argv) != 7:
         print("Please provide a correct number of parameters.")
     else:
-        mo.region_growing_static_with_image_background(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]), sys.argv[6])
+        mo.region_growing_static_with_image_background(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]),
+                                                       int(sys.argv[5]), sys.argv[6])
 elif sys.argv[1] == "--rgc":
     if len(sys.argv) != 7:
         print("Please provide a correct number of parameters.")
     else:
-        mo.region_growing_contagious(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]), sys.argv[6])
+        mo.region_growing_contagious(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]),
+                                     sys.argv[6])
 elif sys.argv[1] == "--rgci":
     if len(sys.argv) != 7:
         print("Please provide a correct number of parameters.")
     else:
-        mo.region_growing_contagious_with_image_background(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]), sys.argv[6])
+        mo.region_growing_contagious_with_image_background(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]),
+                                                           int(sys.argv[5]), sys.argv[6])
 elif sys.argv[1] == "--dft":
     if len(sys.argv) != 3:
         print("Please provide a correct number of parameters.")
@@ -528,32 +527,49 @@ elif sys.argv[1] == "--ifft":
     else:
         ft.ifft2d(Image.open(sys.argv[2]), sys.argv[3])
 elif sys.argv[1] == "--lpf":
-    if len(sys.argv) != 7:
-        print("Please provide a correct number of parameters.")
-    else:
-        # ft.inverse_fourier_transform_2d(Image.open(sys.argv[2]), sys.argv[3])
-        # ft.visualize_image_ifft(ft.inverse_fourier_transform_2d(Image.open(sys.argv[2]), sys.argv[3]))
+    if len(sys.argv) == 7:
         ffd.low_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5], sys.argv[6])
+    elif len(sys.argv) == 6:
+        ffd.low_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5])
+    else:
+        print("Please provide a correct number of parameters.")
 elif sys.argv[1] == "--hpf":
-    if len(sys.argv) != 7:
-        print("Please provide a correct number of parameters.")
-    else:
+    if len(sys.argv) == 7:
         ffd.high_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5], sys.argv[6])
+    if len(sys.argv) == 6:
+        ffd.high_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5])
+    else:
+        print("Please provide a correct number of parameters.")
 elif sys.argv[1] == "--bpf":
-    if len(sys.argv) != 8:
-        print("Please provide a correct number of parameters.")
+    if len(sys.argv) == 8:
+        ffd.band_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6],
+                             sys.argv[7])
+        if len(sys.argv) == 7:
+            ffd.band_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6])
     else:
-        ffd.band_pass_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6], sys.argv[7])
+        print("Please provide a correct number of parameters.")
 elif sys.argv[1] == "--bcf":
-    if len(sys.argv) != 8:
-        print("Please provide a correct number of parameters.")
+    if len(sys.argv) == 8:
+        ffd.band_cut_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6],
+                            sys.argv[7])
+    if len(sys.argv) == 7:
+        ffd.band_cut_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6])
     else:
-        ffd.band_cut_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6], sys.argv[7])
+        print("Please provide a correct number of parameters.")
+elif sys.argv[1] == "--psf":
+    if len(sys.argv) == 7:
+        ffd.phase_shift_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6])
+    if len(sys.argv) == 6:
+        ffd.phase_shift_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
+    else:
+        print("Please provide a correct number of parameters.")
 elif sys.argv[1] == "--spectrum":
-    if len(sys.argv) != 4:
-        print("Please provide a correct number of parameters.")
-    else:
+    if len(sys.argv) == 4:
         ft.visualize_image(Image.open(sys.argv[2]), sys.argv[3])
+    if len(sys.argv) == 3:
+        ft.visualize_image(Image.open(sys.argv[2]))
+    else:
+        print("Please provide a correct number of parameters.")
 elif sys.argv[1] == "--spectrumf":
     if len(sys.argv) != 3:
         print("Please provide a correct number of parameters.")
