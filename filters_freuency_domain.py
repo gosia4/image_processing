@@ -72,7 +72,7 @@ def high_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):
     if output:
         plt.imsave(output, np.abs(image_filtered), cmap='gray')
 
-    return image_filtered
+    return image_fft_filtered
 
 
 def visualize_spectrum(image_fft):
@@ -182,27 +182,25 @@ def phase_shift_filter(image, l, k, show_image=False, output=None):
 
     return phase_shifted_image
 
-def high_pass_with_edge_detection(image, mask, radius):
+def high_pass_with_edge_detection(image, mask, diameter, show_plot=False):
     image = image.convert('L')
+    mask = mask.convert('L')
 
-    hp_image = high_pass_filter(image, radius)
+    hp_image = high_pass_filter(image, diameter)
 
+    output_frequency = hp_image * mask
+    image_highpass = ft.ifft2d(output_frequency)
 
-    f_transform_highpass = f_transform * mask
+    if show_plot:
+        plt.figure(figsize=(10, 5))
 
-    # Inverse Fourier Transform using the custom implementation
-    image_highpass = ft.ifft2d(f_transform_highpass)
+        plt.subplot(121), plt.imshow(image, cmap='gray')
+        plt.title('Original Image'), plt.axis('off')
 
-    # Display the original and high-pass filtered images using Matplotlib
-    plt.figure(figsize=(10, 5))
+        plt.subplot(122), plt.imshow(np.abs(image_highpass), cmap='gray')
+        plt.title('High-pass Filtered Image (Edge Detection)'), plt.axis('off')
 
-    plt.subplot(121), plt.imshow(image, cmap='gray')
-    plt.title('Original Image'), plt.axis('off')
-
-    plt.subplot(122), plt.imshow(np.abs(image_highpass), cmap='gray')
-    plt.title('High-pass Filtered Image (Edge Detection)'), plt.axis('off')
-
-    plt.show()
+        plt.show()
 
 
 

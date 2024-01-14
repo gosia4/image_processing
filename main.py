@@ -15,7 +15,7 @@ import filters_freuency_domain as ffd
 import fft_testing as f_testing
 
 
-# ffd.high_pass_filter(Image.open("lena.bmp"), 1000, "test2.jpg")
+ffd.high_pass_with_edge_detection(Image.open("F5test3.bmp"), Image.open("F5mask2.bmp"), 80, True)
 
 
 # ffd.high_pass_filter(Image.open("lena.bmp"), 100, "test.jpg")
