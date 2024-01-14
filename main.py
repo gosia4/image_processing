@@ -56,6 +56,7 @@ f_testing.ct_fft2(Image.open("box16.bmp"), True)
 
 # wartości od 365 wyświetlają praktycznie niezmieniony obraz
 # ffd.low_pass_filter(Image.open("lena.bmp"), 300, "1.bmp")
+# ffd.low_pass_filter(Image.open("boat.bmp"), 300, "2.bmp")
 # parameter 1 - image almost unchanged, higher value a bit more blurred
 # wartości 340 - rozmyty mocno, 0-200 - praktycznie niezmieniony obraz
 # ffd.high_pass_filter(Image.open("lena.bmp"), 330, "1.bmp")
@@ -69,6 +70,8 @@ f_testing.ct_fft2(Image.open("box16.bmp"), True)
 
 # do wywołania fft
 # ft.visualize_image(ft.fft2d(Image.open("lena.bmp")))
+# ft.visualize_image(ft.fft2d(ffd.low_pass_filter(Image.open("lena.bmp"), 300, "8.bmp")))
+# ft.visualize_image(ft.fft2d(ffd.high_pass_filter(Image.open("lena.bmp"), 330, "4.bmp")))
 
 
 # ft.fourierVisualise(np.transpose(np.array(Image.open("lena.bmp"))))
@@ -534,7 +537,11 @@ elif sys.argv[1] == "--bcf":
         print("Please provide a correct number of parameters.")
     else:
         ffd.band_cut_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
-
+elif sys.argv[1] == "--spectrum":
+    if len(sys.argv) != 6:
+        print("Please provide a correct number of parameters.")
+    else:
+        ft.visualize_image(Image.open(sys.argv[2]))
 elif sys.argv[1] == "--help":
     if len(sys.argv) != 2:
         print("Unexpected argument for --help.")
