@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import fourier_transform as ft
+from scipy import ndimage
 
 
 #  remove high frequency components
@@ -36,9 +37,14 @@ def low_pass_filter(image, D0, output): # D0 - non-negative integer
 
     return image_ifft_filtered
 
+def low_pass_filter_2(image, cutoff):
+    image_array = ft.fft2d(image)
+    image_array = np.array(image_array)
+
+
 
 def high_pass_filter(image, D0, output):
-    image_fft = ft.fft2d(image)
+    image_fft = ft.phase_shift(ft.fft2d(image))
     M, N = image_fft.shape
     H = np.zeros((M, N), dtype=np.float32)
 
@@ -150,6 +156,35 @@ def phase_shift_filter(image, l, k, output=None, show_image=False):
         plt.savefig(output)
 
     return phase_shifted_image
+
+def high_pass_with_edge_detection(image, radius):
+    rows, cols = image.size
+    center_x, center_y = rows // 2, cols // 2
+
+    f_transform = ft.phase_shift(ft.fft2d(image))
+
+    # Create a mask with a high-pass filter
+    mask = np.ones((rows, cols), np.uint8)
+    center = [center_x, center_y]
+    x, y = np.ogrid[:rows, :cols]
+    mask_area = (x - center[0]) ** 2 + (y - center[1]) ** 2 <= radius * radius
+    mask[mask_area] = 0
+
+    f_transform_highpass = f_transform * mask
+
+    # Inverse Fourier Transform using the custom implementation
+    image_highpass = ft.ifft2d(f_transform_highpass)
+
+    # Display the original and high-pass filtered images using Matplotlib
+    plt.figure(figsize=(10, 5))
+
+    plt.subplot(121), plt.imshow(image, cmap='gray')
+    plt.title('Original Image'), plt.axis('off')
+
+    plt.subplot(122), plt.imshow(np.abs(image_highpass), cmap='gray')
+    plt.title('High-pass Filtered Image (Edge Detection)'), plt.axis('off')
+
+    plt.show()
 
 
 
