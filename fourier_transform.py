@@ -4,49 +4,6 @@ from matplotlib import pyplot as plt
 from PIL import Image
 
 
-def one_dimensional_dft(data):  # 1d fourier transform
-    size = len(data)
-    sample_arr = np.arange(size)  # an array where the index numbers of the elements in the data is stored
-    result = np.zeros(size, dtype=np.complex128)  # create a numpy array with zeros, where complex numbers can be
-
-    for k in range(size):
-        result[k] = np.sum(data * np.exp(-2j * np.pi * sample_arr * k / size))
-
-    return result
-
-
-def dft_row(image):
-    # height, width = image.size
-    dft_rows = np.zeros_like(image, dtype=np.complex128)  # with zeros, size is the size of the image
-
-    image_array = np.transpose(np.array(image))
-    height = len(image_array[0])
-    for row in range(height):
-        row_data = image_array[row]
-        dft_rows[row] = one_dimensional_dft(row_data)
-
-    return dft_rows
-
-
-def dft_column(image):
-    # height, width = image.size
-
-    image_array = np.transpose(np.array(image))
-    width = len(image_array)
-    height = len(image_array[0])
-    dft_columns = np.zeros_like(image, dtype=np.complex128)
-
-    for column in range(width):
-        column_data = image_array[column]
-        dft_columns[column] = one_dimensional_dft([column_data])
-
-    return dft_columns
-
-
-def dft2d(image):
-    return dft_column(dft_row(image))
-
-
 def phase_shift(arr):
     rows, cols = arr.shape
     mid_row, mid_col = rows // 2, cols // 2
@@ -61,19 +18,6 @@ def phase_shift(arr):
             shifted_arr[i + mid_row, j] = arr[i, j + mid_col]
 
     return shifted_arr
-
-
-def plot_fourier_transform(image):
-    fourier_transform = dft2d(image)
-    shifted_transform = phase_shift(fourier_transform)
-    magnitude_spectrum = np.log(np.abs(shifted_transform) + 1)
-
-    plt.subplot(1, 1, 1)
-    plt.imshow(magnitude_spectrum, cmap='gray')
-    plt.title('Amplituda Transformaty Fouriera')
-    plt.colorbar()
-
-    plt.show()
 
 
 def discrete_fourier_transform_2d(image, show_plot=False, logarithmic=False):
@@ -92,6 +36,7 @@ def discrete_fourier_transform_2d(image, show_plot=False, logarithmic=False):
                     sum_val += pixel_value * (np.cos(angle) + 1j * np.sin(angle))
             result[u, v] = sum_val
 
+    plt.axis('off')
     if show_plot:
         ft_spectrum = np.abs(result)
         shifted_spectrum = phase_shift(ft_spectrum)
@@ -174,7 +119,7 @@ def fft(x):
     return result
 
 
-def fft2d(image, output=None):
+def fft2d(image, output=None, show_plot=False, logarithmic=False):
     # transpose to be sure that rows and columns are properly calculated
     transposed_image = np.transpose(image)
 
@@ -185,15 +130,37 @@ def fft2d(image, output=None):
     fft_rows = np.array(fft_rows)
 
     # Transpose the result (because rows have now shifted phase) and apply FFT for columns
-    fft_cols = []
+    fft_cols_rows = []
     for col in np.transpose(fft_rows):
-        fft_cols.append(fft(col))
-    fft_cols = np.array(fft_cols)
+        fft_cols_rows.append(fft(col))
+    fft_cols_rows = np.array(fft_cols_rows)
+
+    ft_spectrum = np.abs(fft_cols_rows)
+    shifted_spectrum = phase_shift(ft_spectrum)
+
+    plt.axis('off')
+    if show_plot:
+
+        if logarithmic:
+            plt.imshow(np.log(shifted_spectrum + 1), cmap='gray')
+            plt.title('Custom, Slow FFT (logarithmic)')
+        else:
+            plt.imshow(shifted_spectrum, cmap='gray')
+            plt.title('Custom, Slow FFT (normal)')
+        plt.show()
 
     if output:
-        plt.imsave(output, np.abs(fft_cols), cmap='gray')
+        if logarithmic:
+            plt.imshow(np.log(shifted_spectrum + 1), cmap='gray')
+            plt.title('Custom, Slow FFT (logarithmic)')
+            plt.savefig(output)
+        else:
+            plt.imshow(shifted_spectrum, cmap='gray')
+            plt.title('Custom, Slow FFT (normal)')
+            plt.savefig(output)
 
-    return fft_cols
+
+    return fft_cols_rows
 
 
 # def visualize_spectrum(image_fft):
@@ -212,14 +179,14 @@ def visualize_image(image_fft):
 
     plt.subplot(1, 2, 1)
     plt.imshow(shifted_image, cmap='gray')
-    plt.title("Image after FFT without log function")
+    plt.title("Frequency Domain (normal)")
     # plt.show()
 
     spectrum = np.log(np.abs(image_fft) + 1)
     shifted_spectrum = phase_shift(spectrum)
     plt.subplot(1, 2, 2)
     plt.imshow(shifted_spectrum, cmap='gray')
-    plt.title("Fourier Spectrum")
+    plt.title("Frequency Domain (logarithmic)")
     plt.show()
 
 
@@ -258,19 +225,19 @@ def ifft2d(image_fft, output=None, show=True):
     ifft_rows = np.array(ifft_rows)
 
     # Transpose the result and apply ifft along columns
-    ifft_cols = []
+    ifft_cols_rows = []
     for col in np.transpose(ifft_rows):
-        ifft_cols.append(ifft(col))
-    ifft_cols = np.array(ifft_cols)
+        ifft_cols_rows.append(ifft(col))
+    ifft_cols_rows = np.array(ifft_cols_rows)
 
     if output:
-        plt.imsave(output, np.abs(ifft_cols), cmap='gray')
+        plt.imsave(output, np.abs(ifft_cols_rows), cmap='gray')
     if show:
-        plt.imshow(np.abs(ifft_cols), cmap='gray')
+        plt.imshow(np.abs(ifft_cols_rows), cmap='gray')
         plt.title("Reconstructed Image")
         plt.show()
 
-    return ifft_cols
+    return ifft_cols_rows
 
 #  visualize image after inverse fourier transform
 

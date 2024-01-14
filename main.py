@@ -27,10 +27,12 @@ import fft_testing as f_testing
 
 
 
-f_testing.ct_fft2(Image.open("box16.bmp"), True)
+# f_testing.ct_fft2(Image.open("box16.bmp"), True)
 # ft.discrete_fourier_transform_2d(Image.open("box.bmp"), True)
 # ft.visualize_image(ft.fft2d(Image.open("box.bmp")))
 # f_testing.numpy_fft(Image.open("box.bmp"), True)
+
+ft_image = ft.fft2d(Image.open("box16.bmp"), "test.jpg")
 
 
 # fft_result = np.fft.fft2(Image.open("box.bmp"))
