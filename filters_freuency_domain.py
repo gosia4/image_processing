@@ -199,6 +199,36 @@ def band_cut_filter(image, treshold_1, treshold_2, output):
 
     return image_filtered
 
+def phase_shift_filter(image, l, k, output=None, show_image=False):
+
+    M, N = image.size
+
+    n = np.arange(M) - M // 2
+    m = np.arange(N) - N // 2
+
+    n, m = np.meshgrid(n, m)
+
+    # Calculate shift according to formula from task F6
+    phase_shift_x = -2 * np.pi * n * l / N
+    phase_shift_y = -2 * np.pi * m * k / M
+    phase_shift = np.exp(1j * (phase_shift_x + phase_shift_y + (k+l) * np.pi))
+
+    fft = ft.fft2d(image)
+    phase_shifted_fft = fft * phase_shift
+
+    phase_shifted_image = np.abs(ft.ifft2d(phase_shifted_fft))
+
+    plt.axis('off')
+    if show_image:
+        plt.imshow(phase_shifted_image, cmap='gray')
+        plt.title('Phase Shifted Image')
+        plt.show()
+    if output:
+        plt.savefig(output)
+
+    return phase_shifted_image
+
+
 
 # def high_pass_filter_with_edge_detection(image, high_frequency, low_frequency, mask, output=None):
 #     # assuming that the mask and the image are the same size

@@ -213,7 +213,7 @@ def ifft(x):
     return result
 
 
-def ifft2d(image_fft, output=None, show=True):
+def ifft2d(image_fft, output=None, show=False):
     # Transpose the image to ensure proper calculation of rows and columns
     # otherwise it rotates the image by 90 degree
     transposed_image_fft = np.transpose(image_fft)

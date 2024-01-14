@@ -19,12 +19,10 @@ import filters_freuency_domain as ffd
 import fft_testing as f_testing
 
 
-
 # f_testing.fft2(Image.open("box16.bmp"), True)
 # ft.discrete_fourier_transform_2d(Image.open("box16.bmp"), True)
 # ft.visualize_image(ft.fft2d(Image.open("box16.bmp")))
 # f_testing.numpy_fft(Image.open("box16.bmp"), True)
-
 
 
 # f_testing.ct_fft2(Image.open("box16.bmp"), True)
@@ -32,7 +30,9 @@ import fft_testing as f_testing
 # ft.visualize_image(ft.fft2d(Image.open("box.bmp")))
 # f_testing.numpy_fft(Image.open("box.bmp"), True)
 
-ft_image = ft.fft2d(Image.open("box16.bmp"), "test.jpg")
+# ft_image = ft.fft2d(Image.open("box16.bmp"), "test.jpg")
+
+ffd.phase_shift_filter(Image.open("lena.bmp"), 30, 50, "test.jpg", True)
 
 
 # fft_result = np.fft.fft2(Image.open("box.bmp"))
