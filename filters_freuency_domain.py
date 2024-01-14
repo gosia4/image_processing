@@ -4,9 +4,6 @@ import fourier_transform as ft
 from scipy import ndimage
 
 
-#  remove high frequency components
-#  used to smooth the image (blur)
-#  remove noise
 def low_pass_filter(image, D0, output, spectrum=False, spectrumf=False):  # D0 - non-negative integer
     image_fft = ft.fft2d(image)
     M, N = image_fft.shape
@@ -39,10 +36,6 @@ def low_pass_filter(image, D0, output, spectrum=False, spectrumf=False):  # D0 -
     plt.imsave(output, np.abs(image_ifft_filtered), cmap='gray')
 
     return image_ifft_filtered
-
-def low_pass_filter_2(image, cutoff):
-    image_array = ft.fft2d(image)
-    image_array = np.array(image_array)
 
 
 def high_pass_filter(image, D0, output, spectrum=False, spectrumf=False):
@@ -187,18 +180,11 @@ def phase_shift_filter(image, l, k, output=None, show_image=False):
 
     return phase_shifted_image
 
-def high_pass_with_edge_detection(image, radius):
-    rows, cols = image.size
-    center_x, center_y = rows // 2, cols // 2
+def high_pass_with_edge_detection(image, mask, radius):
+    image = image.convert('L')
 
-    f_transform = ft.phase_shift(ft.fft2d(image))
+    hp_image = high_pass_filter(image, radius)
 
-    # Create a mask with a high-pass filter
-    mask = np.ones((rows, cols), np.uint8)
-    center = [center_x, center_y]
-    x, y = np.ogrid[:rows, :cols]
-    mask_area = (x - center[0]) ** 2 + (y - center[1]) ** 2 <= radius * radius
-    mask[mask_area] = 0
 
     f_transform_highpass = f_transform * mask
 

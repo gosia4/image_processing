@@ -160,7 +160,7 @@ def fft2d(image, output=None, show_plot=False, logarithmic=False):
             plt.savefig(output)
 
 
-    return fft_cols_rows
+    return phase_shift(fft_cols_rows)
 
 
 # def visualize_spectrum(image_fft):
