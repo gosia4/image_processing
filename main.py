@@ -15,7 +15,7 @@ import filters_freuency_domain as ffd
 import fft_testing as f_testing
 
 
-ffd.high_pass_with_edge_detection(Image.open("F5test3.bmp"), Image.open("F5mask2.bmp"), 80, True)
+# ffd.high_pass_with_edge_detection(Image.open("F5test3.bmp"), Image.open("F5mask2.bmp"), 80, True)
 
 
 # ffd.high_pass_filter(Image.open("lena.bmp"), 100, "test.jpg")
@@ -561,6 +561,14 @@ elif sys.argv[1] == "--psf":
         ffd.phase_shift_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6])
     if len(sys.argv) == 6:
         ffd.phase_shift_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
+    else:
+        print("Please provide a correct number of parameters.")
+elif sys.argv[1] == "--hpfed":
+    if len(sys.argv) == 7:
+        ffd.high_pass_with_edge_detection(Image.open(sys.argv[2]),Image.open(sys.argv[3]), int(sys.argv[4]), sys.argv[5],
+                               sys.argv[6])
+    elif len(sys.argv) == 6:
+        ffd.high_pass_with_edge_detection(Image.open(sys.argv[2]), Image.open(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
     else:
         print("Please provide a correct number of parameters.")
 elif sys.argv[1] == "--spectrum":

@@ -177,12 +177,14 @@ def phase_shift_filter(image, l, k, show_image=False, output=None):
         plt.imshow(phase_shifted_image, cmap='gray')
         plt.title('Phase Shifted Image')
         plt.show()
+
     if output:
-        plt.savefig(output)
+        plt.imsave(output, np.abs(phase_shifted_image), cmap='gray')
 
     return phase_shifted_image
 
-def high_pass_with_edge_detection(image, mask, diameter, show_plot=False):
+
+def high_pass_with_edge_detection(image, mask, diameter, show_plot=False, output=None):
     image = image.convert('L')
     mask = mask.convert('L')
 
@@ -201,35 +203,5 @@ def high_pass_with_edge_detection(image, mask, diameter, show_plot=False):
         plt.title('High-pass Filtered Image (Edge Detection)'), plt.axis('off')
 
         plt.show()
-
-
-
-# def high_pass_filter_with_edge_detection(image, high_frequency, low_frequency, mask, output=None):
-#     # assuming that the mask and the image are the same size
-#     image_fft = ft.fft2d(image)
-#     M, N = image_fft.shape
-#     # fill with ones
-#     filtered_image = np.ones((M, N), dtype=np.float32)
-#     mask_image = Image.open(mask)
-#     mask_array = np.array(mask_image)
-#     filtered_image *= mask_array
-#
-#     center_frequency = max(M, N) / 2
-#     for i in range(M):
-#         for j in range(N):
-#             D = np.sqrt((i - M // 2) ** 2 + (j - N // 2) ** 2)
-#             if D<= center_frequency - low_frequency /2 or D>=center_frequency + high_frequency /2:
-#                 filtered_image[i, j] = 0
-#
-#
-#     # Apply the filter to the image in the frequency domain
-#     image_fft_filtered = filtered_image * image_fft
-#
-#     # Perform inverse FFT to get the spatial domain representation
-#     # image_filtered = np.fft.ifft2(image_fft_filtered).real
-#     image_filtered = ft.ifft2d(image_fft_filtered, None, False)
-#     # Visualize the result
-#     plt.imshow(np.abs(image_filtered), cmap='gray')
-#     plt.title("Image after high-pass filter with edge detection")
-#     plt.show()
-#     plt.imsave(output, np.abs(filtered_image), cmap='gray')
+    if output:
+        plt.imsave(output, np.abs(image_highpass), cmap='gray')
