@@ -172,12 +172,13 @@ def fft2d(image, output=None, show_plot=False, logarithmic=False):
 #     plt.show()
 
 
-def visualize_image(image_fft):
+def visualize_image(image_fft, output):
     # without logarithmic function there is only one dot in the middle
     image_magnitude = np.abs(image_fft)
     shifted_image = phase_shift(image_magnitude)
 
     plt.subplot(1, 2, 1)
+    plt.axis("off")
     plt.imshow(shifted_image, cmap='gray')
     plt.title("Frequency Domain (normal)")
     # plt.show()
@@ -185,9 +186,12 @@ def visualize_image(image_fft):
     spectrum = np.log(np.abs(image_fft) + 1)
     shifted_spectrum = phase_shift(spectrum)
     plt.subplot(1, 2, 2)
+    plt.axis("off")
     plt.imshow(shifted_spectrum, cmap='gray')
     plt.title("Frequency Domain (logarithmic)")
     plt.show()
+    if output:
+        plt.imsave(output, np.abs(shifted_spectrum), cmap='gray')
 
 
 def ifft(x):
