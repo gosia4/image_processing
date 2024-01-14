@@ -19,6 +19,15 @@ import filters_freuency_domain as ffd
 import fft_testing as f_testing
 
 
+
+ffd.high_pass_filter(Image.open("lena.bmp"), 1000, "test2.jpg")
+
+
+# ffd.high_pass_filter(Image.open("lena.bmp"), 100, "test.jpg")
+# ffd.high_pass_with_edge_detection(Image.open("lena.bmp"), 100)
+# ffd.low_pass_filter_2(Image.open("F5mask2.bmp"), 100)
+
+
 # f_testing.fft2(Image.open("box16.bmp"), True)
 # ft.discrete_fourier_transform_2d(Image.open("box16.bmp"), True)
 # ft.visualize_image(ft.fft2d(Image.open("box16.bmp")))
