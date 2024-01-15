@@ -51,10 +51,7 @@ def high_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):
             else:
                 H[i, j] = 0
     if spectrumf is True:
-        plt.imshow(H, cmap='gray')
-        plt.axis("off")
-        plt.title("Filter")
-        plt.show()
+        visualize_spectrum(H)
 
     image_fft_filtered = image_fft * H
     if spectrum is True:
@@ -78,8 +75,8 @@ def high_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):
 def visualize_spectrum(image_fft):
     spectrum = np.log(np.abs(image_fft) + 1)
     shifted_spectrum = ft.phase_shift(spectrum)
-
-    plt.imshow(shifted_spectrum, cmap='gray')
+    plt.axis('off')
+    plt.imshow(spectrum, cmap='gray')
     plt.title("Fourier Spectrum")
     plt.show()
 

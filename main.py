@@ -14,7 +14,11 @@ import fourier_transform as ft
 import filters_freuency_domain as ffd
 import fft_testing as f_testing
 
-ffd.high_pass_with_edge_detection(Image.open("F5test1.bmp"), Image.open("F5mask2.bmp"), 80, True)
+# ffd.phase_shift_filter(Image.open("lena.bmp"), 40, 70, False, "s1.jpg")
+# ffd.phase_shift_filter(Image.open("lena.bmp"), 400, 0, False, "s2.jpg")
+ffd.high_pass_filter(Image.open("lena.bmp"), 120, True, True)
+
+
 
 
 # ft.fft2d(Image.open("lena.bmp"), None, True, True)

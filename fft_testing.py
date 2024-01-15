@@ -5,39 +5,33 @@ import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
 
-
+def next_power_of_two(x):
+    return 2 ** math.ceil(math.log2(x))
 
 def bluestein_fft2(image, show_plot = False, logarithmic = False):
     rows, cols = image.size
 
-    print("halo?")
-
-    # Determine the size of the FFT along rows and columns
     m_rows = next_power_of_two(2 * rows - 1)
     m_cols = next_power_of_two(2 * cols - 1)
 
-    # Generate the chirp functions for rows and columns
     omega_rows = np.exp(-2j * np.pi / m_rows)
     omega_cols = np.exp(-2j * np.pi / m_cols)
 
     twiddle_factors_rows = np.power(omega_rows, np.arange(rows))
     twiddle_factors_cols = np.power(omega_cols, np.arange(cols))
 
-    # Pad the input image with zeros
+    # Pad the input image with an array of zeros
     image_padded = np.zeros((m_rows, m_cols), dtype=image.dtype)
     image_padded[:rows, :cols] = image
 
-    # Multiply the input image by the chirp functions along rows
     image_chirped_rows = np.zeros((m_rows, cols), dtype=complex)
     for i in range(m_rows):
         image_chirped_rows[i, :] = np.fft.ifft(np.fft.fft(image_padded[i, :]) * twiddle_factors_rows[i])
 
-    # Multiply the result by the chirp functions along columns
     image_chirped_cols = np.zeros((m_rows, m_cols), dtype=complex)
     for j in range(m_cols):
         image_chirped_cols[:, j] = np.fft.ifft(np.fft.fft(image_chirped_rows[:, j]) * twiddle_factors_cols[j])
 
-    # Trim the result to the original size
     result = np.real(image_chirped_cols[:rows, :cols])
 
     if show_plot:
@@ -51,9 +45,6 @@ def bluestein_fft2(image, show_plot = False, logarithmic = False):
 
     return result
 
-
-def next_power_of_two(x):
-    return 2 ** math.ceil(math.log2(x))
 
 def cooley_tukey_fft(x):
     N = len(x)
