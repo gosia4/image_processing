@@ -16,7 +16,7 @@ import fft_testing as f_testing
 
 # ffd.phase_shift_filter(Image.open("lena.bmp"), 40, 70, False, "s1.jpg")
 # ffd.phase_shift_filter(Image.open("lena.bmp"), 400, 0, False, "s2.jpg")
-ffd.high_pass_filter(Image.open("lena.bmp"), 120, True, True)
+# ffd.high_pass_filter(Image.open("lena.bmp"), 120, True, True)
 
 
 
@@ -521,11 +521,16 @@ elif sys.argv[1] == "--idft":
     else:
         ft.inverse_fourier_transform_2d(Image.open(sys.argv[2]))
 elif sys.argv[1] == "--fft":
-    if len(sys.argv) != 4:
-        print("Please provide a correct number of parameters.")
+    if len(sys.argv) == 4:
+        ft.fft2d(Image.open(sys.argv[2]), sys.argv[3])
+    elif len(sys.argv) == 6:
+        ft.fft2d(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4], sys.argv[5])
+    elif len(sys.argv) == 5:
+        ft.fft2d(Image.open(sys.argv[2]), sys.argv[3], sys.argv[4])
+    elif len(sys.argv) == 3:
+        ft.fft2d(Image.open(sys.argv[2]))
     else:
-        # ft.fft2d(Image.open(sys.argv[2]), sys.argv[3])
-        ft.visualize_image(ft.fft2d(Image.open(sys.argv[2]), sys.argv[3]))
+        print("Please provide a correct number of parameters.")
 elif sys.argv[1] == "--ifft":
     if len(sys.argv) != 4:
         print("Please provide a correct number of parameters.")
@@ -557,24 +562,28 @@ elif sys.argv[1] == "--bcf":
     if len(sys.argv) == 8:
         ffd.band_cut_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6],
                             sys.argv[7])
-    if len(sys.argv) == 7:
+    elif len(sys.argv) == 7:
         ffd.band_cut_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6])
     else:
         print("Please provide a correct number of parameters.")
 elif sys.argv[1] == "--psf":
     if len(sys.argv) == 7:
         ffd.phase_shift_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5], sys.argv[6])
-    if len(sys.argv) == 6:
+    elif len(sys.argv) == 6:
         ffd.phase_shift_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5])
+    elif len(sys.argv) == 5:
+        ffd.phase_shift_filter(Image.open(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]))
     else:
         print("Please provide a correct number of parameters.")
 elif sys.argv[1] == "--hpfed":
-    if len(sys.argv) == 7:
-        ffd.high_pass_with_edge_detection(Image.open(sys.argv[2]), Image.open(sys.argv[3]), sys.argv[5],
-                                          sys.argv[6])
+    if len(sys.argv) == 5:
+        ffd.high_pass_with_edge_detection(Image.open(sys.argv[2]), Image.open(sys.argv[3]), sys.argv[4])
     elif len(sys.argv) == 6:
-        ffd.high_pass_with_edge_detection(Image.open(sys.argv[2]), Image.open(sys.argv[3]), int(sys.argv[4]),
+        ffd.high_pass_with_edge_detection(Image.open(sys.argv[2]), Image.open(sys.argv[3]), sys.argv[4],
                                           sys.argv[5])
+    elif len(sys.argv) == 4:
+        ffd.high_pass_with_edge_detection(Image.open(sys.argv[2]), Image.open(sys.argv[3]))
+
     else:
         print("Please provide a correct number of parameters.")
 elif sys.argv[1] == "--spectrum":

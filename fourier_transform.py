@@ -119,7 +119,7 @@ def fft(x):
     return result
 
 
-def fft2d(image, output=None, show_plot=False, logarithmic=False):
+def fft2d(image, show_plot=False, logarithmic=False, output=None):
     # transpose to be sure that rows and columns are properly calculated
     transposed_image = np.transpose(image)
 
@@ -153,12 +153,13 @@ def fft2d(image, output=None, show_plot=False, logarithmic=False):
         if logarithmic:
             plt.imshow(np.log(shifted_spectrum + 1), cmap='gray')
             plt.title('Custom, Slow FFT (logarithmic)')
-            plt.savefig(output)
+            # plt.savefig(output)
+            plt.imsave(output + "_logarithmic.png", np.log(shifted_spectrum), cmap='gray')
         else:
             plt.imshow(shifted_spectrum, cmap='gray')
             plt.title('Custom, Slow FFT (normal)')
-            plt.savefig(output)
-
+            # plt.savefig(output)
+            plt.imsave(output + "_normal.png", np.abs(shifted_spectrum), cmap='gray')
 
     return phase_shift(fft_cols_rows)
 
@@ -184,14 +185,14 @@ def visualize_image(image_fft, output=None):
     # plt.show()
 
     spectrum = np.log(np.abs(image_fft) + 1)
-    shifted_spectrum = phase_shift(spectrum)
+    # shifted_spectrum = phase_shift(spectrum)
     plt.subplot(1, 2, 2)
     plt.axis("off")
-    plt.imshow(shifted_spectrum, cmap='gray')
+    plt.imshow(spectrum, cmap='gray')
     plt.title("Frequency Domain (logarithmic)")
     plt.show()
     if output:
-        plt.imsave(output, np.abs(shifted_spectrum), cmap='gray')
+        plt.imsave(output, np.abs(spectrum), cmap='gray')
 
 
 def ifft(x):

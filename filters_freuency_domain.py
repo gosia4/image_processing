@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import fourier_transform as ft
 
-def low_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):  # D0 - non-negative integer
+def high_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):  # D0 - non-negative integer
 
     image_fft = ft.fft2d(image)
     M, N = image_fft.shape
@@ -16,14 +16,15 @@ def low_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):  #
                 H[i, j] = 0
             # else:
             #     H[i, j] = 1
-    if spectrumf is True:
+    H[N//2][M//2] = 1
+    if spectrumf:
         plt.imshow(H, cmap='gray')
         plt.axis("off")
         plt.title("Filter")
         plt.show()
 
     image_fft_filtered = H * image_fft
-    if spectrum is True:
+    if spectrum:
         visualize_spectrum(image_fft_filtered)
     image_ifft_filtered = ft.ifft2d(image_fft_filtered, None, False)
     # plt.imshow(np.real(image_ifft_filtered), cmap='gray')
@@ -38,7 +39,7 @@ def low_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):  #
     return image_ifft_filtered
 
 
-def high_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):
+def low_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):
     image_fft = ft.fft2d(image)
     M, N = image_fft.shape
     H = np.zeros((M, N), dtype=np.float32)
@@ -50,11 +51,11 @@ def high_pass_filter(image, D0, spectrum=False, spectrumf=False, output=None):
                 H[i, j] = 1
             else:
                 H[i, j] = 0
-    if spectrumf is True:
+    if spectrumf:
         visualize_spectrum(H)
 
     image_fft_filtered = image_fft * H
-    if spectrum is True:
+    if spectrum:
         visualize_spectrum(image_fft_filtered)
 
     # Use inverse fourier transform to see the image in the spatial domain
@@ -170,7 +171,7 @@ def phase_shift_filter(image, l, k, show_image=False, output=None):
     phase_shifted_image = np.abs(ft.ifft2d(phase_shifted_fft))
 
     plt.axis('off')
-    if show_image is True:
+    if show_image:
         plt.imshow(phase_shifted_image, cmap='gray')
         plt.title('Phase Shifted Image')
         plt.show()
