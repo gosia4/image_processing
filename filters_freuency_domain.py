@@ -184,14 +184,14 @@ def phase_shift_filter(image, l, k, show_image=False, output=None):
     return phase_shifted_image
 
 
-def high_pass_with_edge_detection(image, mask, diameter, show_plot=False, output=None):
+def high_pass_with_edge_detection(image, mask, show_plot=False, output=None):
     image = image.convert('L')
     mask = mask.convert('L')
 
     # hp_image = high_pass_filter(image, diameter)
     frequency_image = ft.fft2d(image)
 
-    output_frequency = image * mask
+    output_frequency = frequency_image * mask
     image_highpass = ft.ifft2d(output_frequency)
 
     if show_plot:
