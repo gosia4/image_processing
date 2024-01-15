@@ -186,9 +186,10 @@ def high_pass_with_edge_detection(image, mask, diameter, show_plot=False):
     image = image.convert('L')
     mask = mask.convert('L')
 
-    hp_image = high_pass_filter(image, diameter)
+    # hp_image = high_pass_filter(image, diameter)
+    frequency_image = ft.fft2d(image)
 
-    output_frequency = hp_image * mask
+    output_frequency = image * mask
     image_highpass = ft.ifft2d(output_frequency)
 
     if show_plot:
